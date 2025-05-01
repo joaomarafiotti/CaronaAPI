@@ -1,4 +1,4 @@
-package br.ifsp.demo.models.ride.resp;
+package br.ifsp.demo.models;
 
 public record GetAvailableRidesResponseModel() {
 }
