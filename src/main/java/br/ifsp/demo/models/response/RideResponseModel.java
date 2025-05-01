@@ -1,4 +1,9 @@
 package br.ifsp.demo.models.response;
 
-public record RideResponseModel() {
+import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.utils.RideStatus;
+
+import java.time.LocalDateTime;
+
+public record RideResponseModel(LocalDateTime startTime, RideStatus status, Driver driver) {
 }
