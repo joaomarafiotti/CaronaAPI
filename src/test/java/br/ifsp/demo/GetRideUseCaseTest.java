@@ -3,7 +3,6 @@ package br.ifsp.demo;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
-import br.ifsp.demo.dto.RideDTO;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.usecase.GetRideUseCase;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,35 +35,36 @@ public class GetRideUseCaseTest {
 
     @Test
     void shouldReturnARideListWithRidesWithWaitingAndFullStatus() {
+        LocalDateTime now = LocalDateTime.now();
 
         Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
-                LocalDateTime.now(),
+                now,
                 driver
         );
         Ride r2 = new Ride(
                 "Rua XV de Novembro, 500",
                 "Rua das Laranjeiras, 200",
-                LocalDateTime.now().plusMinutes(30),
+                now.plusMinutes(30),
                 driver
         );
         Ride r3 = new Ride(
                 "Av. Paulista, 1000",
                 "Rua Augusta, 1500",
-                LocalDateTime.now().plusHours(1),
+                now.plusHours(1),
                 driver
         );
         Ride r4 = new Ride(
                 "Praça da Sé, 50",
                 "Rua Direita, 75",
-                LocalDateTime.now().plusHours(2).plusMinutes(45),
+                now.plusHours(2).plusMinutes(45),
                 driver
         );
         Ride r5 = new Ride(
                 "Rua das Flores, 77",
                 "Alameda Santos, 1500",
-                LocalDateTime.now().plusDays(1).plusHours(3),
+                now.plusDays(1).plusHours(3),
                 driver
         );
         r1.setRideStatus(RideStatus.WAITING);
@@ -73,8 +73,8 @@ public class GetRideUseCaseTest {
         r4.setRideStatus(RideStatus.FINISHED);
         r5.setRideStatus(RideStatus.STARTED);
 
-        RideResponseModel r1Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.WAITING, driver);
-        RideResponseModel r2Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.FULL, driver);
+        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver);
+        RideResponseModel r2Resp = new RideResponseModel(now, RideStatus.FULL, driver);
 
         when(rideRepository.findAll()).thenReturn(List.of(r1, r2, r3, r4, r5));
 
@@ -90,21 +90,19 @@ public class GetRideUseCaseTest {
 
     @Test
     void shouldReturnARideByUUID() {
-        UUID uuid = UUID.randomUUID();
-        RideDTO r1 = new RideDTO(
-                UUID.randomUUID(),
+        Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
                 LocalDateTime.now(),
-                RideStatus.WAITING,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
-        RideResponseModel r1Resp = new RideResponseModel(RideStatus.WAITING, driver, LocalDateTime.now());
 
-        when(rideRepository.findById(uuid)).thenReturn(Optional.of(r1));
+        r1.setRideStatus(RideStatus.WAITING);
+        RideResponseModel r1Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.WAITING, driver);
 
-        assertThat(sut.byId(uuid)).isEqualTo(r1Resp);
+        when(rideRepository.findById(r1.getId())).thenReturn(Optional.of(r1));
+
+        assertThat(sut.byId(r1.getId())).isEqualTo(r1Resp);
     }
 
     @Test
@@ -113,6 +111,6 @@ public class GetRideUseCaseTest {
 
         when(rideRepository.findById(uuid)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(sut.getById(uuid)).isInstanceOf(Exception.class);
+        assertThrows(IllegalArgumentException.class, () -> sut.byId(uuid));
     }
 }
