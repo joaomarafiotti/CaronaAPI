@@ -85,14 +85,14 @@ public class GetRideUseCaseTest {
 
         when(rideRepository.findAll()).thenReturn(List.of(r1, r2, r3, r4, r5));
 
-        assertThat(sut.getAvailableRides()).isEqual(List.of(r1Resp, r2Resp));
+        assertThat(sut.availableOnes()).isEqualTo(List.of(r1Resp, r2Resp));
     }
 
     @Test
-    void shouldReturnEmptyListWhenSystemHasNoAvailableRides() {
+    void shouldReturnEmptyListWhenSystemHasNoAvailableOnes() {
         when(rideRepository.findAll()).thenReturn(List.of());
 
-        assertThat(sut.getAvailableRides()).isEqual(List.of());
+        assertThat(sut.availableOnes()).isEmpty();
     }
 
     @Test
@@ -111,7 +111,7 @@ public class GetRideUseCaseTest {
 
         when(rideRepository.findById(uuid)).thenReturn(Optional.of(r1));
 
-        assertThat(sut.getById(uuid)).isEqual(r1Resp);
+        assertThat(sut.byId(uuid)).isEqualTo(r1Resp);
     }
 
     @Test
