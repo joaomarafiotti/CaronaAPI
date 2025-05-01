@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -47,5 +48,15 @@ public class Ride {
         this.departureTime = departureTime;
         this.driver = driver;
         this.rideStatus = RideStatus.WAITING;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ride ride = (Ride) o;
+        return Objects.equals(id, ride.id) && Objects.equals(startAddress, ride.startAddress)
+                && Objects.equals(endAddress, ride.endAddress) && Objects.equals(departureTime, ride.departureTime)
+                && rideStatus == ride.rideStatus && Objects.equals(driver, ride.driver) && Objects.equals(passengers, ride.passengers);
     }
 }

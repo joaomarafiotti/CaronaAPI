@@ -3,35 +3,49 @@ package br.ifsp.demo.usecase;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.dto.RideRequestDTO;
+import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RegisterRideUseCase {
     private final DriverRepository driverRepository;
     private final RideRepository rideRepository;
 
-    @Autowired
-    public RegisterRideUseCase(DriverRepository driverRepository, RideRepository rideRepository) {
-        this.driverRepository = driverRepository;
-        this.rideRepository = rideRepository;
+    public Ride execute(@Valid RideRequestDTO rideRequestDTO) {
+        validateRideRequest(rideRequestDTO);
+
+        Driver driver = findDriveOrThrow(rideRequestDTO.driverId());
+
+        Ride ride = rideRequestDTO.toRide(driver);
+
+        return rideRepository.save(ride);
     }
 
-    public boolean execute(RideRequestDTO rideRequestDTO) {
-        Optional<Driver> driver = driverRepository.findById(rideRequestDTO.driverId());
+    private Driver findDriveOrThrow(UUID driverId){
+        return driverRepository.findById(driverId)
+                .orElseThrow(() -> new DriverNotFoundException("Driver not found: " + driverId));
+    }
 
-        if (driver.isEmpty()) {
-            throw new RuntimeException("Driver not found");
+    private void validateRideRequest(RideRequestDTO request) {
+        if (request.startAddress().equals(request.endAddress())) {
+            throw new IllegalArgumentException("Start and end locations must be different");
         }
 
-        Ride ride = rideRequestDTO.toRide(driver.get());
+        if (request.departureTime().isBefore(LocalDateTime.now().plusHours(1))) {
+            throw new IllegalArgumentException("Ride must be scheduled at least 1 hour in advance");
+        }
 
-        rideRepository.save(ride);
-
-        return true;
+        if (request.departureTime().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Departure time must be in the future");
+        }
     }
 }
