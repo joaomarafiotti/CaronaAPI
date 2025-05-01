@@ -1,12 +1,12 @@
-package br.ifsp.demo;
+package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
-import br.ifsp.demo.usecase.GetRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +34,9 @@ public class GetRideUseCaseTest {
     GetRideUseCase sut;
 
     @Test
+    @Tag("Unit Test")
+    @Tag("TDD")
+    @DisplayName("Should return a ride list with rides with waiting and full status")
     void shouldReturnARideListWithRidesWithWaitingAndFullStatus() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime r2Start = now.plusMinutes(90);
@@ -86,6 +89,9 @@ public class GetRideUseCaseTest {
     }
 
     @Test
+    @Tag("Unit Test")
+    @Tag("TDD")
+    @DisplayName("Should return empty list when system has no available ones")
     void shouldReturnEmptyListWhenSystemHasNoAvailableOnes() {
         when(rideRepository.findAll()).thenReturn(List.of());
 
@@ -93,6 +99,9 @@ public class GetRideUseCaseTest {
     }
 
     @Test
+    @Tag("Unit Test")
+    @Tag("TDD")
+    @DisplayName("Should return a ride by UUID")
     void shouldReturnARideByUUID() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -112,6 +121,9 @@ public class GetRideUseCaseTest {
     }
 
     @Test
+    @Tag("Unit Test")
+    @Tag("TDD")
+    @DisplayName("Should throw exception when ride does not exist")
     void shouldThrowExceptionWhenRideDoesNotExist() {
         UUID uuid = UUID.randomUUID();
 

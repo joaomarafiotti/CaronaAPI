@@ -1,11 +1,10 @@
-package br.ifsp.demo;
+package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
-import br.ifsp.demo.usecase.RegisterRideUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
