@@ -1,6 +1,8 @@
 package br.ifsp.demo;
 
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.Passenger;
+import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.dto.RideDTO;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
@@ -34,51 +36,42 @@ public class GetRideUseCaseTest {
 
     @Test
     void shouldReturnARideListWithRidesWithWaitingAndFullStatus() {
-        RideDTO r1 = new RideDTO(
-                UUID.randomUUID(),
+
+        Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
                 LocalDateTime.now(),
-                RideStatus.WAITING,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
-        RideDTO r2 = new RideDTO(
-                UUID.randomUUID(),
+        Ride r2 = new Ride(
                 "Rua XV de Novembro, 500",
                 "Rua das Laranjeiras, 200",
                 LocalDateTime.now().plusMinutes(30),
-                RideStatus.FULL,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
-        RideDTO r3 = new RideDTO(
-                UUID.randomUUID(),
+        Ride r3 = new Ride(
                 "Av. Paulista, 1000",
                 "Rua Augusta, 1500",
                 LocalDateTime.now().plusHours(1),
-                RideStatus.CANCELED,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
-        RideDTO r4 = new RideDTO(
-                UUID.randomUUID(),
+        Ride r4 = new Ride(
                 "Praça da Sé, 50",
                 "Rua Direita, 75",
                 LocalDateTime.now().plusHours(2).plusMinutes(45),
-                RideStatus.FINISHED,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
-        RideDTO r5 = new RideDTO(
-                UUID.randomUUID(),
+        Ride r5 = new Ride(
                 "Rua das Flores, 77",
                 "Alameda Santos, 1500",
                 LocalDateTime.now().plusDays(1).plusHours(3),
-                RideStatus.STARTED,
-                driver.getId(),
-                List.of(UUID.randomUUID())
+                driver
         );
+        r1.setRideStatus(RideStatus.WAITING);
+        r2.setRideStatus(RideStatus.FULL);
+        r3.setRideStatus(RideStatus.CANCELED);
+        r4.setRideStatus(RideStatus.FINISHED);
+        r5.setRideStatus(RideStatus.STARTED);
 
         RideResponseModel r1Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.WAITING, driver);
         RideResponseModel r2Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.FULL, driver);
