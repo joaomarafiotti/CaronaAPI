@@ -2,7 +2,7 @@ package br.ifsp.demo;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.dto.RideDTO;
-import br.ifsp.demo.models.RideResponseModel;
+import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.usecase.GetRideUseCase;
 import br.ifsp.demo.utils.RideStatus;

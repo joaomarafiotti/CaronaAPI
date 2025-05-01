@@ -2,7 +2,7 @@ package br.ifsp.demo;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
-import br.ifsp.demo.dto.RideRequestDTO;
+import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.usecase.RegisterRideUseCase;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,7 +40,7 @@ public class RegisterRideUseCaseTest {
         Driver driver = new Driver("John", "111.222.333-45", "john@gmail.com", LocalDate.of(2004, 5, 6));
         UUID driverId = UUID.randomUUID();
         LocalDateTime time = LocalDateTime.now().plusDays(3).plusHours(10);
-        RideRequestDTO rideDTO = new RideRequestDTO("São Paulo", "Campinas", time, driverId);
+        RideRequestModel rideDTO = new RideRequestModel("São Paulo", "Campinas", time, driverId);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
@@ -56,7 +55,7 @@ public class RegisterRideUseCaseTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidRideScenarios")
-    public void testRegisterWithInvalidOptions(String scenario, RideRequestDTO rideDTO, Class<? extends Exception> expectedException) {
+    public void testRegisterWithInvalidOptions(String scenario, RideRequestModel rideDTO, Class<? extends Exception> expectedException) {
         assertThrows(expectedException, () -> registerRideUseCase.execute(rideDTO));
         verify(rideRepository, never()).save(any());
     }
@@ -68,12 +67,12 @@ public class RegisterRideUseCaseTest {
         return Stream.of(
                 Arguments.of(
                         "Should fail when departure time is in past",
-                        new RideRequestDTO("São Paulo", "Campinas", LocalDateTime.now().minusHours(1), validDriverId),
+                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now().minusHours(1), validDriverId),
                         IllegalArgumentException.class
                 ),
                 Arguments.of(
                         "Should fail when start address is equal to end address",
-                        new RideRequestDTO("São Paulo", "São Paulo", LocalDateTime.now().plusHours(1), validDriverId),
+                        new RideRequestModel("São Paulo", "São Paulo", LocalDateTime.now().plusHours(1), validDriverId),
                         IllegalArgumentException.class
                 )
         );

@@ -2,7 +2,7 @@ package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
-import br.ifsp.demo.dto.RideRequestDTO;
+import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,12 +19,12 @@ public class RegisterRideUseCase {
     private final DriverRepository driverRepository;
     private final RideRepository rideRepository;
 
-    public Ride execute(@Valid RideRequestDTO rideRequestDTO) {
-        validateRideRequest(rideRequestDTO);
+    public Ride execute(@Valid RideRequestModel rideRequestModel) {
+        validateRideRequest(rideRequestModel);
 
-        Driver driver = findDriveOrThrow(rideRequestDTO.driverId());
+        Driver driver = findDriveOrThrow(rideRequestModel.driverId());
 
-        Ride ride = rideRequestDTO.toRide(driver);
+        Ride ride = rideRequestModel.toRide(driver);
 
         return rideRepository.save(ride);
     }
@@ -35,7 +34,7 @@ public class RegisterRideUseCase {
                 .orElseThrow(() -> new DriverNotFoundException("Driver not found: " + driverId));
     }
 
-    private void validateRideRequest(RideRequestDTO request) {
+    private void validateRideRequest(RideRequestModel request) {
         if (request.startAddress().equals(request.endAddress())) {
             throw new IllegalArgumentException("Start and end locations must be different");
         }
