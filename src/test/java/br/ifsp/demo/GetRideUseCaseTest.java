@@ -36,6 +36,10 @@ public class GetRideUseCaseTest {
     @Test
     void shouldReturnARideListWithRidesWithWaitingAndFullStatus() {
         LocalDateTime now = LocalDateTime.now();
+        LocalDateTime r2Start = now.plusMinutes(90);
+        LocalDateTime r3Start = now.plusHours(1);
+        LocalDateTime r4Start = now.plusHours(2).plusMinutes(45);
+        LocalDateTime r5Start = now.plusDays(1).plusHours(3);
 
         Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
@@ -46,25 +50,25 @@ public class GetRideUseCaseTest {
         Ride r2 = new Ride(
                 "Rua XV de Novembro, 500",
                 "Rua das Laranjeiras, 200",
-                now.plusMinutes(30),
+                r2Start,
                 driver
         );
         Ride r3 = new Ride(
                 "Av. Paulista, 1000",
                 "Rua Augusta, 1500",
-                now.plusHours(1),
+                r3Start,
                 driver
         );
         Ride r4 = new Ride(
                 "Praça da Sé, 50",
                 "Rua Direita, 75",
-                now.plusHours(2).plusMinutes(45),
+                r4Start,
                 driver
         );
         Ride r5 = new Ride(
                 "Rua das Flores, 77",
                 "Alameda Santos, 1500",
-                now.plusDays(1).plusHours(3),
+                r5Start,
                 driver
         );
         r1.setRideStatus(RideStatus.WAITING);
@@ -74,7 +78,7 @@ public class GetRideUseCaseTest {
         r5.setRideStatus(RideStatus.STARTED);
 
         RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver);
-        RideResponseModel r2Resp = new RideResponseModel(now, RideStatus.FULL, driver);
+        RideResponseModel r2Resp = new RideResponseModel(r2Start, RideStatus.FULL, driver);
 
         when(rideRepository.findAll()).thenReturn(List.of(r1, r2, r3, r4, r5));
 
@@ -90,15 +94,17 @@ public class GetRideUseCaseTest {
 
     @Test
     void shouldReturnARideByUUID() {
+        LocalDateTime now = LocalDateTime.now();
+
         Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
-                LocalDateTime.now(),
+                now,
                 driver
         );
 
         r1.setRideStatus(RideStatus.WAITING);
-        RideResponseModel r1Resp = new RideResponseModel(LocalDateTime.now(), RideStatus.WAITING, driver);
+        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver);
 
         when(rideRepository.findById(r1.getId())).thenReturn(Optional.of(r1));
 
