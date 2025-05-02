@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.request.RideRequestModel;
+import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ public class RegisterRideUseCaseTest {
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
         when(rideRepository.save(any(Ride.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Retorna o próprio objeto salvo
-        Ride response = registerRideUseCase.execute(rideDTO);
+        RideResponseModel response = registerRideUseCase.execute(rideDTO);
 
         Ride expectedRide = new Ride("São Paulo", "Campinas", time, driver);
         assertThat(response).isEqualTo(expectedRide);
@@ -72,6 +73,16 @@ public class RegisterRideUseCaseTest {
                 Arguments.of(
                         "Should fail when start address is equal to end address",
                         new RideRequestModel("São Paulo", "São Paulo", LocalDateTime.now().plusHours(1), validDriverId),
+                        IllegalArgumentException.class
+                ),
+                Arguments.of(
+                        "Should fail when driver was not found",
+                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now(), UUID.randomUUID()),
+                        IllegalArgumentException.class
+                ),
+                Arguments.of(
+                        "Should fail when departure time is less than one hour",
+                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now().plusMinutes(30), validDriverId),
                         IllegalArgumentException.class
                 )
         );
