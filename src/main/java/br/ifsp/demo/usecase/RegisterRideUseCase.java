@@ -4,6 +4,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.exception.DriverNotFoundException;
+import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import jakarta.validation.Valid;
@@ -19,14 +20,17 @@ public class RegisterRideUseCase {
     private final DriverRepository driverRepository;
     private final RideRepository rideRepository;
 
-    public Ride execute(@Valid RideRequestModel rideRequestModel) {
+    public RideResponseModel execute(@Valid RideRequestModel rideRequestModel) {
         validateRideRequest(rideRequestModel);
 
         Driver driver = findDriveOrThrow(rideRequestModel.driverId());
 
         Ride ride = rideRequestModel.toRide(driver);
 
-        return rideRepository.save(ride);
+        rideRepository.save(ride);
+
+        return new RideResponseModel(ride.getDepartureTime(),
+                ride.getRideStatus(), driver);
     }
 
     private Driver findDriveOrThrow(UUID driverId){
