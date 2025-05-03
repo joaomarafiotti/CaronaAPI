@@ -15,6 +15,7 @@ public class Car {
 
     @Id
     @GeneratedValue
+    @Column(name = "car_id", updatable = false, nullable = false)
     private UUID id;
 
     @Column(nullable = false)

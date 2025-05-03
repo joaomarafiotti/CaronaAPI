@@ -39,15 +39,21 @@ public class Ride {
     @OneToMany(mappedBy = "ride")
     private List<Passenger> passengers;
 
+    @Setter
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
+
     public Ride() {
     }
 
-    public Ride(String startAddress, String endAddress, LocalDateTime departureTime, Driver driver) {
+    public Ride(String startAddress, String endAddress, LocalDateTime departureTime, Driver driver, Car car) {
         this.startAddress = startAddress;
         this.endAddress = endAddress;
         this.departureTime = departureTime;
         this.driver = driver;
         this.rideStatus = RideStatus.WAITING;
+        this.car = car;
     }
 
     @Override
