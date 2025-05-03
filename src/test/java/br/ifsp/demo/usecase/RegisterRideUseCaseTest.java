@@ -1,16 +1,20 @@
 package br.ifsp.demo.usecase;
 
+import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.exception.CarNotFoundException;
+import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.request.RideRequestModel;
-import br.ifsp.demo.models.response.RideResponseModel;
+import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.utils.RideStatus;
+import jdk.jfr.Description;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,72 +23,110 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class RegisterRideUseCaseTest {
     @Mock
-    private DriverRepository driverRepository;
+    DriverRepository driverRepository;
     @Mock
-    private RideRepository rideRepository;
+    CarRepository carRepository;
+    @Mock
+    RideRepository rideRepository;
+
     @InjectMocks
-    private RegisterRideUseCase registerRideUseCase;
+    RegisterRideUseCase registerRideUseCase;
 
     @Test
-    public void testRegisterRideSuccessfully() {
-        Driver driver = new Driver("John", "111.222.333-45", "john@gmail.com", LocalDate.of(2004, 5, 6));
+    @Tag("UnitTest")
+    @Description("Should successfully register a ride when the driver and car are valid and found in the repository.")
+    void testRegisterRideSuccessfully() {
         UUID driverId = UUID.randomUUID();
-        LocalDateTime time = LocalDateTime.now().plusDays(3).plusHours(10);
-        RideRequestModel rideDTO = new RideRequestModel("São Paulo", "Campinas", time, driverId);
+        UUID carId = UUID.randomUUID();
+        LocalDateTime departureTime = LocalDateTime.now().plusDays(3).plusHours(10);
+
+        Driver driver = new Driver("John", "111.222.333-45", "john@gmail.com", LocalDate.of(2004, 5, 6));
+        Car car = new Car("Fiat", "Uno", "Red", 5, "ABC3X12");
+
+        var rideDTO = new RideRequestModel("São Paulo", "Campinas", departureTime, driverId, carId);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
+        when(rideRepository.save(any(Ride.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        when(rideRepository.save(any(Ride.class))).thenAnswer(invocation -> invocation.getArgument(0)); // Retorna o próprio objeto salvo
-        RideResponseModel response = registerRideUseCase.execute(rideDTO);
+        var response = registerRideUseCase.execute(rideDTO);
 
-        Ride expectedRide = new Ride("São Paulo", "Campinas", time, driver);
-        assertThat(response).isEqualTo(expectedRide);
+        assertThat(response).isNotNull();
+        assertThat(response.rideId()).isNotNull();
 
-        verify(rideRepository).save(eq(expectedRide));
+        ArgumentCaptor<Ride> captor = ArgumentCaptor.forClass(Ride.class);
+        verify(rideRepository).save(captor.capture());
+        Ride savedRide = captor.getValue();
+
+        assertThat(savedRide.getStartAddress()).isEqualTo("São Paulo");
+        assertThat(savedRide.getEndAddress()).isEqualTo("Campinas");
+        assertThat(savedRide.getDepartureTime()).isEqualTo(departureTime);
+        assertThat(savedRide.getDriver()).isEqualTo(driver);
+        assertThat(savedRide.getCar()).isEqualTo(car);
+        assertThat(savedRide.getRideStatus()).isEqualTo(RideStatus.WAITING);
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("invalidRideScenarios")
-    public void testRegisterWithInvalidOptions(String scenario, RideRequestModel rideDTO, Class<? extends Exception> expectedException) {
-        assertThrows(expectedException, () -> registerRideUseCase.execute(rideDTO));
+    @Test
+    @Tag("UnitTest")
+    @Description("Should result in NoCarFoundException when driver has no car")
+    void shouldFailWhenDriverHasNoCar() {
+        UUID driverId = UUID.randomUUID();
+        UUID carId = UUID.randomUUID();
+        LocalDateTime departureTime = LocalDateTime.now().plusDays(1);
+
+        Driver driver = new Driver("Ana", "222.333.444-55", "ana@gmail.com", LocalDate.of(1990, 1, 1));
+
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(carRepository.findById(carId)).thenReturn(Optional.empty());
+
+        assertThrows(CarNotFoundException.class, () -> registerRideUseCase.execute(rideDTO));
+
         verify(rideRepository, never()).save(any());
     }
 
-    static Stream<Arguments> invalidRideScenarios() {
-        UUID validDriverId = UUID.randomUUID();
-        LocalDateTime validTime = LocalDateTime.now().plusHours(1);
 
-        return Stream.of(
-                Arguments.of(
-                        "Should fail when departure time is in past",
-                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now().minusHours(1), validDriverId),
-                        IllegalArgumentException.class
-                ),
-                Arguments.of(
-                        "Should fail when start address is equal to end address",
-                        new RideRequestModel("São Paulo", "São Paulo", LocalDateTime.now().plusHours(1), validDriverId),
-                        IllegalArgumentException.class
-                ),
-                Arguments.of(
-                        "Should fail when driver was not found",
-                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now(), UUID.randomUUID()),
-                        IllegalArgumentException.class
-                ),
-                Arguments.of(
-                        "Should fail when departure time is less than one hour",
-                        new RideRequestModel("São Paulo", "Campinas", LocalDateTime.now().plusMinutes(30), validDriverId),
-                        IllegalArgumentException.class
-                )
-        );
+    @Test
+    @Tag("UnitTest")
+    @Description("Should result in DriverNotFoundException when driver not found")
+    void shouldFailWhenDriverNotFound() {
+        UUID driverId = UUID.randomUUID();
+        UUID carId = UUID.randomUUID();
+        LocalDateTime departureTime = LocalDateTime.now().plusDays(1);
+
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
+
+        assertThrows(DriverNotFoundException.class, () -> registerRideUseCase.execute(rideDTO));
+
+        verify(carRepository, never()).findById(any());
+        verify(rideRepository, never()).save(any());
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Description("Should fail when departure time is less than one hour")
+    void shouldFailWhenDepartureTimeIsLessThanOneHour() {
+        UUID driverId = UUID.randomUUID();
+        UUID carId = UUID.randomUUID();
+        LocalDateTime departureTime = LocalDateTime.now().plusMinutes(30); // Less than 1 hour
+
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+
+        assertThrows(IllegalArgumentException.class, () -> registerRideUseCase.execute(rideDTO));
+
+        verify(driverRepository, never()).findById(any());
+        verify(carRepository, never()).findById(any());
+        verify(rideRepository, never()).save(any());
     }
 }

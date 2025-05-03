@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +35,7 @@ public class Car {
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
 
-    public Car() {
+    protected Car() {
     }
 
     public Car(String brand, String model, String color, Integer seats, String licensePlate) {

@@ -15,7 +15,6 @@ import java.util.UUID;
 public class Ride {
 
     @Id
-    @GeneratedValue
     private UUID id;
 
     @Setter
@@ -48,6 +47,7 @@ public class Ride {
     }
 
     public Ride(String startAddress, String endAddress, LocalDateTime departureTime, Driver driver, Car car) {
+        this.id = UUID.randomUUID();
         this.startAddress = startAddress;
         this.endAddress = endAddress;
         this.departureTime = departureTime;
