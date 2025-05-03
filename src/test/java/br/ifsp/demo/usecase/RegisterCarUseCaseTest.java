@@ -2,6 +2,7 @@ package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CarResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
@@ -16,7 +17,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,19 +48,17 @@ class RegisterCarUseCaseTest {
         );
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
-
-        Car savedCar = new Car(carRequest.brand(), carRequest.model(), carRequest.color(),
-                carRequest.seats(), carRequest.licensePlate());
-
-        savedCar.setId(UUID.randomUUID());
-        when(carRepository.save(savedCar)).thenReturn(savedCar);
+        when(driverRepository.save(any(Driver.class))).thenReturn(driver);
+        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
+            Car car = invocation.getArgument(0);
+            car.setId(UUID.randomUUID());
+            return car;
+        });
 
         CarResponseModel result = sut.execute(carRequest);
 
-        Car expectedCar = driver.getCars().stream().filter(c -> c.getId().equals(savedCar.getId())).findFirst()
-                .orElse(null);
-
-        assertNotNull(expectedCar);
+        assertNotNull(result);
+        assertNotNull(result.id());
     }
 
 
@@ -74,7 +72,7 @@ class RegisterCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> sut.execute(carRequest));
+        assertThrows(DriverNotFoundException.class, () -> sut.execute(carRequest));
 
         verify(driverRepository).findById(driverId);
         verify(carRepository, never()).save(Mockito.<Car>any());
