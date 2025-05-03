@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,13 +35,8 @@ public class Driver {
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @Setter
-    @NonNull
-    @Column(nullable = false)
-    private boolean hasCar;
-
-    @Setter @OneToMany(mappedBy = "driver")
-    private List<Ride> rides;
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars = new ArrayList<>();
 
     public Driver() {
     }
@@ -50,6 +46,12 @@ public class Driver {
         this.cpf = cpf;
         this.email = email;
         this.birthDate = birthDate;
-        this.hasCar = true;
+    }
+
+    public void addCar(Car car) {
+        if (!this.cars.contains(car)) {
+            car.setDriver(this);
+            this.cars.add(car);
+        }
     }
 }
