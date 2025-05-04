@@ -73,6 +73,16 @@ public class CreateRideSolicitationUseCaseTest {
         assertThat(driver.getRideSolicitations()).isEqualTo(List.of(rideSolicitation));
     }
 
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should not create two equals solicitations")
+    public void shouldNotCreateTwoEqualsSolicitations() {
+        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(passenger, ride);
+        assertThrows(Exception.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
+    }
+
+
     @ParameterizedTest
     @Tag("UnitTest")
     @Tag("TDD")
