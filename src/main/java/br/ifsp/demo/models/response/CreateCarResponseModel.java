@@ -2,7 +2,7 @@ package br.ifsp.demo.models.response;
 
 import java.util.UUID;
 
-public record CarResponseModel(
+public record CreateCarResponseModel(
         UUID id
 ) {
 }
