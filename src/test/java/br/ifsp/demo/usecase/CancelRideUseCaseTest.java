@@ -54,8 +54,8 @@ public class CancelRideUseCaseTest {
         Car car = new Car("Fiat", "Uno", "Red", 5, "12345");
 
         passengers = List.of(
-                new Passenger("João", "111.222.333-44", "joao@example.com"),
-                new Passenger("Maria", "555.666.777-88", "maria@example.com")
+                new Passenger("João", "joao@example.com"),
+                new Passenger("Maria",  "maria@example.com")
         );
 
         ride = new Ride("São Paulo", "Campinas", futureTime, driver, car);

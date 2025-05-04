@@ -43,7 +43,7 @@ public class Ride {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    public Ride() {
+    protected Ride() {
     }
 
     public Ride(String startAddress, String endAddress, LocalDateTime departureTime, Driver driver, Car car) {

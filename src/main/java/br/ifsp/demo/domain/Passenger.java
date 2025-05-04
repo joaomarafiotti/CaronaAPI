@@ -25,7 +25,7 @@ public class Passenger {
     @JoinColumn(name = "ride_id")
     private Ride ride;
 
-    public Passenger(){
+    protected Passenger(){
     }
 
     public Passenger(String name, String email) {

@@ -37,7 +37,7 @@ class RegisterCarUseCaseTest {
 
     @Test
     @Tag("TDD")
-    @Tag("Unit test")
+    @Tag("UnitTest")
     @DisplayName("Should register car successfully and return car ID")
     void shouldRegisterCarSuccessfully() {
         Driver driver = new Driver("João", "111.222.333-44", "joao@gmail.com", LocalDate.now());
@@ -61,10 +61,9 @@ class RegisterCarUseCaseTest {
         assertNotNull(result.id());
     }
 
-
     @Test
     @Tag("TDD")
-    @Tag("Unit test")
+    @Tag("UnitTest")
     @DisplayName("Should throw exception when driver not found")
     void shouldThrowExceptionWhenDriverNotFound() {
         UUID driverId = UUID.randomUUID();
@@ -80,7 +79,7 @@ class RegisterCarUseCaseTest {
 
     @Test
     @Tag("TDD")
-    @Tag("Unit test")
+    @Tag("UnitTest")
     @DisplayName("Should throw exception when CarRequestModel is null")
     void shouldThrowExceptionWhenCarRequestModelIsNull() {
         assertThrows(IllegalArgumentException.class, () -> sut.execute(null));
