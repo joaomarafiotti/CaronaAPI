@@ -65,9 +65,9 @@ public class GetRideSolicitationUseCaseTest {
         RideSolicitation s2 = new RideSolicitation(ride, passenger);
         s1.setStatus(RideSolicitationStatus.REJECTED);
 
-        when(driver.getRideSolicitations()).thenReturn(List.of());
+        when(driver.getRideSolicitations()).thenReturn(List.of(s1, s2));
 
-        sut.getPendingSolicitationsFrom(driver);
+        assertThat(sut.getPendingSolicitationsFrom(driver)).isEqualTo(List.of(s2));
     }
 
 }

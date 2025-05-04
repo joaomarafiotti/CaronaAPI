@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateRideSolicitationUseCaseTest {
@@ -79,7 +81,8 @@ public class CreateRideSolicitationUseCaseTest {
     @DisplayName("Should not create two equals solicitations")
     public void shouldNotCreateTwoEqualsSolicitations() {
         RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(passenger, ride);
-        assertThrows(Exception.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
+        when(solicitationRepo.findAll()).thenReturn(List.of(r1));
+        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
     }
 
 
