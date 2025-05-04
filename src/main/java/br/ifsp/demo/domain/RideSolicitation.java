@@ -31,7 +31,6 @@ public class RideSolicitation {
     @Column
     private RideSolicitationStatus status = RideSolicitationStatus.WAITING;
 
-
     public RideSolicitation(Ride ride, Passenger passenger) {
         if (ride == null || passenger == null) {
             throw new IllegalArgumentException("Ride and passenger must not be null");
@@ -39,5 +38,20 @@ public class RideSolicitation {
 
         this.ride = ride;
         this.passenger = passenger;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RideSolicitation that = (RideSolicitation) o;
+        return ride.equals(that.ride) && passenger.equals(that.passenger);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ride.hashCode();
+        result = 31 * result + passenger.hashCode();
+        return result;
     }
 }
