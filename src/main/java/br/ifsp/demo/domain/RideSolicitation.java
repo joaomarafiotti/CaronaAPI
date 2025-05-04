@@ -33,6 +33,10 @@ public class RideSolicitation {
 
 
     public RideSolicitation(Ride ride, Passenger passenger) {
+        if (ride == null || passenger == null) {
+            throw new IllegalArgumentException("Ride and passenger must not be null");
+        }
+
         this.ride = ride;
         this.passenger = passenger;
     }
