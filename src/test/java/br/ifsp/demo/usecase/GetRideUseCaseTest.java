@@ -38,7 +38,7 @@ public class GetRideUseCaseTest {
     GetRideUseCase sut;
 
     @Test
-    @Tag("Unit Test")
+    @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should return a ride list with rides with waiting and full status")
     void shouldReturnARideListWithRidesWithWaitingAndFullStatus() {
@@ -98,7 +98,7 @@ public class GetRideUseCaseTest {
     }
 
     @Test
-    @Tag("Unit Test")
+    @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should return empty list when system has no available ones")
     void shouldReturnEmptyListWhenSystemHasNoAvailableOnes() {
@@ -108,7 +108,7 @@ public class GetRideUseCaseTest {
     }
 
     @Test
-    @Tag("Unit Test")
+    @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should return a ride by UUID")
     void shouldReturnARideByUUID() {
@@ -130,7 +130,7 @@ public class GetRideUseCaseTest {
     }
 
     @Test
-    @Tag("Unit Test")
+    @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should throw exception when ride does not exist")
     void shouldThrowExceptionWhenRideDoesNotExist() {

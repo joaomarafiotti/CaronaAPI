@@ -21,7 +21,8 @@ public class GetRideSolicitationUseCaseTest {
     private LocalDateTime now;
     private Driver driver;
     private Car car;
-    private Passenger passenger;
+    private Passenger passenger1;
+    private Passenger passenger2;
     private Ride ride;
     private GetRideSolicitationUseCase sut;
 
@@ -48,7 +49,11 @@ public class GetRideSolicitationUseCaseTest {
                 driver,
                 car
         );
-        passenger = new Passenger(
+        passenger1 = new Passenger(
+                "Pedro",
+                "passageiro@gmail.com"
+        );
+        passenger2 = new Passenger(
                 "Pedro",
                 "passageiro@gmail.com"
         );
@@ -61,11 +66,11 @@ public class GetRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should get the driver pending ride solicitations")
     public void shouldGetTheDriverPendingRideSolicitations() {
-        RideSolicitation s1 = new RideSolicitation(ride, passenger);
-        RideSolicitation s2 = new RideSolicitation(ride, passenger);
+        RideSolicitation s1 = new RideSolicitation(ride, passenger1);
+        RideSolicitation s2 = new RideSolicitation(ride, passenger2);
         s1.setStatus(RideSolicitationStatus.REJECTED);
-
-        when(driver.getRideSolicitations()).thenReturn(List.of(s1, s2));
+        driver.addSolicitations(s1);
+        driver.addSolicitations(s2);
 
         assertThat(sut.getPendingSolicitationsFrom(driver)).isEqualTo(List.of(s2));
     }
