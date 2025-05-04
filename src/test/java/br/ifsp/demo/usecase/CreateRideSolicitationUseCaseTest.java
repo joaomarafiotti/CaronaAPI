@@ -1,8 +1,11 @@
 package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.repositories.RideSolicitationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateRideSolicitationUseCaseTest {
+    @Mock
+    private RideSolicitationRepository solicitationRepo;
     private LocalDateTime now;
     private Driver driver;
     private Car car;
@@ -26,7 +31,7 @@ public class CreateRideSolicitationUseCaseTest {
     @BeforeEach
     public void setUp() {
         now = LocalDateTime.now();
-        sut = new CreateRideSolicitationUseCase();
+        sut = new CreateRideSolicitationUseCase(solicitationRepo);
         driver = new Driver(
                 "Gustavo",
                 "123.456.789-X",
@@ -55,6 +60,8 @@ public class CreateRideSolicitationUseCaseTest {
 
 
     @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
     @DisplayName("Should create and register ride solicitation")
     public void shouldCreateAndRegisterRideSolicitation() {
         RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(passenger, ride);
