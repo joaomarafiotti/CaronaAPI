@@ -89,8 +89,8 @@ public class GetRideUseCaseTest {
         r4.setRideStatus(RideStatus.FINISHED);
         r5.setRideStatus(RideStatus.STARTED);
 
-        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver);
-        RideResponseModel r2Resp = new RideResponseModel(r2Start, RideStatus.FULL, driver);
+        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver, car);
+        RideResponseModel r2Resp = new RideResponseModel(r2Start, RideStatus.FULL, driver, car);
 
         when(rideRepository.findAll()).thenReturn(List.of(r1, r2, r3, r4, r5));
 
@@ -123,7 +123,7 @@ public class GetRideUseCaseTest {
         );
 
         r1.setRideStatus(RideStatus.WAITING);
-        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver);
+        RideResponseModel r1Resp = new RideResponseModel(now, RideStatus.WAITING, driver, car);
 
         when(rideRepository.findById(r1.getId())).thenReturn(Optional.of(r1));
 
