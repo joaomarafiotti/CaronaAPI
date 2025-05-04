@@ -1,5 +1,6 @@
 package br.ifsp.demo.usecase;
 
+import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
@@ -22,11 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-/*
 @ExtendWith(MockitoExtension.class)
 public class GetRideUseCaseTest {
     @Mock
     Driver driver;
+
+    @Mock
+    Car car;
 
     @Mock
     RideRepository rideRepository;
@@ -49,31 +52,36 @@ public class GetRideUseCaseTest {
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
                 now,
-                driver
+                driver,
+                car
         );
         Ride r2 = new Ride(
                 "Rua XV de Novembro, 500",
                 "Rua das Laranjeiras, 200",
                 r2Start,
-                driver
+                driver,
+                car
         );
         Ride r3 = new Ride(
                 "Av. Paulista, 1000",
                 "Rua Augusta, 1500",
                 r3Start,
-                driver
+                driver,
+                car
         );
         Ride r4 = new Ride(
                 "Praça da Sé, 50",
                 "Rua Direita, 75",
                 r4Start,
-                driver
+                driver,
+                car
         );
         Ride r5 = new Ride(
                 "Rua das Flores, 77",
                 "Alameda Santos, 1500",
                 r5Start,
-                driver
+                driver,
+                car
         );
         r1.setRideStatus(RideStatus.WAITING);
         r2.setRideStatus(RideStatus.FULL);
@@ -110,7 +118,8 @@ public class GetRideUseCaseTest {
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
                 now,
-                driver
+                driver,
+                car
         );
 
         r1.setRideStatus(RideStatus.WAITING);
@@ -133,4 +142,3 @@ public class GetRideUseCaseTest {
         assertThrows(IllegalArgumentException.class, () -> sut.byId(uuid));
     }
 }
-*/
