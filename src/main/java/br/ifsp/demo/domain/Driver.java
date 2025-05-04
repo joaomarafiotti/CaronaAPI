@@ -19,24 +19,31 @@ public class Driver {
     @Column(name = "driver_id", updatable = false, nullable = false)
     private UUID id;
 
-    @NonNull @Setter
+    @NonNull
+    @Setter
     @Column(nullable = false)
     private String name;
 
-    @NonNull @Setter
+    @NonNull
+    @Setter
     @Column(nullable = false)
     private String cpf;
 
-    @NonNull @Setter
+    @NonNull
+    @Setter
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NonNull @Setter
+    @NonNull
+    @Setter
     @Column(nullable = false)
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Car> cars = new ArrayList<>();
+    private final List<Car> cars = new ArrayList<>();
+
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<RideSolicitation> rideSolicitations = new ArrayList<>();
 
     public Driver() {
     }
@@ -52,6 +59,12 @@ public class Driver {
         if (!this.cars.contains(car)) {
             car.setDriver(this);
             this.cars.add(car);
+        }
+    }
+
+    public void addSolicitations(RideSolicitation s) {
+        if (!this.rideSolicitations.contains(s)) {
+            this.rideSolicitations.add(s);
         }
     }
 }

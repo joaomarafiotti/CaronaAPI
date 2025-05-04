@@ -1,4 +1,39 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.utils.RideSolicitationStatus;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class RideSolicitation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID Id;
+
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "ride_id")
+    private Ride ride;
+
+    @OneToOne
+    @NotNull
+    @JoinColumn(name = "passenger_id")
+    private Passenger passenger;
+
+    @Column
+    private RideSolicitationStatus status = RideSolicitationStatus.WAITING;
+
+
+    public RideSolicitation(Ride ride, Passenger passenger) {
+        this.ride = ride;
+        this.passenger = passenger;
+    }
 }

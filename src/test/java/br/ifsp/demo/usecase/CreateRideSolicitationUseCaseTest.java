@@ -26,8 +26,20 @@ public class CreateRideSolicitationUseCaseTest {
     @BeforeEach
     public void setUp() {
         now = LocalDateTime.now();
-        driver = new Driver("Gustavo", "123.456.789-X", "motorista@gmail.com", LocalDate.of(2004, 5, 6));
-        car = new Car("Fiat", "Palio", "Prata", 4, "DQC1-ADQ");
+        sut = new CreateRideSolicitationUseCase();
+        driver = new Driver(
+                "Gustavo",
+                "123.456.789-X",
+                "motorista@gmail.com",
+                LocalDate.of(2004, 5, 6)
+        );
+        car = new Car(
+                "Fiat",
+                "Palio",
+                "Prata",
+                4,
+                "DQC1-ADQ"
+        );
         ride = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
@@ -35,8 +47,10 @@ public class CreateRideSolicitationUseCaseTest {
                 driver,
                 car
         );
-        passenger = new Passenger("Pedro", "passageiro@gmail.com");
-
+        passenger = new Passenger(
+                "Pedro",
+                "passageiro@gmail.com"
+        );
     }
 
 
