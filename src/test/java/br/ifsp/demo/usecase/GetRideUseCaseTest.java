@@ -113,7 +113,6 @@ public class GetRideUseCaseTest {
     @DisplayName("Should return a ride by UUID")
     void shouldReturnARideByUUID() {
         LocalDateTime now = LocalDateTime.now();
-
         Ride r1 = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
