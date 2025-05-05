@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -63,10 +60,11 @@ public class Ride {
     }
 
     public void removePassenger(UUID passengerId) {
-        passengers.stream()
+        Optional<Passenger> passenger = passengers.stream()
                 .filter(p -> p.getId().equals(passengerId))
-                .findFirst()
-                .ifPresent(p -> passengers.remove(p));
+                .findFirst();
+        if (passenger.isEmpty()) throw new EntityNotFoundException("Passenger not found in this ride");
+        passengers.remove(passenger.get());
     }
 
     @Override
