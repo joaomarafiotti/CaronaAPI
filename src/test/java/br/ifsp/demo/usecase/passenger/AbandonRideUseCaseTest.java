@@ -39,7 +39,6 @@ public class AbandonRideUseCaseTest {
     @BeforeEach
     void setUp() {
         LocalDateTime now = LocalDateTime.now();
-        driver = new Driver();
         ride = new Ride(
                 "Rua São João Bosco, 1324",
                 "Av. Miguel Petroni, 321",
