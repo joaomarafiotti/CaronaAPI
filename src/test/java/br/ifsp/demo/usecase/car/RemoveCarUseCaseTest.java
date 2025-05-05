@@ -86,4 +86,48 @@ class RemoveCarUseCaseTest {
         verify(driverRepository, never()).save(any());
         verify(carRepository, never()).deleteById(any());
     }
+
+    @Test
+    @Tag("TDD")
+    @Tag("UnitTest")
+    @Description("Should not remove car if it belongs to another driver")
+    void shouldNotRemoveCarIfItBelongsToAnotherDriver() {
+        UUID otherCarId = UUID.randomUUID();
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, otherCarId));
+
+        verify(driverRepository, never()).save(any());
+        verify(carRepository, never()).deleteById(any());
+    }
+
+    @Test
+    @Tag("TDD")
+    @Tag("UnitTest")
+    @Description("Should only remove specified car when multiple cars exists")
+    void shouldOnlyRemoveSpecifiedCarWhenMultipleCarsExist() {
+        Car car2 = new Car("Ford", "Ka", "Blue", 5, "DEF5678");
+        driver.addCar(car2);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        removeCarUseCase.execute(driverId, carId);
+
+        assertFalse(driver.getCars().contains(car));
+        assertTrue(driver.getCars().contains(car2));
+
+        verify(driverRepository).save(driver);
+        verify(carRepository).deleteById(carId);
+    }
+
+    @Test
+    @Tag("TDD")
+    @Tag("UnitTest")
+    @Description("Should throw car not found exception when driver has no cars")
+    void shouldThrowCarNotFoundExceptionWhenDriverHasNoCars() {
+        driver.getCars().clear();
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, carId));
+    }
 }
