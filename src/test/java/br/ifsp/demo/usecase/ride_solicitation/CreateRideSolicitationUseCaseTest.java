@@ -2,6 +2,7 @@ package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
+import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import br.ifsp.demo.utils.RideStatus;
@@ -40,6 +41,10 @@ public class CreateRideSolicitationUseCaseTest {
     private Driver driver;
     private Car car;
     private Passenger passenger;
+    private Passenger p1;
+    private Passenger p2;
+    private Passenger p3;
+    private Passenger p4;
     private Ride ride;
 
     @BeforeEach
@@ -66,8 +71,24 @@ public class CreateRideSolicitationUseCaseTest {
                 car
         );
         passenger = new Passenger(
+                "Gustavo",
+                "passageiro@gmail.com"
+        );
+        p1 = new Passenger(
                 "Pedro",
                 "passageiro@gmail.com"
+        );
+        p2 = new Passenger(
+                "Giovanna",
+                "passageira@gmail.com"
+        );
+        p3 = new Passenger(
+                "Rodrigo",
+                "rodrigo123@gmail.com"
+        );
+        p4 = new Passenger(
+                "Pedro",
+                "pedro@gmail.com"
         );
     }
 
@@ -135,5 +156,18 @@ public class CreateRideSolicitationUseCaseTest {
                 Arguments.of(null, ride),
                 Arguments.of(passenger, null)
         );
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should throws exception if passenger tries to create a solicitation to a ride that is not with status Waiting")
+    public void shouldThrowExceptionIfRideIsNotWithStatusWaiting() {
+        ride.addPassenger(p1);
+        ride.addPassenger(p2);
+        ride.addPassenger(p3);
+        ride.addPassenger(p4);
+
+        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
     }
 }
