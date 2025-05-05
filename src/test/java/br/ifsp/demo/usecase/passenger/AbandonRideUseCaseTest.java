@@ -5,6 +5,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.repositories.RideRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +48,6 @@ public class AbandonRideUseCaseTest {
                 car
         );
         p1 = new Passenger(UUID.randomUUID(), "Gustavo", "endereco@gmail.com", null);
-        ride.addPassenger(p1);
     }
 
 
@@ -55,8 +56,20 @@ public class AbandonRideUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should abandon ride if passenger is in it")
     public void shouldAbandonRideIfPassengerIsInIt() {
+        ride.addPassenger(p1);
         when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
         sut.abandonFor(p1.getId(), ride.getId());
         assertThat(ride.getPassengers()).isEmpty();
     }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should throws if passenger is not in the ride")
+    public void shouldThrowIfPassengerIsNotInRide() {
+        when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
+        assertThrows(EntityNotFoundException.class, () -> sut.abandonFor(p1.getId(), ride.getId()));
+
+    }
+
 }
