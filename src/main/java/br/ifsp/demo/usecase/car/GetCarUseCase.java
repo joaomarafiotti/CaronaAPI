@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;

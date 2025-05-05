@@ -1,14 +1,12 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.*;
-import br.ifsp.demo.repositories.RideSolicitationRepository;
+import br.ifsp.demo.usecase.ride.GetRideSolicitationUseCase;
 import br.ifsp.demo.utils.RideSolicitationStatus;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +14,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 public class GetRideSolicitationUseCaseTest {
     private LocalDateTime now;

@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
@@ -9,6 +9,7 @@ import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.usecase.ride.RegisterRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Tag;

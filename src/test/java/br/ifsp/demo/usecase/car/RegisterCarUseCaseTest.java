@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
@@ -7,6 +7,7 @@ import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CreateCarResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
+import br.ifsp.demo.usecase.car.RegisterCarUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.exception.RideNotFoundException;

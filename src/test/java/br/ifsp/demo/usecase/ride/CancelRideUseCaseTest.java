@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
@@ -7,6 +7,7 @@ import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.exception.RideNotFoundException;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.service.NotificationService;
+import br.ifsp.demo.usecase.ride.CancelRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

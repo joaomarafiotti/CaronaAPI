@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
@@ -7,6 +7,7 @@ import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.response.CarResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
+import br.ifsp.demo.usecase.car.GetCarUseCase;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -1,10 +1,11 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

@@ -1,6 +1,7 @@
-package br.ifsp.demo.usecase;
+package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.usecase.ride.ManageRideSolicitationUseCase;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
