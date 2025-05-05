@@ -73,4 +73,64 @@ public class ApiExceptionHandler {
                 .build();
         return new ResponseEntity<>(apiException, conflict);
     }
+
+    @ExceptionHandler(CarNotFoundException.class)
+    public ResponseEntity<?> handleCarNotFoundException(CarNotFoundException e) {
+        final HttpStatus notFound = HttpStatus.NOT_FOUND;
+        final ApiException apiException = ApiException.builder()
+                .status(notFound)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(CarInUseException.class)
+    public ResponseEntity<?> handleCarInUseException(CarInUseException e) {
+        final HttpStatus conflict = HttpStatus.CONFLICT;
+        final ApiException apiException = ApiException.builder()
+                .status(conflict)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, conflict);
+    }
+
+    @ExceptionHandler(DriverNotFoundException.class)
+    public ResponseEntity<?> handleDriverNotFoundException(DriverNotFoundException e) {
+        final HttpStatus notFound = HttpStatus.NOT_FOUND;
+        final ApiException apiException = ApiException.builder()
+                .status(notFound)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(RideNotFoundException.class)
+    public ResponseEntity<?> handleRideNotFoundException(RideNotFoundException e) {
+        final HttpStatus notFound = HttpStatus.NOT_FOUND;
+        final ApiException apiException = ApiException.builder()
+                .status(notFound)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(RideSolicitationForInvalidRideException.class)
+    public ResponseEntity<?> handleRideSolicitationForInvalidRideException(RideSolicitationForInvalidRideException e) {
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        final ApiException apiException = ApiException.builder()
+                .status(badRequest)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 }
