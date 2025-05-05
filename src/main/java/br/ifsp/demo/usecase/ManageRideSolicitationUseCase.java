@@ -10,4 +10,8 @@ public class ManageRideSolicitationUseCase {
     public RideSolicitation acceptSolicitationFor(UUID solicitationId, Driver driver) {
         return driver.accept(solicitationId);
     }
+
+    public RideSolicitation rejectSolicitationFor(UUID solicitationId, Driver driver) {
+        return driver.reject(solicitationId);
+    }
 }
