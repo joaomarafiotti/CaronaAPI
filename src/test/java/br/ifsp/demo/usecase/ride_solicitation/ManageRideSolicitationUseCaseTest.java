@@ -1,23 +1,34 @@
 package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class ManageRideSolicitationUseCaseTest {
     @Mock
+    RideSolicitationRepository solicitationRepository;
+    @Mock
     private Car car;
+    @InjectMocks
+    private ManageRideSolicitationUseCase sut;
     private Ride r1;
     private Ride r2;
     private Passenger p1;
@@ -28,12 +39,11 @@ public class ManageRideSolicitationUseCaseTest {
     private RideSolicitation s3;
     private RideSolicitation s4;
 
-    private ManageRideSolicitationUseCase sut;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         LocalDateTime now = LocalDateTime.now();
-        sut = new ManageRideSolicitationUseCase();
         driver = new Driver(
                 "Gustavo",
                 "123.456.789-X",
@@ -61,9 +71,6 @@ public class ManageRideSolicitationUseCaseTest {
         s2 = new RideSolicitation(r1, p2);
         s3 = new RideSolicitation(r2, p1);
         s4 = new RideSolicitation(r2, p2);
-
-        driver.addSolicitations(s1);
-        driver.addSolicitations(s3);
     }
 
     @Test
@@ -71,6 +78,8 @@ public class ManageRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should the driver accept the ride solicitation if he is the owner of the Ride")
     public void shouldAcceptRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
+        when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+
         RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver);
 
         assertThat(acceptedS1.getStatus()).isEqualTo(RideSolicitationStatus.ACCEPTED);
@@ -81,6 +90,8 @@ public class ManageRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should the driver reject the ride solicitation if he is the owner of the Ride")
     public void shouldRejectRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
+        when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+
         RideSolicitation rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver);
 
         assertThat(rejectedS1.getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
@@ -98,8 +109,10 @@ public class ManageRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should passenger be added into ride after the solicitation is accepted")
     public void shouldPassengerBeAddedIntoRideAfterTheSolicitationIsAccepted() {
-        RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver);
-        
+        when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+
+        sut.acceptSolicitationFor(s1.getId(), driver);
+
         assertThat(r1.getPassengers()).contains(p1);
     }
 

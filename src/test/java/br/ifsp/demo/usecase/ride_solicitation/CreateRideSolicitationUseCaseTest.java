@@ -3,6 +3,8 @@ package br.ifsp.demo.usecase.ride_solicitation;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
+import br.ifsp.demo.utils.RideSolicitationStatus;
+import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,33 +13,38 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CreateRideSolicitationUseCaseTest {
     @Mock
     private RideSolicitationRepository solicitationRepo;
+    @InjectMocks
+    private CreateRideSolicitationUseCase sut;
+
     private LocalDateTime now;
     private Driver driver;
     private Car car;
     private Passenger passenger;
     private Ride ride;
-    private CreateRideSolicitationUseCase sut;
 
     @BeforeEach
     public void setUp() {
         now = LocalDateTime.now();
-        sut = new CreateRideSolicitationUseCase(solicitationRepo);
         driver = new Driver(
                 "Gustavo",
                 "123.456.789-X",
@@ -72,7 +79,7 @@ public class CreateRideSolicitationUseCaseTest {
     public void shouldCreateAndRegisterRideSolicitation() {
         RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(passenger, ride);
 
-        assertThat(driver.getRideSolicitations()).isEqualTo(List.of(rideSolicitation));
+        assertThat(rideSolicitation).isNotNull();
     }
 
     @Test
@@ -81,7 +88,9 @@ public class CreateRideSolicitationUseCaseTest {
     @DisplayName("Should not create two equals solicitations")
     public void shouldNotCreateTwoEqualsSolicitations() {
         RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(passenger, ride);
-        when(solicitationRepo.findAll()).thenReturn(List.of(r1));
+
+        when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
+
         assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
     }
 

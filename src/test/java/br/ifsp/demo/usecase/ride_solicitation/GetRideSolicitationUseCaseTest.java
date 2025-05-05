@@ -1,11 +1,18 @@
 package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,15 +20,23 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class GetRideSolicitationUseCaseTest {
+    @Mock
+    private RideRepository rideRepository;
+    @Mock
+    private RideSolicitationRepository solicitationRepository;
+    @InjectMocks
+    private GetRideSolicitationUseCase sut;
+
     private LocalDateTime now;
     private Driver driver;
     private Car car;
     private Passenger passenger1;
     private Passenger passenger2;
     private Ride ride;
-    private GetRideSolicitationUseCase sut;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +69,6 @@ public class GetRideSolicitationUseCaseTest {
                 "Pedro",
                 "passageiro@gmail.com"
         );
-        sut = new GetRideSolicitationUseCase();
     }
 
 
@@ -66,8 +80,9 @@ public class GetRideSolicitationUseCaseTest {
         RideSolicitation s1 = new RideSolicitation(ride, passenger1);
         RideSolicitation s2 = new RideSolicitation(ride, passenger2);
         s1.setStatus(RideSolicitationStatus.REJECTED);
-        driver.addSolicitations(s1);
-        driver.addSolicitations(s2);
+
+        when(rideRepository.findRideByDriver_Id(driver.getId())).thenReturn(List.of(ride));
+        when(solicitationRepository.findRideSolicitationByRide_Id(ride.getId())).thenReturn(List.of(s1, s2));
 
         assertThat(sut.getPendingSolicitationsFrom(driver)).isEqualTo(List.of(s2));
     }
