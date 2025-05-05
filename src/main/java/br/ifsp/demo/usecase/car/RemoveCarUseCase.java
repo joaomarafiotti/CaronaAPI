@@ -1,7 +1,6 @@
 package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.exception.CarInUseException;
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.exception.DriverNotFoundException;
