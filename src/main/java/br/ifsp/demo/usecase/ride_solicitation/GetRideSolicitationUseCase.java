@@ -9,7 +9,6 @@ import java.util.List;
 public class GetRideSolicitationUseCase {
 
     public List<RideSolicitation> getPendingSolicitationsFrom(Driver driver) {
-        System.out.println(driver.getRideSolicitations());
         return driver
                 .getRideSolicitations()
                 .stream()

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -54,6 +55,11 @@ public class Ride {
         this.driver = driver;
         this.rideStatus = RideStatus.WAITING;
         this.car = car;
+        this.passengers = new ArrayList<>();
+    }
+
+    public void addPassenger(Passenger passenger) {
+        this.passengers.add(passenger);
     }
 
     @Override
@@ -62,7 +68,7 @@ public class Ride {
         if (o == null || getClass() != o.getClass()) return false;
         Ride ride = (Ride) o;
         return Objects.equals(id, ride.id) && Objects.equals(startAddress, ride.startAddress)
-                && Objects.equals(endAddress, ride.endAddress) && Objects.equals(departureTime, ride.departureTime)
-                && rideStatus == ride.rideStatus && Objects.equals(driver, ride.driver) && Objects.equals(passengers, ride.passengers);
+               && Objects.equals(endAddress, ride.endAddress) && Objects.equals(departureTime, ride.departureTime)
+               && rideStatus == ride.rideStatus && Objects.equals(driver, ride.driver) && Objects.equals(passengers, ride.passengers);
     }
 }
