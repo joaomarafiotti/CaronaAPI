@@ -2,10 +2,13 @@ package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.exception.CarInUseException;
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
+import br.ifsp.demo.repositories.RideRepository;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -16,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,6 +32,9 @@ class RemoveCarUseCaseTest {
     CarRepository carRepository;
     @Mock
     DriverRepository driverRepository;
+
+    @Mock
+    RideRepository rideRepository;
 
     @InjectMocks
     RemoveCarUseCase removeCarUseCase;
@@ -129,5 +136,17 @@ class RemoveCarUseCaseTest {
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
         assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, carId));
+    }
+
+    @Test
+    void throwsExceptionIfCarIsLinkedToRide() {
+        Ride ride = new Ride("São Paulo", "Campinas", LocalDateTime.now().plusDays(2), driver, car);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+
+        assertThrows(CarInUseException.class, () -> {
+            removeCarUseCase.execute(driverId, carId);
+        });
     }
 }
