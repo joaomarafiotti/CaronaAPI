@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -39,10 +40,24 @@ public class Car {
     }
 
     public Car(String brand, String model, String color, Integer seats, String licensePlate) {
+        this.id = UUID.randomUUID();
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.seats = seats;
         this.licensePlate = licensePlate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Objects.equals(id, car.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
