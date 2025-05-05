@@ -1,12 +1,15 @@
 package br.ifsp.demo.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;
-
+@Data
 @Entity
+@AllArgsConstructor
 public class Passenger {
 
     @Id

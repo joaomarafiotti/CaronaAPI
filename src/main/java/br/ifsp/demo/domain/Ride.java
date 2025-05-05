@@ -62,6 +62,13 @@ public class Ride {
         this.passengers.add(passenger);
     }
 
+    public void removePassenger(UUID passengerId) {
+        passengers.stream()
+                .filter(p -> p.getId().equals(passengerId))
+                .findFirst()
+                .ifPresent(p -> passengers.remove(p));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
