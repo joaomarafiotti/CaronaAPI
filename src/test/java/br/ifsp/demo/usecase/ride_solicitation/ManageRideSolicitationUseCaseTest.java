@@ -93,4 +93,14 @@ public class ManageRideSolicitationUseCaseTest {
         assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver));
     }
 
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should passenger be added into ride after the solicitation is accepted")
+    public void shouldPassengerBeAddedIntoRideAfterTheSolicitationIsAccepted() {
+        RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver);
+        
+        assertThat(r1.getPassengers()).contains(p1);
+    }
+
 }
