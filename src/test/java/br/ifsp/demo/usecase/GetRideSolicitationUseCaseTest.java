@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -75,4 +76,9 @@ public class GetRideSolicitationUseCaseTest {
         assertThat(sut.getPendingSolicitationsFrom(driver)).isEqualTo(List.of(s2));
     }
 
+    @Test
+    @DisplayName("Should return a empty list if there's no pending solicitations")
+    public void shouldReturnEmptyListIfThereIsNoPendingSolicitations() {
+        assertThat(sut.getPendingSolicitationsFrom(driver)).isEmpty();
+    }
 }
