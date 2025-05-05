@@ -2,6 +2,7 @@ package br.ifsp.demo.usecase;
 
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.utils.RideSolicitationStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -60,16 +61,16 @@ public class ManageRideSolicitationUseCaseTest {
         s2 = new RideSolicitation(r1, p2);
         s3 = new RideSolicitation(r2, p1);
         s4 = new RideSolicitation(r2, p2);
+
+        driver.addSolicitations(s1);
+        driver.addSolicitations(s3);
     }
 
     @Test
     @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should the driver accept the ride solicitation if he is the owner of the Ride")
-    public void shouldAcceptRideSolicitationIfTheOwnerIsTheOwnerOfTheRide() {
-        driver.addSolicitations(s1);
-        driver.addSolicitations(s3);
-
+    public void shouldAcceptRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         sut.acceptSolicitationFor(s1.getId(), driver);
 
         RideSolicitation acceptedS1 = driver.getRideSolicitations()
@@ -85,10 +86,7 @@ public class ManageRideSolicitationUseCaseTest {
     @Tag("UnitTest")
     @Tag("TDD")
     @DisplayName("Should the driver reject the ride solicitation if he is the owner of the Ride")
-    public void shouldRejectRideSolicitationIfTheOwnerIsTheOwnerOfTheRide() {
-        driver.addSolicitations(s1);
-        driver.addSolicitations(s3);
-
+    public void shouldRejectRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         sut.rejectSolicitationFor(s1.getId(), driver);
 
         RideSolicitation rejectedS1 = driver.getRideSolicitations()
@@ -98,6 +96,13 @@ public class ManageRideSolicitationUseCaseTest {
                 .orElseThrow();
 
         assertThat(rejectedS1.getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
+    }
+
+    @Test
+    @DisplayName("Should driver cannot change the solicitation status if he isn't the owner of the Ride")
+    public void shouldDriverCannotChangeTheSolicitationStatusIfTheDriverIsNotTheOwnerOfTheRide() {
+        assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(s2.getId(), driver));
+        assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver));
     }
 
 }
