@@ -80,4 +80,24 @@ public class ManageRideSolicitationUseCaseTest {
 
         assertThat(acceptedS1.getStatus()).isEqualTo(RideSolicitationStatus.ACCEPTED);
     }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should the driver reject the ride solicitation if he is the owner of the Ride")
+    public void shouldRejectRideSolicitationIfTheOwnerIsTheOwnerOfTheRide() {
+        driver.addSolicitations(s1);
+        driver.addSolicitations(s3);
+
+        sut.rejectSolicitationFor(s1.getId(), driver);
+
+        RideSolicitation rejectedS1 = driver.getRideSolicitations()
+                .stream()
+                .filter(s -> s.getId() == s1.getId())
+                .findFirst()
+                .orElseThrow();
+
+        assertThat(rejectedS1.getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
+    }
+
 }
