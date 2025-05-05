@@ -4,18 +4,22 @@ import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.repositories.RideRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AbandonRideUseCaseTest {
@@ -23,6 +27,9 @@ public class AbandonRideUseCaseTest {
     private Driver driver;
     @Mock
     private Car car;
+    @Mock
+    private RideRepository rideRepository;
+    @InjectMocks
     private AbandonRideUseCase sut;
     private Ride ride;
     private Passenger p1;
@@ -30,7 +37,6 @@ public class AbandonRideUseCaseTest {
     @BeforeEach
     void setUp() {
         LocalDateTime now = LocalDateTime.now();
-        sut = new AbandonRideUseCase();
         driver = new Driver();
         ride = new Ride(
                 "Rua São João Bosco, 1324",
@@ -39,7 +45,7 @@ public class AbandonRideUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("Gustavo", "endereco@gmail.com");
+        p1 = new Passenger(UUID.randomUUID(), "Gustavo", "endereco@gmail.com", null);
         ride.addPassenger(p1);
     }
 
@@ -49,6 +55,7 @@ public class AbandonRideUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should abandon ride if passenger is in it")
     public void shouldAbandonRideIfPassengerIsInIt() {
+        when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
         sut.abandonFor(p1.getId(), ride.getId());
         assertThat(ride.getPassengers()).isEmpty();
     }
