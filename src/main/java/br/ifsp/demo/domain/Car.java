@@ -1,5 +1,6 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.models.response.CarResponseModel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +47,10 @@ public class Car {
         this.color = color;
         this.seats = seats;
         this.licensePlate = licensePlate;
+    }
+
+    public CarResponseModel toResponseModel() {
+        return new CarResponseModel(this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate());
     }
 
     @Override

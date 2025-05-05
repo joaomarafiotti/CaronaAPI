@@ -1,5 +1,6 @@
 package br.ifsp.demo.usecase.ride;
 
+import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
@@ -22,7 +23,7 @@ public class GetRideUseCase {
 
         return rides.stream()
                 .filter(r -> r.getRideStatus().equals(RideStatus.WAITING) || r.getRideStatus().equals(RideStatus.FULL))
-                .map(r -> new RideResponseModel(r.getDepartureTime(), r.getRideStatus(), r.getDriver(), r.getCar()))
+                .map(r -> new RideResponseModel(r.getDepartureTime(), r.getRideStatus(), r.getDriver().toResponseModel(), r.getCar().toResponseModel()))
                 .toList();
     }
 
@@ -31,6 +32,6 @@ public class GetRideUseCase {
                 .findById(rideUUID)
                 .orElseThrow(() -> new IllegalArgumentException("Ride not found"));
 
-        return new RideResponseModel(ride.getDepartureTime(), ride.getRideStatus(), ride.getDriver(), ride.getCar());
+        return new RideResponseModel(ride.getDepartureTime(), ride.getRideStatus(), ride.getDriver().toResponseModel(), ride.getCar().toResponseModel());
     }
 }
