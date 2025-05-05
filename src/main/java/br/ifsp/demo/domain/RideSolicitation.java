@@ -15,8 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RideSolicitation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID Id;
+    private UUID Id = UUID.randomUUID();
 
     @ManyToOne
     @NotNull

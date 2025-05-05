@@ -1,5 +1,6 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -66,5 +68,31 @@ public class Driver {
         if (!this.rideSolicitations.contains(s)) {
             this.rideSolicitations.add(s);
         }
+    }
+
+    public RideSolicitation accept(UUID solicitationId) {
+        Optional<RideSolicitation> s = rideSolicitations.stream()
+                .filter(rideSolicitation -> rideSolicitation.getId().equals(solicitationId))
+                .findFirst();
+
+        if (s.isPresent()) {
+            s.get().setStatus(RideSolicitationStatus.ACCEPTED);
+            return s.get();
+        }
+
+        throw new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found");
+    }
+
+    public RideSolicitation reject(UUID solicitationId) {
+        Optional<RideSolicitation> s = rideSolicitations.stream()
+                .filter(rideSolicitation -> rideSolicitation.getId().equals(solicitationId))
+                .findFirst();
+
+        if (s.isPresent()) {
+            s.get().setStatus(RideSolicitationStatus.REJECTED);
+            return s.get();
+        }
+
+        throw new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found");
     }
 }
