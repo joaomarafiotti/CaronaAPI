@@ -60,7 +60,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Fiat",
                 "Palio",
                 "Prata",
-                4,
+                5,
                 "DQC1-ADQ"
         );
         ride = new Ride(

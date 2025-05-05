@@ -4,6 +4,7 @@ import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
+import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,11 @@ public class CreateRideSolicitationUseCase {
     }
 
     public RideSolicitation createAndRegisterRideSolicitationFor(Passenger passenger, Ride ride) {
+        if (ride == null || passenger == null)
+            throw new IllegalArgumentException("Ride and passenger must not be null");
+
+        if (rideIsAlreadyFull(ride)) throw new RideSolicitationForInvalidRideException("Ride is already full");
+
         RideSolicitation solicitation = new RideSolicitation(ride, passenger);
         List<RideSolicitation> solicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
         Optional<RideSolicitation> equalSolicitationAlreadyPersisted = solicitations
@@ -31,5 +37,9 @@ public class CreateRideSolicitationUseCase {
 
         solicitationRepository.save(solicitation);
         return solicitation;
+    }
+
+    private boolean rideIsAlreadyFull(Ride ride) {
+        return ride.getPassengers().size() + 1 >= ride.getCar().getSeats();
     }
 }
