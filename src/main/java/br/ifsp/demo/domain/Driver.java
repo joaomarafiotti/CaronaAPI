@@ -44,9 +44,6 @@ public class Driver {
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Car> cars = new ArrayList<>();
 
-    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<RideSolicitation> rideSolicitations = new ArrayList<>();
-
     public Driver() {
     }
 
@@ -64,35 +61,26 @@ public class Driver {
         }
     }
 
-    public void addSolicitations(RideSolicitation s) {
-        if (!this.rideSolicitations.contains(s)) {
-            this.rideSolicitations.add(s);
+
+    public RideSolicitation acceptIfIsTheOwner(RideSolicitation solicitation) {
+        if (solicitation == null) throw new IllegalArgumentException("Ride solicitation is null");
+
+        if (solicitation.getRide().getDriver().equals(this)) {
+            solicitation.setStatus(RideSolicitationStatus.ACCEPTED);
+            return solicitation;
         }
+
+        throw new EntityNotFoundException("Ride solicitation with id " + solicitation.getId() + " not found");
     }
 
-    public RideSolicitation accept(UUID solicitationId) {
-        Optional<RideSolicitation> s = rideSolicitations.stream()
-                .filter(rideSolicitation -> rideSolicitation.getId().equals(solicitationId))
-                .findFirst();
+    public RideSolicitation rejectIfIsTheOwner(RideSolicitation solicitation) {
+        if (solicitation == null) throw new IllegalArgumentException("Ride solicitation is null");
 
-        if (s.isPresent()) {
-            s.get().setStatus(RideSolicitationStatus.ACCEPTED);
-            return s.get();
+        if (solicitation.getRide().getDriver().equals(this)) {
+            solicitation.setStatus(RideSolicitationStatus.REJECTED);
+            return solicitation;
         }
 
-        throw new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found");
-    }
-
-    public RideSolicitation reject(UUID solicitationId) {
-        Optional<RideSolicitation> s = rideSolicitations.stream()
-                .filter(rideSolicitation -> rideSolicitation.getId().equals(solicitationId))
-                .findFirst();
-
-        if (s.isPresent()) {
-            s.get().setStatus(RideSolicitationStatus.REJECTED);
-            return s.get();
-        }
-
-        throw new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found");
+        throw new EntityNotFoundException("Ride solicitation with id " + solicitation.getId() + " not found");
     }
 }
