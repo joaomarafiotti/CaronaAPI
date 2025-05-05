@@ -76,4 +76,9 @@ public class Ride {
                && Objects.equals(endAddress, ride.endAddress) && Objects.equals(departureTime, ride.departureTime)
                && rideStatus == ride.rideStatus && Objects.equals(driver, ride.driver) && Objects.equals(passengers, ride.passengers);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startAddress, endAddress, departureTime, rideStatus, driver, passengers, car);
+    }
 }

@@ -1,7 +1,5 @@
 package br.ifsp.demo.models.request;
 
-import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Ride;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
