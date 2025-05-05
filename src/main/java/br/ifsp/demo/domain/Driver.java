@@ -1,5 +1,6 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -44,14 +44,22 @@ public class Driver {
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Car> cars = new ArrayList<>();
 
-    public Driver() {
+    protected Driver() {
     }
 
     public Driver(String name, String cpf, String email, LocalDate birthDate) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.cpf = cpf;
         this.email = email;
         this.birthDate = birthDate;
+    }
+
+    public void removeCarById(UUID carId) {
+        boolean removed = cars.removeIf(car -> car.getId().equals(carId));
+        if (!removed) {
+            throw new CarNotFoundException(carId);
+        }
     }
 
     public void addCar(Car car) {
@@ -60,7 +68,6 @@ public class Driver {
             this.cars.add(car);
         }
     }
-
 
     public RideSolicitation acceptIfIsTheOwner(RideSolicitation solicitation) {
         if (solicitation == null) throw new IllegalArgumentException("Ride solicitation is null");
