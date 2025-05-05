@@ -87,8 +87,8 @@ public class ManageRideSolicitationUseCaseTest {
     }
 
     @Test
-    @DisplayName("Should driver cannot change the solicitation status if he isn't the owner of the Ride")
-    public void shouldDriverCannotChangeTheSolicitationStatusIfTheDriverIsNotTheOwnerOfTheRide() {
+    @DisplayName("Should throws EntityNotFoundException if the driver isn't the owner of the Ride")
+    public void shouldThrowsEntityNotFoundExceptionIfTheDriverIsNotTheOwnerOfTheRide() {
         assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(s2.getId(), driver));
         assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver));
     }
