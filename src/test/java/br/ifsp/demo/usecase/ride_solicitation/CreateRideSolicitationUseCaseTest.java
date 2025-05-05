@@ -1,9 +1,8 @@
-package br.ifsp.demo.usecase.ride;
+package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
-import br.ifsp.demo.usecase.ride.CreateRideSolicitationUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

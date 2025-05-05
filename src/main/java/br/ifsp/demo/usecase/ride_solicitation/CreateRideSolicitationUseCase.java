@@ -1,4 +1,4 @@
-package br.ifsp.demo.usecase.ride;
+package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
