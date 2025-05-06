@@ -1,4 +1,4 @@
-package br.ifsp.demo.controller.ride_solicitation;
+package br.ifsp.demo.controller.rideSolicitation;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
