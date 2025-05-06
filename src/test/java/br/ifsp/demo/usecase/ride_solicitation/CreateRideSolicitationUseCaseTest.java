@@ -52,7 +52,7 @@ public class CreateRideSolicitationUseCaseTest {
         now = LocalDateTime.now();
         driver = new Driver(
                 "Gustavo",
-                "123.456.789-X",
+                "123.456.789-55",
                 "motorista@gmail.com",
                 LocalDate.of(2004, 5, 6)
         );
@@ -72,23 +72,28 @@ public class CreateRideSolicitationUseCaseTest {
         );
         passenger = new Passenger(
                 "Gustavo",
-                "passageiro@gmail.com"
+                "passageiro@gmail.com",
+                "123.456.789-55"
         );
         p1 = new Passenger(
                 "Pedro",
-                "passageiro@gmail.com"
+                "passageiro@gmail.com",
+                "321.654.789-55"
         );
         p2 = new Passenger(
                 "Giovanna",
-                "passageira@gmail.com"
+                "passageira@gmail.com",
+                "123.456.789-77"
         );
         p3 = new Passenger(
                 "Rodrigo",
-                "rodrigo123@gmail.com"
+                "rodrigo123@gmail.com",
+                "123.499.888-55"
         );
         p4 = new Passenger(
                 "Pedro",
-                "pedro@gmail.com"
+                "pedro@gmail.com",
+                "111.222.335-55"
         );
     }
 
@@ -129,7 +134,7 @@ public class CreateRideSolicitationUseCaseTest {
         LocalDateTime now = LocalDateTime.now();
         Driver driver = new Driver(
                 "Gustavo",
-                "123.456.789-X",
+                "123.458.719-55",
                 "motorista@gmail.com",
                 LocalDate.of(2004, 5, 6)
         );
@@ -142,7 +147,8 @@ public class CreateRideSolicitationUseCaseTest {
         );
         Passenger passenger = new Passenger(
                 "Pedro",
-                "passageiro@gmail.com"
+                "passageiro@gmail.com",
+                "123.456.333-99"
         );
         Ride ride = new Ride(
                 "Rua São João Bosco, 1324",

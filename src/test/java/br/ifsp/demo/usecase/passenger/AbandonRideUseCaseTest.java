@@ -46,7 +46,7 @@ public class AbandonRideUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger(UUID.randomUUID(), "Gustavo", "endereco@gmail.com", null);
+        p1 = new Passenger("Gustavo", "endereco@gmail.com","123.456.789-55");
     }
 
 
@@ -68,7 +68,6 @@ public class AbandonRideUseCaseTest {
     public void shouldThrowIfPassengerIsNotInRide() {
         when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
         assertThrows(EntityNotFoundException.class, () -> sut.abandonFor(p1.getId(), ride.getId()));
-
     }
 
 }

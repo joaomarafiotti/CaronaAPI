@@ -46,7 +46,7 @@ public class ManageRideSolicitationUseCaseTest {
         LocalDateTime now = LocalDateTime.now();
         driver = new Driver(
                 "Gustavo",
-                "123.456.789-X",
+                "123.456.789-55",
                 "motorista@gmail.com",
                 LocalDate.of(2004, 5, 6)
         );
@@ -64,8 +64,8 @@ public class ManageRideSolicitationUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("Gustavo", "passageiro@gmail.com");
-        p2 = new Passenger("Bruno", "passenger@gmail.com");
+        p1 = new Passenger("Gustavo", "passageiro@gmail.com", "123.456.789-55");
+        p2 = new Passenger("Bruno", "passenger@gmail.com", "123.423.712-22");
 
         s1 = new RideSolicitation(r1, p1);
         s2 = new RideSolicitation(r1, p2);
