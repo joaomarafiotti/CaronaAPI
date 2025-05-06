@@ -17,8 +17,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RegisterCarUseCase {
 
-    private DriverRepository driverRepository;
-    private CarRepository carRepository;
+    private final DriverRepository driverRepository;
+    private final CarRepository carRepository;
 
     public CreateCarResponseModel execute(@Valid CarRequestModel request){
 

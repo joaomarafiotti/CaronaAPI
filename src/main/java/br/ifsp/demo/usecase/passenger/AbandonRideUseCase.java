@@ -15,6 +15,9 @@ public class AbandonRideUseCase {
     }
 
     public void abandonFor(UUID passengerId, UUID rideId) {
-        rideRepository.findById(rideId).ifPresent(ride -> ride.removePassenger(passengerId));
+        rideRepository.findById(rideId).ifPresent(ride -> {
+            ride.removePassenger(passengerId);
+            rideRepository.save(ride);
+        });
     }
 }
