@@ -7,10 +7,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -27,10 +29,9 @@ public class Driver {
     @Column(nullable = false)
     private String name;
 
-    @NonNull
-    @Setter
-    @Column(nullable = false)
-    private String cpf;
+    @Embedded
+    @Unique
+    private Cpf cpf;
 
     @NonNull
     @Setter
@@ -51,7 +52,7 @@ public class Driver {
     public Driver(String name, String cpf, String email, LocalDate birthDate) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.cpf = cpf;
+        this.cpf = new Cpf(cpf);
         this.email = email;
         this.birthDate = birthDate;
     }
@@ -94,5 +95,18 @@ public class Driver {
 
     public DriverResponseModel toResponseModel() {
         return new DriverResponseModel(this.getName(), this.getBirthDate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Driver driver = (Driver) o;
+        return Objects.equals(id, driver.id) && Objects.equals(name, driver.name) && Objects.equals(cpf, driver.cpf) && Objects.equals(email, driver.email) && Objects.equals(birthDate, driver.birthDate) && Objects.equals(cars, driver.cars);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, cpf, email, birthDate, cars);
     }
 }

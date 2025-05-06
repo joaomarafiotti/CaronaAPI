@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -25,6 +26,10 @@ public class Passenger {
     @Getter @Setter
     private String email;
 
+    @Embedded
+    @Getter
+    private Cpf cpf;
+
     @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "ride_id")
@@ -33,9 +38,11 @@ public class Passenger {
     protected Passenger(){
     }
 
-    public Passenger(String name, String email) {
+    public Passenger(String name, String email, String cpf) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
+        this.cpf = new Cpf(cpf);
     }
 
     @Override
