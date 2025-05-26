@@ -1,6 +1,11 @@
 package br.ifsp.demo.security.auth;
 
+import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.Passenger;
+import br.ifsp.demo.exception.ApiExceptionHandler;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
+import br.ifsp.demo.repositories.DriverRepository;
+import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.security.config.JwtService;
 import br.ifsp.demo.security.user.JpaUserRepository;
 import br.ifsp.demo.security.user.Role;
@@ -20,6 +25,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final DriverRepository driverRepository;
+    private final PassengerRepository passengerRepository;
 
     public RegisterUserResponse register(RegisterUserRequest request) {
 
@@ -28,18 +35,19 @@ public class AuthenticationService {
 
         String encryptedPassword = passwordEncoder.encode(request.password());
 
-        final UUID id = UUID.randomUUID();
-        final User user = User.builder()
-                .id(id)
-                .name(request.name())
-                .lastname(request.lastname())
-                .email(request.email())
-                .password(encryptedPassword)
-                .role(request.role())
-                .build();
-
-        userRepository.save(user);
-        return new RegisterUserResponse(id);
+        if(request.role() == Role.PASSENGER) {
+            Passenger passenger = new Passenger(request.name(), request.lastname(), request.email(),
+                    encryptedPassword,  request.cpf(), request.bithDate());
+            passengerRepository.save(passenger);
+            return new RegisterUserResponse(passenger.getId());
+        }
+        if(request.role() == Role.DRIVER) {
+            Driver driver = new Driver(request.name(), request.lastname(), request.email(),
+                    encryptedPassword,  request.cpf(), request.bithDate());
+            driverRepository.save(driver);
+            return new RegisterUserResponse(driver.getId());
+        }
+        throw new IllegalArgumentException("Invalid role");
     }
 
     public AuthResponse authenticate(AuthRequest request) {

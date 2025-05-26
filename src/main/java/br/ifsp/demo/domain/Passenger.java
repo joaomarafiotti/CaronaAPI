@@ -5,15 +5,12 @@ import br.ifsp.demo.security.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 @Data
 @Entity
 @AllArgsConstructor
 public class Passenger extends User {
-
-    @NonNull @Column(nullable = false)
-    private Cpf cpf;
-
     @ManyToOne
     @JoinColumn(name = "ride_id")
     private Ride ride;
@@ -21,8 +18,7 @@ public class Passenger extends User {
     protected Passenger(){
     }
 
-    public Passenger(String name, String lastname, String email, String password, String cpf) {
-        super(UUID.randomUUID(), name, lastname, email, password, Role.PASSENGER);
-        this.cpf = new Cpf(cpf);
+    public Passenger(String name, String lastname, String email, String password, Cpf cpf, LocalDate birthDate) {
+        super(UUID.randomUUID(), name, lastname, email, cpf, birthDate,password, Role.PASSENGER);
     }
 }

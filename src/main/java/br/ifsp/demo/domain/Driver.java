@@ -20,15 +20,6 @@ import java.util.UUID;
 @Getter
 public class Driver extends User {
 
-    @Embedded
-    @Setter
-    private Cpf cpf;
-
-    @NonNull
-    @Setter
-    @Column(nullable = false)
-    private LocalDate birthDate;
-
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Car> cars = new ArrayList<>();
 
@@ -36,10 +27,8 @@ public class Driver extends User {
         super();
     }
 
-    public Driver(String name, String lastname, String email, String password, String cpf, LocalDate birthDate) {
-        super(UUID.randomUUID(), name, lastname, email, password, Role.DRIVER);
-        this.cpf = new Cpf(cpf);
-        this.birthDate = birthDate;
+    public Driver(String name, String lastname, String email, String password, Cpf cpf, LocalDate birthDate) {
+        super(UUID.randomUUID(), name, lastname, email, cpf, birthDate, password, Role.DRIVER);
     }
 
     public void removeCarById(UUID carId) {

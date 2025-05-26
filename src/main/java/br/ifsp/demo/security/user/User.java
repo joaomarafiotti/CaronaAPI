@@ -1,5 +1,6 @@
 package br.ifsp.demo.security.user;
 
+import br.ifsp.demo.domain.Cpf;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -8,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,10 @@ public class User implements UserDetails {
     private String lastname;
     @NonNull @Column(nullable = false)
     private String email;
+    @NonNull @Column(nullable = false)
+    private Cpf cpf;
+    @NonNull @Column(nullable = false)
+    private LocalDate birthDate;
     @NonNull @Column(nullable = false)
     private String password;
 

@@ -50,7 +50,7 @@ public class Car {
     }
 
     public CarResponseModel toResponseModel() {
-        return new CarResponseModel(this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate());
+        return new CarResponseModel(this.getId(), this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate());
     }
 
     @Override
