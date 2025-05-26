@@ -31,7 +31,7 @@ public class GetCarUseCase {
             throw new CarNotFoundException(carId); // ou nova exceção, como CarDoesNotBelongToDriverException
         }
 
-        return toResponseModel(car);
+        return car.toResponseModel();
     }
 
     public List<CarResponseModel> allCars(UUID driverId) {
@@ -39,12 +39,7 @@ public class GetCarUseCase {
                 .orElseThrow(() -> new DriverNotFoundException(driverId));
 
         return driver.getCars().stream()
-                .map(this::toResponseModel)
+                .map(Car::toResponseModel)
                 .toList();
-    }
-
-    private CarResponseModel toResponseModel(Car car) {
-        return new CarResponseModel(car.getBrand(), car.getModel(),
-                car.getColor(), car.getSeats(), car.getLicensePlate());
     }
 }
