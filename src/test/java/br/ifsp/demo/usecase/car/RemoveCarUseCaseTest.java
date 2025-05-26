@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
+import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.exception.CarInUseException;
@@ -47,7 +48,7 @@ class RemoveCarUseCaseTest {
     @BeforeEach
     void setUp() {
         car = new Car("Fiat", "Uno","Red",5, "ABC1234");
-        driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", "444.777.888-33", LocalDate.of(2003, 3,20));
+        driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
         carId = car.getId();
         driverId = driver.getId();
         driver.addCar(car);

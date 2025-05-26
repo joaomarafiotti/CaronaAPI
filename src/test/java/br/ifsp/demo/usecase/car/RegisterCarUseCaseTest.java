@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
+import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.request.CarRequestModel;
@@ -41,7 +42,7 @@ class RegisterCarUseCaseTest {
     @Tag("UnitTest")
     @DisplayName("Should register car successfully and return car ID")
     void shouldRegisterCarSuccessfully() {
-        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", "444.777.888-33", LocalDate.of(2003, 3,20));
+        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
         UUID driverId = driver.getId();
 
         CarRequestModel carRequest = new CarRequestModel(

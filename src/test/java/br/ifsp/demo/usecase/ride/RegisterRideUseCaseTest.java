@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.ride;
 
 import br.ifsp.demo.domain.Car;
+import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.exception.CarNotFoundException;
@@ -49,7 +50,7 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(3).plusHours(10);
 
-        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", "444.777.888-33", LocalDate.of(2003, 3,20));
+        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
         Car car = new Car("Fiat", "Uno", "Red", 5, "ABC3X12");
 
         var rideDTO = new RideRequestModel("São Paulo", "Campinas", departureTime, driverId, carId);
@@ -83,7 +84,7 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(1);
 
-        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", "444.777.888-33", LocalDate.of(2003, 3,20));
+        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
 
         var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
 

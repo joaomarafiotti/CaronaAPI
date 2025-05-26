@@ -1,9 +1,6 @@
 package br.ifsp.demo.usecase.passenger;
 
-import br.ifsp.demo.domain.Car;
-import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Passenger;
-import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.RideRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +44,7 @@ public class AbandonRideUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#","456.111.333-45");
+        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#", new Cpf("456.111.333-45"), LocalDate.of(2005, 03,03));
     }
 
     @Test
@@ -68,5 +66,4 @@ public class AbandonRideUseCaseTest {
         when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
         assertThrows(EntityNotFoundException.class, () -> sut.abandonFor(p1.getId(), ride.getId()));
     }
-
 }
