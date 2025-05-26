@@ -35,7 +35,7 @@ public class AuthenticationService {
                 .lastname(request.lastname())
                 .email(request.email())
                 .password(encryptedPassword)
-                .role(Role.PASSENGER)
+                .role(request.role())
                 .build();
 
         userRepository.save(user);
