@@ -44,7 +44,7 @@ public class AbandonRideUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#", new Cpf("456.111.333-45"), LocalDate.of(2005, 03,03));
+        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#", Cpf.of("390.533.447-05"), LocalDate.of(2005, 03,03));
     }
 
     @Test

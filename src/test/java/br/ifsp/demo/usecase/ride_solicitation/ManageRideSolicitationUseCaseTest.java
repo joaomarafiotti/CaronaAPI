@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,6 +26,8 @@ import static org.mockito.Mockito.when;
 public class ManageRideSolicitationUseCaseTest {
     @Mock
     RideSolicitationRepository solicitationRepository;
+    @Mock
+    RideRepository rideRepository;
     @Mock
     private Car car;
     @InjectMocks

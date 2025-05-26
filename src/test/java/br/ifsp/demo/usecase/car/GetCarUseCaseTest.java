@@ -46,7 +46,7 @@ class GetCarUseCaseTest {
         car = new Car("Toyota","Corolla","Black",5,"ABC1234");
         Car car2 = new Car("Volkswagen", "Fusca", "White", 5, "GEK3245");
 
-        driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
+        driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
         driverId = driver.getId();
 
         driver.addCar(car);

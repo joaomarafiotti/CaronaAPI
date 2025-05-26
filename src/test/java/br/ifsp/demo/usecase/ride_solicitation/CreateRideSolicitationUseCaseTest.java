@@ -118,7 +118,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Oliveira",
                 "pedro@gmail.com",
                 "senha123",
-                Cpf.of("286.941.530-04"),
+                Cpf.of("145.382.206-20"),
                 LocalDate.of(2010,12,21)
         );
     }
@@ -162,7 +162,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Contiero",
                 "motorista@gmail.com",
                 "DSd3149l;",
-                Cpf.of("832.609.845-50"),
+                Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 5, 6)
         );
         Car car = new Car(
@@ -177,7 +177,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Castro",
                 "F312hhnd;",
                 "passageiro@gmail.com",
-                Cpf.of("367.198.270-00"),
+                Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 12, 6)
         );
 

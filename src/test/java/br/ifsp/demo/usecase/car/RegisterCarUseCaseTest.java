@@ -42,7 +42,7 @@ class RegisterCarUseCaseTest {
     @Tag("UnitTest")
     @DisplayName("Should register car successfully and return car ID")
     void shouldRegisterCarSuccessfully() {
-        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
+        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
         UUID driverId = driver.getId();
 
         CarRequestModel carRequest = new CarRequestModel(

@@ -48,12 +48,12 @@ public class CancelRideUseCaseTest {
     @BeforeEach
     void setUp() {
         futureTime = LocalDateTime.now().plusHours(2);
-        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", new Cpf("444.777.888-33"), LocalDate.of(2003, 3,20));
+        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
         Car car = new Car("Fiat", "Uno", "Red", 5, "12345");
 
         passengers = List.of(
-                new Passenger("João", "Matias", "joao@example.com", "31234BBds#",new Cpf("456.111.333-45"), LocalDate.of(2000, 3, 12)),
-                new Passenger("Maria", "Souza", "maria@example.com","132BBj#da",new Cpf("456.111.333-34"), LocalDate.of(1999, 1, 12))
+                new Passenger("João", "Matias", "joao@example.com", "31234BBds#", Cpf.of("123.456.789-09"), LocalDate.of(2000, 3, 12)),
+                new Passenger("Maria", "Souza", "maria@example.com", "132BBj#da", Cpf.of("111.444.777-35"), LocalDate.of(1999, 1, 12))
         );
 
         ride = new Ride("São Paulo", "Campinas", futureTime, driver, car);
