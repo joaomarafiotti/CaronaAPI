@@ -10,7 +10,6 @@ public record RideRequestModel(
         @NotBlank String startAddress,
         @NotBlank String endAddress,
         @NotNull LocalDateTime departureTime,
-        @NotNull UUID driverId,
         @NotNull UUID carId
 ) {
 }

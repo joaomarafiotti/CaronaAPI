@@ -25,14 +25,14 @@ public class RegisterRideUseCase {
     private final RideRepository rideRepository;
     private final CarRepository carRepository;
 
-    public CreateRideResponseModel execute(RideRequestModel rideRequestModel) {
+    public CreateRideResponseModel execute(RideRequestModel rideRequestModel,UUID driverId) {
         if (rideRequestModel == null) {
             throw new IllegalArgumentException("Ride request must not be null");
         }
 
         validateRideRequest(rideRequestModel);
 
-        Driver driver = findDriverOrThrow(rideRequestModel.driverId());
+        Driver driver = findDriverOrThrow(driverId);
 
         Car car = findCarOrThrow(rideRequestModel.carId());
 

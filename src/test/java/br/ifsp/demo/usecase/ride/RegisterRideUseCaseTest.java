@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.smartcardio.Card;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -50,16 +51,16 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(3).plusHours(10);
 
-        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
+        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
         Car car = new Car("Fiat", "Uno", "Red", 5, "ABC3X12");
 
-        var rideDTO = new RideRequestModel("São Paulo", "Campinas", departureTime, driverId, carId);
+        var rideDTO = new RideRequestModel("São Paulo", "Campinas", departureTime, carId);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
         when(rideRepository.save(any(Ride.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        var response = registerRideUseCase.execute(rideDTO);
+        var response = registerRideUseCase.execute(rideDTO, driverId);
 
         assertThat(response).isNotNull();
         assertThat(response.rideId()).isNotNull();
@@ -84,14 +85,14 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(1);
 
-        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
+        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
 
-        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, carId);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(carRepository.findById(carId)).thenReturn(Optional.empty());
 
-        assertThrows(CarNotFoundException.class, () -> registerRideUseCase.execute(rideDTO));
+        assertThrows(CarNotFoundException.class, () -> registerRideUseCase.execute(rideDTO, driverId));
 
         verify(rideRepository, never()).save(any());
     }
@@ -105,11 +106,11 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(1);
 
-        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, carId);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
 
-        assertThrows(DriverNotFoundException.class, () -> registerRideUseCase.execute(rideDTO));
+        assertThrows(DriverNotFoundException.class, () -> registerRideUseCase.execute(rideDTO, driverId));
 
         verify(carRepository, never()).findById(any());
         verify(rideRepository, never()).save(any());
@@ -123,9 +124,9 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusMinutes(30); // Less than 1 hour
 
-        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, driverId, carId);
+        var rideDTO = new RideRequestModel("São Paulo", "Santos", departureTime, carId);
 
-        assertThrows(IllegalArgumentException.class, () -> registerRideUseCase.execute(rideDTO));
+        assertThrows(IllegalArgumentException.class, () -> registerRideUseCase.execute(rideDTO, driverId));
 
         verify(driverRepository, never()).findById(any());
         verify(carRepository, never()).findById(any());
