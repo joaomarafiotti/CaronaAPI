@@ -3,6 +3,7 @@ package br.ifsp.demo.controller.ride;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.models.response.CreateRideResponseModel;
 import br.ifsp.demo.models.response.RideResponseModel;
+import br.ifsp.demo.security.auth.AuthenticationInfoService;
 import br.ifsp.demo.usecase.ride.CancelRideUseCase;
 import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.usecase.ride.RegisterRideUseCase;

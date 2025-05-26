@@ -46,9 +46,8 @@ public class AbandonRideUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("Gustavo", "endereco@gmail.com","123.456.789-55");
+        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#","456.111.333-45");
     }
-
 
     @Test
     @Tag("UnitTest")

@@ -2,12 +2,13 @@ package br.ifsp.demo.domain;
 
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.models.response.DriverResponseModel;
+import br.ifsp.demo.security.user.Role;
+import br.ifsp.demo.security.user.User;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,26 +18,11 @@ import java.util.UUID;
 
 @Entity
 @Getter
-public class Driver {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "driver_id", updatable = false, nullable = false)
-    private UUID id;
-
-    @NonNull
-    @Setter
-    @Column(nullable = false)
-    private String name;
+public class Driver extends User {
 
     @Embedded
-    @Unique
-    private Cpf cpf;
-
-    @NonNull
     @Setter
-    @Column(nullable = false, unique = true)
-    private String email;
+    private Cpf cpf;
 
     @NonNull
     @Setter
@@ -47,13 +33,12 @@ public class Driver {
     private final List<Car> cars = new ArrayList<>();
 
     protected Driver() {
+        super();
     }
 
-    public Driver(String name, String cpf, String email, LocalDate birthDate) {
-        this.id = UUID.randomUUID();
-        this.name = name;
+    public Driver(String name, String lastname, String email, String password, String cpf, LocalDate birthDate) {
+        super(UUID.randomUUID(), name, lastname, email, password, Role.DRIVER);
         this.cpf = new Cpf(cpf);
-        this.email = email;
         this.birthDate = birthDate;
     }
 
@@ -95,18 +80,5 @@ public class Driver {
 
     public DriverResponseModel toResponseModel() {
         return new DriverResponseModel(this.getName(), this.getBirthDate());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Driver driver = (Driver) o;
-        return Objects.equals(id, driver.id) && Objects.equals(name, driver.name) && Objects.equals(cpf, driver.cpf) && Objects.equals(email, driver.email) && Objects.equals(birthDate, driver.birthDate) && Objects.equals(cars, driver.cars);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, cpf, email, birthDate, cars);
     }
 }
