@@ -56,7 +56,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Silva",
                 "motorista@gmail.com",
                 "senha123",
-                "123.456.789-55",
+                Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 5, 6)
         );
 
@@ -81,7 +81,8 @@ public class CreateRideSolicitationUseCaseTest {
                 "Silva",
                 "passageiro@gmail.com",
                 "senha123",
-                "123.456.789-55"
+                Cpf.of("123.456.789-09"),
+                LocalDate.of(2003,5,12)
         );
 
         p1 = new Passenger(
@@ -89,7 +90,8 @@ public class CreateRideSolicitationUseCaseTest {
                 "Santos",
                 "passageiro@gmail.com",
                 "senha123",
-                "321.654.789-55"
+                Cpf.of("111.444.777-35"),
+                LocalDate.of(1999,5,12)
         );
 
         p2 = new Passenger(
@@ -97,7 +99,8 @@ public class CreateRideSolicitationUseCaseTest {
                 "Costa",
                 "passageira@gmail.com",
                 "senha123",
-                "123.456.789-77"
+                Cpf.of("390.533.447-05"),
+                LocalDate.of(1999,12,21)
         );
 
         p3 = new Passenger(
@@ -105,7 +108,9 @@ public class CreateRideSolicitationUseCaseTest {
                 "Almeida",
                 "rodrigo123@gmail.com",
                 "senha123",
-                "123.499.888-55"
+                Cpf.of("145.382.206-20"),
+                LocalDate.of(2010,12,21)
+
         );
 
         p4 = new Passenger(
@@ -113,7 +118,8 @@ public class CreateRideSolicitationUseCaseTest {
                 "Oliveira",
                 "pedro@gmail.com",
                 "senha123",
-                "111.222.335-55"
+                Cpf.of("286.941.530-04"),
+                LocalDate.of(2010,12,21)
         );
     }
 
@@ -156,7 +162,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Contiero",
                 "motorista@gmail.com",
                 "DSd3149l;",
-                "123.458.719-55",
+                Cpf.of("832.609.845-50"),
                 LocalDate.of(2004, 5, 6)
         );
         Car car = new Car(
@@ -171,7 +177,8 @@ public class CreateRideSolicitationUseCaseTest {
                 "Castro",
                 "F312hhnd;",
                 "passageiro@gmail.com",
-                "123.456.333-99"
+                Cpf.of("367.198.270-00"),
+                LocalDate.of(2004, 12, 6)
         );
 
         Ride ride = new Ride(

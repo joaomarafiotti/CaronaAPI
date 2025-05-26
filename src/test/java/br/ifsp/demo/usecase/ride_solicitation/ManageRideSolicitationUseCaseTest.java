@@ -49,7 +49,7 @@ public class ManageRideSolicitationUseCaseTest {
                 "Contiero",
                 "motorista@gmail.com",
                 "1323nnks;",
-                "123.456.789-55",
+                Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 5, 6)
         );
         r1 = new Ride(
@@ -66,8 +66,22 @@ public class ManageRideSolicitationUseCaseTest {
                 driver,
                 car
         );
-        p1 = new Passenger("Gustavo", "Contiero","passageiro@gmail.com","123sdb;BB", "123.456.789-55");
-        p2 = new Passenger("Bruno", "Souza","passenger@gmail.com", "983nBBdl;", "123.423.712-22");
+        p1 = new Passenger(
+                "Pedro",
+                "Santos",
+                "passageiro@gmail.com",
+                "senha123",
+                Cpf.of("111.444.777-35"),
+                LocalDate.of(1999, 5, 12)
+        );
+        p2 = new Passenger(
+                "Giovanna",
+                "Costa",
+                "passageira@gmail.com",
+                "senha123",
+                Cpf.of("390.533.447-05"),
+                LocalDate.of(1999, 12, 21)
+        );
 
         s1 = new RideSolicitation(r1, p1);
         s2 = new RideSolicitation(r1, p2);

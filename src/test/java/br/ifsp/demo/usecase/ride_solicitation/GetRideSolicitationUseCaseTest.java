@@ -46,7 +46,7 @@ public class GetRideSolicitationUseCaseTest {
                 "Contiero",
                 "motorista@gmail.com",
                 "P32144ac#",
-                "123.456.789-55",
+                Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 5, 6)
         );
         car = new Car(
@@ -67,15 +67,17 @@ public class GetRideSolicitationUseCaseTest {
                 "Pedro",
                 "Santos",
                 "passageiro@gmail.com",
-                "P32144ac#",
-                "123.456.789-55"
+                "senha123",
+                Cpf.of("111.444.777-35"),
+                LocalDate.of(1999, 5, 12)
         );
         passenger2 = new Passenger(
-                "Pedro",
-                "Castro",
-                "passageiro2@gmail.com",
-                "P32144ac#",
-                "123.456.789-55"
+                "Giovanna",
+                "Costa",
+                "passageira@gmail.com",
+                "senha123",
+                Cpf.of("390.533.447-05"),
+                LocalDate.of(1999,12,21)
         );
     }
 
