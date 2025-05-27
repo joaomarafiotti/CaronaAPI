@@ -12,6 +12,7 @@ import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -147,6 +148,19 @@ class RemoveCarUseCaseTest {
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
 
         assertThrows(CarInUseException.class, () -> {
+            removeCarUseCase.execute(driverId, carId);
+        });
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @DisplayName("Should throw if ride car is null")
+    void shouldThrowIfRideCarIsNull() {
+        Ride ride = new Ride("São Paulo", "Campinas", LocalDateTime.now().plusDays(2), driver, null);
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+        assertThrows(IllegalStateException.class, () -> {
             removeCarUseCase.execute(driverId, carId);
         });
     }
