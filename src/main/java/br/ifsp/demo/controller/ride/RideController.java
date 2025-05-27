@@ -35,7 +35,8 @@ public class RideController {
 
     @DeleteMapping("/{rideId}")
     public ResponseEntity<Void> cancelRide(@PathVariable @NonNull UUID rideId) {
-        cancelRideUseCase.execute(rideId);
+        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        cancelRideUseCase.execute(rideId, driverId);
         return ResponseEntity.noContent().build();
     }
 

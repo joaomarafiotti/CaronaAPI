@@ -14,29 +14,38 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class CancelRideUseCase {
-    private RideRepository rideRepository;
-    private NotificationService notificationService;
+    private final RideRepository rideRepository;
+    private final NotificationService notificationService;
 
-    public void execute(UUID rideId) {
+    public void execute(UUID rideId, UUID driverId) {
+        if (rideId == null || driverId == null) {
+            throw new IllegalArgumentException("Ride ID and Driver ID must not be null");
+        }
+
         Ride ride = rideRepository.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundException(rideId));
 
-        if (ride.getDepartureTime().minusHours(1).isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Cannot cancel ride in current state");
+        if(!ride.getDriver().getId().equals(driverId)) {
+            throw new IllegalArgumentException("Only the assigned driver can cancel this ride");
         }
 
         if (ride.getRideStatus() != RideStatus.WAITING) {
             throw new IllegalStateException("Ride cannot be cancelled with status " + ride.getRideStatus());
         }
 
+        if (ride.getDepartureTime().minusHours(1).isBefore(LocalDateTime.now())) {
+            throw new IllegalStateException("Cannot cancel ride less than 1 hour before departure");
+        }
+
         ride.setRideStatus(RideStatus.CANCELED);
+
         rideRepository.save(ride);
 
         notificationService.notifyPassengers(
                 ride.getPassengers(),
                 "Ride cancelled",
                 "The ride from " + ride.getStartAddress() + " to " + ride.getEndAddress()
-                        + "has been cancelled"
+                        + " has been cancelled."
         );
     }
 }
