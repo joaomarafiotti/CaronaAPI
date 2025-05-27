@@ -20,15 +20,13 @@ public class RegisterCarUseCase {
     private final DriverRepository driverRepository;
     private final CarRepository carRepository;
 
-    public CreateCarResponseModel execute(@Valid CarRequestModel request){
+    public CreateCarResponseModel execute(CarRequestModel request, UUID driverId){
 
         if (request == null) {
             throw new IllegalArgumentException();
         }
 
-        Driver driver = driverRepository.findById(request.driverId())
-                .orElseThrow(() -> new DriverNotFoundException(request.driverId()));
-
+        Driver driver = isDriverRegistered(driverId);
 
         Car car = new Car(request.brand(),
                 request.model(),

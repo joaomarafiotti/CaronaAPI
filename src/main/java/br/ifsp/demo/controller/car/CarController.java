@@ -44,7 +44,8 @@ public class CarController {
     public ResponseEntity<CreateCarResponseModel> registerCar(
             @RequestBody @Valid CarRequestModel request
     ) {
-        CreateCarResponseModel response = registerCarUseCase.execute(request);
+        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        CreateCarResponseModel response = registerCarUseCase.execute(request, driverId);
         return ResponseEntity.ok(response);
     }
 

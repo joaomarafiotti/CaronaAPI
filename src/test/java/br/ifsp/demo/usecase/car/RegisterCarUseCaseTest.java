@@ -46,7 +46,7 @@ class RegisterCarUseCaseTest {
         UUID driverId = driver.getId();
 
         CarRequestModel carRequest = new CarRequestModel(
-                "Toyota", "Corolla", "Azul", 5, "ABC1D23", driverId
+                "Toyota", "Corolla", "Azul", 5, "ABC1D23"
         );
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
@@ -57,7 +57,7 @@ class RegisterCarUseCaseTest {
             return car;
         });
 
-        CreateCarResponseModel result = sut.execute(carRequest);
+        CreateCarResponseModel result = sut.execute(carRequest, driverId);
 
         assertNotNull(result);
         assertNotNull(result.id());
@@ -69,11 +69,11 @@ class RegisterCarUseCaseTest {
     @DisplayName("Should throw exception when driver not found")
     void shouldThrowExceptionWhenDriverNotFound() {
         UUID driverId = UUID.randomUUID();
-        CarRequestModel carRequest = new CarRequestModel("Toyota", "Corolla", "Azul", 5, "ABC1D23", driverId);
+        CarRequestModel carRequest = new CarRequestModel("Toyota", "Corolla", "Azul", 5, "ABC1D23");
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
 
-        assertThrows(DriverNotFoundException.class, () -> sut.execute(carRequest));
+        assertThrows(DriverNotFoundException.class, () -> sut.execute(carRequest, driverId));
 
         verify(driverRepository).findById(driverId);
         verify(carRepository, never()).save(Mockito.<Car>any());
@@ -84,6 +84,6 @@ class RegisterCarUseCaseTest {
     @Tag("UnitTest")
     @DisplayName("Should throw exception when CarRequestModel is null")
     void shouldThrowExceptionWhenCarRequestModelIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> sut.execute(null));
+        assertThrows(IllegalArgumentException.class, () -> sut.execute(null, null));
     }
 }
