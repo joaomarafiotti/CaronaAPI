@@ -162,8 +162,16 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <targetClasses></targetClasses>
-                    <targetTests></targetTests>
+                    <targetClasses>
+                        <param>
+                            br.ifsp.demo.usecase*
+                        </param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>
+                            br.ifsp.demo.usecase*
+                        </param>
+                    </targetTests>
                 </configuration>
             </plugin>
             <plugin>

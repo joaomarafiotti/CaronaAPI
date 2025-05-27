@@ -39,7 +39,10 @@ public class CreateRideSolicitationUseCaseTest {
     private Car car;
     private Address address0;
     private Address address1;
-    private Ride ride;
+    private Address address2;
+    private Address address3;
+    private Ride ride0;
+    private Ride ride1;
     private Passenger p0;
     private Passenger p1;
     private Passenger p2;
@@ -79,10 +82,30 @@ public class CreateRideSolicitationUseCaseTest {
                 .neighborhood("Planalto Paraíso")
                 .city("São Carlos")
                 .build();
+        address2 = new Address.AddressBuilder()
+                .street("Rua das Flores")
+                .number("215A")
+                .neighborhood("Vila Nova")
+                .city("Campinas")
+                .build();
+        address3 = new Address.AddressBuilder()
+                .street("Av. das Amoreiras")
+                .number("78B")
+                .neighborhood("Jardim Botânico")
+                .city("Rio de Janeiro")
+                .build();
 
-        ride = new Ride(
+        ride0 = new Ride(
                 address0,
                 address1,
+                now,
+                driver,
+                car
+        );
+
+        ride1 = new Ride(
+                address2,
+                address3,
                 now,
                 driver,
                 car
@@ -140,7 +163,10 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should create and register ride solicitation")
     public void shouldCreateAndRegisterRideSolicitation() {
-        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0, ride);
+        when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class)))
+                .thenReturn(List.of(new RideSolicitation(ride1, p0)));
+
+        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0, ride0);
 
         assertThat(rideSolicitation).isNotNull();
     }
@@ -150,11 +176,11 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should not create two equals solicitations")
     public void shouldNotCreateTwoEqualsSolicitations() {
-        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0, ride);
+        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0, ride0);
 
         when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
 
-        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride));
+        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride0));
     }
 
 
@@ -222,11 +248,11 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should throws exception if passenger tries to create a solicitation to a ride that is not with status Waiting")
     public void shouldThrowExceptionIfRideIsNotWithStatusWaiting() {
-        ride.addPassenger(p1);
-        ride.addPassenger(p2);
-        ride.addPassenger(p3);
-        ride.addPassenger(p4);
+        ride0.addPassenger(p1);
+        ride0.addPassenger(p2);
+        ride0.addPassenger(p3);
+        ride0.addPassenger(p4);
 
-        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride));
+        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride0));
     }
 }
