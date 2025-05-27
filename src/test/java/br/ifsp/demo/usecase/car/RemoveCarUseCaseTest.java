@@ -8,10 +8,7 @@ import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import jdk.jfr.Description;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -36,7 +34,7 @@ class RemoveCarUseCaseTest {
     RideRepository rideRepository;
 
     @InjectMocks
-    RemoveCarUseCase removeCarUseCase;
+    RemoveCarUseCase sut;
 
     Address address0;
     Address address1;
@@ -72,13 +70,17 @@ class RemoveCarUseCaseTest {
     @Test
     @Description("Should Remove Car successfully when driverId and carId ar valid")
     void shouldRemoveCarSuccessfully() {
+        Ride ride = new Ride(address0, address1, LocalDateTime.now().plusDays(2), driver, car);
+        Car otherCar = new Car("Ford", "Ka", "Blue", 5, "DEF5678");
+        driver.addCar(otherCar);
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
 
-        removeCarUseCase.execute(driverId, carId);
+        sut.execute(driverId, otherCar.getId());
 
         verify(driverRepository).save(driver);
-        verify(carRepository).deleteById(carId);
-        assertFalse(driver.getCars().contains(car));
+        verify(carRepository).deleteById(otherCar.getId());
+        assertFalse(driver.getCars().contains(otherCar));
     }
 
     @Tag("TDD")
@@ -88,7 +90,7 @@ class RemoveCarUseCaseTest {
     void shouldThrowDriverNotFoundException() {
         when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
 
-        assertThrows(DriverNotFoundException.class, () -> removeCarUseCase.execute(driverId, carId));
+        assertThrows(DriverNotFoundException.class, () -> sut.execute(driverId, carId));
 
         verify(driverRepository, never()).save(any());
         verify(carRepository, never()).deleteById(any());
@@ -102,7 +104,7 @@ class RemoveCarUseCaseTest {
         driver.getCars().clear();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
-        assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, carId));
+        assertThrows(CarNotFoundException.class, () -> sut.execute(driverId, carId));
 
         verify(driverRepository, never()).save(any());
         verify(carRepository, never()).deleteById(any());
@@ -116,7 +118,7 @@ class RemoveCarUseCaseTest {
         UUID otherCarId = UUID.randomUUID();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
-        assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, otherCarId));
+        assertThrows(CarNotFoundException.class, () -> sut.execute(driverId, otherCarId));
 
         verify(driverRepository, never()).save(any());
         verify(carRepository, never()).deleteById(any());
@@ -132,7 +134,7 @@ class RemoveCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
-        removeCarUseCase.execute(driverId, carId);
+        sut.execute(driverId, carId);
 
         assertFalse(driver.getCars().contains(car));
         assertTrue(driver.getCars().contains(car2));
@@ -149,7 +151,8 @@ class RemoveCarUseCaseTest {
         driver.getCars().clear();
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
 
-        assertThrows(CarNotFoundException.class, () -> removeCarUseCase.execute(driverId, carId));
+        assertThat(driver.getCars()).isEmpty();
+        assertThrows(CarNotFoundException.class, () -> sut.execute(driverId, carId));
     }
 
     @Test
@@ -160,7 +163,7 @@ class RemoveCarUseCaseTest {
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
 
         assertThrows(CarInUseException.class, () -> {
-            removeCarUseCase.execute(driverId, carId);
+            sut.execute(driverId, carId);
         });
     }
 
@@ -173,7 +176,22 @@ class RemoveCarUseCaseTest {
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
         assertThrows(IllegalStateException.class, () -> {
-            removeCarUseCase.execute(driverId, carId);
+            sut.execute(driverId, carId);
         });
+    }
+
+    @Test
+    @Tag("Mutant")
+    @Tag("UnitTest")
+    @DisplayName("should throws if the driver is not the owner of the car")
+    void shouldThrowsIfTheDriverIsNotTheOwnerOfTheCar() {
+        UUID otherCarId = UUID.randomUUID();
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        try {
+            sut.execute(driverId, otherCarId);
+        } catch (CarNotFoundException e) {
+            assertThat(e.getMessage()).isEqualTo("driver is not the owner of car with id: " + otherCarId);
+        }
     }
 }

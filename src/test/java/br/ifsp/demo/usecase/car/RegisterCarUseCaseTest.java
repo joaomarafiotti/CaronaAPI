@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -85,5 +86,30 @@ class RegisterCarUseCaseTest {
     @DisplayName("Should throw exception when CarRequestModel is null")
     void shouldThrowExceptionWhenCarRequestModelIsNull() {
         assertThrows(IllegalArgumentException.class, () -> sut.execute(null, null));
+    }
+
+    @Test
+    @Tag("Mutant")
+    @Tag("UnitTest")
+    @DisplayName("Should register car successfully into the driver car list")
+    void shouldRegisterCarSuccessfullyIntoTheDriverCarList() {
+        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
+        UUID driverId = driver.getId();
+
+        CarRequestModel carRequest = new CarRequestModel(
+                "Toyota", "Corolla", "Azul", 5, "ABC1D23"
+        );
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(driverRepository.save(any(Driver.class))).thenReturn(driver);
+        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
+            Car car = invocation.getArgument(0);
+            car.setId(UUID.randomUUID());
+            return car;
+        });
+
+        sut.execute(carRequest, driverId);
+
+        assertThat(driver.getCars()).hasSize(1);
     }
 }

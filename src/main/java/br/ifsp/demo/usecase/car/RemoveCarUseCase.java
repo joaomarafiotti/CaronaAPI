@@ -10,7 +10,6 @@ import br.ifsp.demo.repositories.RideRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,7 +28,7 @@ public class RemoveCarUseCase {
                 .anyMatch(car -> car.getId().equals(carId));
 
         if (!carExists) {
-            throw new CarNotFoundException(carId);
+            throw new CarNotFoundException("driver is not the owner of car with id: " + carId);
         }
 
         boolean carIsInUse = rideRepository.findRideByDriver_Id(driverId).stream()
