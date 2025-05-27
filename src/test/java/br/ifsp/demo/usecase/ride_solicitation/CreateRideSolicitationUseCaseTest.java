@@ -4,8 +4,6 @@ import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
-import br.ifsp.demo.utils.RideSolicitationStatus;
-import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -16,7 +14,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -40,12 +37,14 @@ public class CreateRideSolicitationUseCaseTest {
     private LocalDateTime now;
     private Driver driver;
     private Car car;
-    private Passenger passenger;
+    private Address address0;
+    private Address address1;
+    private Ride ride;
+    private Passenger p0;
     private Passenger p1;
     private Passenger p2;
     private Passenger p3;
     private Passenger p4;
-    private Ride ride;
 
     @BeforeEach
     public void setUp() {
@@ -68,21 +67,34 @@ public class CreateRideSolicitationUseCaseTest {
                 "DQC1-ADQ"
         );
 
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+
         ride = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                address0,
+                address1,
                 now,
                 driver,
                 car
         );
 
-        passenger = new Passenger(
+        p0 = new Passenger(
                 "Gustavo",
                 "Silva",
                 "passageiro@gmail.com",
                 "senha123",
                 Cpf.of("123.456.789-09"),
-                LocalDate.of(2003,5,12)
+                LocalDate.of(2003, 5, 12)
         );
 
         p1 = new Passenger(
@@ -91,7 +103,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "passageiro@gmail.com",
                 "senha123",
                 Cpf.of("111.444.777-35"),
-                LocalDate.of(1999,5,12)
+                LocalDate.of(1999, 5, 12)
         );
 
         p2 = new Passenger(
@@ -100,7 +112,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "passageira@gmail.com",
                 "senha123",
                 Cpf.of("390.533.447-05"),
-                LocalDate.of(1999,12,21)
+                LocalDate.of(1999, 12, 21)
         );
 
         p3 = new Passenger(
@@ -109,7 +121,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "rodrigo123@gmail.com",
                 "senha123",
                 Cpf.of("145.382.206-20"),
-                LocalDate.of(2010,12,21)
+                LocalDate.of(2010, 12, 21)
 
         );
 
@@ -119,7 +131,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "pedro@gmail.com",
                 "senha123",
                 Cpf.of("145.382.206-20"),
-                LocalDate.of(2010,12,21)
+                LocalDate.of(2010, 12, 21)
         );
     }
 
@@ -128,7 +140,7 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should create and register ride solicitation")
     public void shouldCreateAndRegisterRideSolicitation() {
-        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(passenger, ride);
+        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0, ride);
 
         assertThat(rideSolicitation).isNotNull();
     }
@@ -138,11 +150,11 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should not create two equals solicitations")
     public void shouldNotCreateTwoEqualsSolicitations() {
-        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(passenger, ride);
+        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0, ride);
 
         when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
 
-        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
+        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride));
     }
 
 
@@ -182,8 +194,18 @@ public class CreateRideSolicitationUseCaseTest {
         );
 
         Ride ride = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                new Address.AddressBuilder()
+                        .street("Rua São João Bosco")
+                        .number("1324")
+                        .neighborhood("Planalto Paraíso")
+                        .city("São Carlos")
+                        .build(),
+                new Address.AddressBuilder()
+                        .street("Av. Miguel Petroni")
+                        .number("321")
+                        .neighborhood("Planalto Paraíso")
+                        .city("São Carlos")
+                        .build(),
                 now,
                 driver,
                 car
@@ -205,6 +227,6 @@ public class CreateRideSolicitationUseCaseTest {
         ride.addPassenger(p3);
         ride.addPassenger(p4);
 
-        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
+        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride));
     }
 }

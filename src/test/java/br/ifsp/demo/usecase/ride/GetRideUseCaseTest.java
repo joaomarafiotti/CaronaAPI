@@ -1,5 +1,6 @@
 package br.ifsp.demo.usecase.ride;
 
+import br.ifsp.demo.domain.Address;
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
@@ -7,6 +8,7 @@ import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,81 @@ public class GetRideUseCaseTest {
     @InjectMocks
     GetRideUseCase sut;
 
+    Address address0;
+    Address address1;
+    Address address2;
+    Address address3;
+    Address address4;
+    Address address5;
+    Address address6;
+    Address address7;
+    Address address8;
+    Address address9;
+
+    @BeforeEach
+    void setUp() {
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address2 = new Address.AddressBuilder()
+                .street("Rua das Flores")
+                .number("215A")
+                .neighborhood("Vila Nova")
+                .city("Campinas")
+                .build();
+        address3 = new Address.AddressBuilder()
+                .street("Av. das Amoreiras")
+                .number("78B")
+                .neighborhood("Jardim Botânico")
+                .city("Rio de Janeiro")
+                .build();
+        address4 = new Address.AddressBuilder()
+                .street("Rua Padre Anchieta")
+                .number("456")
+                .neighborhood("Centro")
+                .city("Curitiba")
+                .build();
+        address5 = new Address.AddressBuilder()
+                .street("Av. Paulista")
+                .number("1578")
+                .neighborhood("Bela Vista")
+                .city("São Paulo")
+                .build();
+        address6 = new Address.AddressBuilder()
+                .street("Rua XV de Novembro")
+                .number("100")
+                .neighborhood("Centro Histórico")
+                .city("Joinville")
+                .build();
+        address7 = new Address.AddressBuilder()
+                .street("Av. Brasil")
+                .number("900C")
+                .neighborhood("Floresta")
+                .city("Porto Alegre")
+                .build();
+        address8 = new Address.AddressBuilder()
+                .street("Rua do Sol")
+                .number("11")
+                .neighborhood("Barra")
+                .city("Salvador")
+                .build();
+        address9 = new Address.AddressBuilder()
+                .street("Av. Amazonas")
+                .number("2305")
+                .neighborhood("Aleixo")
+                .city("Manaus")
+                .build();
+    }
+
     @Test
     @Tag("UnitTest")
     @Tag("TDD")
@@ -50,36 +127,36 @@ public class GetRideUseCaseTest {
         LocalDateTime r5Start = now.plusDays(1).plusHours(3);
 
         Ride r1 = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                address0,
+                address1,
                 now,
                 driver,
                 car
         );
         Ride r2 = new Ride(
-                "Rua XV de Novembro, 500",
-                "Rua das Laranjeiras, 200",
+                address2,
+                address3,
                 r2Start,
                 driver,
                 car
         );
         Ride r3 = new Ride(
-                "Av. Paulista, 1000",
-                "Rua Augusta, 1500",
+                address4,
+                address5,
                 r3Start,
                 driver,
                 car
         );
         Ride r4 = new Ride(
-                "Praça da Sé, 50",
-                "Rua Direita, 75",
+                address6,
+                address7,
                 r4Start,
                 driver,
                 car
         );
         Ride r5 = new Ride(
-                "Rua das Flores, 77",
-                "Alameda Santos, 1500",
+                address8,
+                address9,
                 r5Start,
                 driver,
                 car
@@ -115,8 +192,8 @@ public class GetRideUseCaseTest {
     void shouldReturnARideByUUID() {
         LocalDateTime now = LocalDateTime.now();
         Ride r1 = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                address0,
+                address1,
                 now,
                 driver,
                 car

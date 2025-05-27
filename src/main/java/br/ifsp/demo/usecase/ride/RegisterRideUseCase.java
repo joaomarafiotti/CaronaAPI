@@ -1,5 +1,6 @@
 package br.ifsp.demo.usecase.ride;
 
+import br.ifsp.demo.domain.Address;
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
@@ -11,6 +12,7 @@ import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
+import com.thoughtworks.qdox.model.expression.Add;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,8 @@ public class RegisterRideUseCase {
         Car car = findCarOrThrow(rideRequestModel.carId());
 
         Ride ride = new Ride(
-                rideRequestModel.startAddress(),
-                rideRequestModel.endAddress(),
+                Address.parse(rideRequestModel.startAddress()),
+                Address.parse(rideRequestModel.endAddress()),
                 rideRequestModel.departureTime(),
                 driver,
                 car

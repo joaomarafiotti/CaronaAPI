@@ -31,6 +31,9 @@ public class GetRideSolicitationUseCaseTest {
     @InjectMocks
     private GetRideSolicitationUseCase sut;
 
+    private Address address0;
+    private Address address1;
+
     private LocalDateTime now;
     private Driver driver;
     private Car car;
@@ -56,9 +59,24 @@ public class GetRideSolicitationUseCaseTest {
                 4,
                 "DQC1-ADQ"
         );
+
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+
+
         ride = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                address0,
+                address1,
                 now,
                 driver,
                 car
@@ -77,7 +95,7 @@ public class GetRideSolicitationUseCaseTest {
                 "passageira@gmail.com",
                 "senha123",
                 Cpf.of("390.533.447-05"),
-                LocalDate.of(1999,12,21)
+                LocalDate.of(1999, 12, 21)
         );
     }
 

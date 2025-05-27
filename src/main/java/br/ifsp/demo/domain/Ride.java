@@ -1,6 +1,7 @@
 package br.ifsp.demo.domain;
 
 import br.ifsp.demo.utils.RideStatus;
+import com.thoughtworks.qdox.model.expression.Add;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,10 +17,10 @@ public class Ride {
     private UUID id;
 
     @Setter
-    private String startAddress;
+    private Address startAddress;
 
     @Setter
-    private String endAddress;
+    private Address endAddress;
 
     @Setter
     private LocalDateTime departureTime;
@@ -44,7 +45,7 @@ public class Ride {
     protected Ride() {
     }
 
-    public Ride(String startAddress, String endAddress, LocalDateTime departureTime, Driver driver, Car car) {
+    public Ride(Address startAddress, Address endAddress, LocalDateTime departureTime, Driver driver, Car car) {
         this.id = UUID.randomUUID();
         this.startAddress = startAddress;
         this.endAddress = endAddress;

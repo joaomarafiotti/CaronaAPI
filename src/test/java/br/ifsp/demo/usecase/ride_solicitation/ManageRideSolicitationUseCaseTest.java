@@ -32,6 +32,12 @@ public class ManageRideSolicitationUseCaseTest {
     private Car car;
     @InjectMocks
     private ManageRideSolicitationUseCase sut;
+
+    private Address address0;
+    private Address address1;
+    private Address address2;
+    private Address address3;
+
     private Ride r1;
     private Ride r2;
     private Passenger p1;
@@ -55,16 +61,42 @@ public class ManageRideSolicitationUseCaseTest {
                 Cpf.of("529.982.247-25"),
                 LocalDate.of(2004, 5, 6)
         );
+
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address2 = new Address.AddressBuilder()
+                .street("Rua das Flores")
+                .number("215A")
+                .neighborhood("Vila Nova")
+                .city("Campinas")
+                .build();
+        address3 = new Address.AddressBuilder()
+                .street("Av. das Amoreiras")
+                .number("78B")
+                .neighborhood("Jardim Botânico")
+                .city("Rio de Janeiro")
+                .build();
+
         r1 = new Ride(
-                "Av. Paulista, 1000",
-                "Rua Augusta, 1500",
+                address0,
+                address1,
                 now,
                 driver,
                 car
         );
         r2 = new Ride(
-                "Rua XV de Novembro, 500",
-                "Rua das Laranjeiras, 200",
+                address2,
+                address3,
                 now.plusDays(1),
                 driver,
                 car

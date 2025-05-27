@@ -31,20 +31,39 @@ public class AbandonRideUseCaseTest {
     private RideRepository rideRepository;
     @InjectMocks
     private AbandonRideUseCase sut;
+
+    private Address address0;
+    private Address address1;
+
     private Ride ride;
     private Passenger p1;
 
     @BeforeEach
     void setUp() {
         LocalDateTime now = LocalDateTime.now();
+
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+
         ride = new Ride(
-                "Rua São João Bosco, 1324",
-                "Av. Miguel Petroni, 321",
+                address0,
+                address1,
                 now,
                 driver,
                 car
         );
-        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#", Cpf.of("390.533.447-05"), LocalDate.of(2005, 03,03));
+        p1 = new Passenger("João", "Matias", "joao@example.com", "31234BBds#", Cpf.of("390.533.447-05"), LocalDate.of(2005, 03, 03));
     }
 
     @Test

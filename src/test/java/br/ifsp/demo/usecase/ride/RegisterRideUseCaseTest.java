@@ -1,9 +1,6 @@
 package br.ifsp.demo.usecase.ride;
 
-import br.ifsp.demo.domain.Car;
-import br.ifsp.demo.domain.Cpf;
-import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.request.RideRequestModel;
@@ -52,10 +49,29 @@ public class RegisterRideUseCaseTest {
         UUID carId = UUID.randomUUID();
         LocalDateTime departureTime = LocalDateTime.now().plusDays(3).plusHours(10);
 
+        Address address0 = new Address.AddressBuilder()
+                .street("Rua das Palmeiras")
+                .number("250B")
+                .neighborhood("Jardim América")
+                .city("São Paulo")
+                .build();
+
+        Address address1 = new Address.AddressBuilder()
+                .street("Av. Brasil")
+                .number("1020")
+                .neighborhood("Centro")
+                .city("Rio de Janeiro")
+                .build();
+
         Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
         Car car = new Car("Fiat", "Uno", "Red", 5, "ABC3X12");
 
-        var rideDTO = new RideRequestModel("São Paulo", "Campinas", departureTime, carId);
+        var rideDTO = new RideRequestModel(
+                "Rua das Palmeiras, 250B, Jardim América, São Paulo",
+                "Av. Brasil, 1020, Centro, Rio de Janeiro",
+                departureTime,
+                carId
+        );
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
@@ -70,8 +86,8 @@ public class RegisterRideUseCaseTest {
         verify(rideRepository).save(captor.capture());
         Ride savedRide = captor.getValue();
 
-        assertThat(savedRide.getStartAddress()).isEqualTo("São Paulo");
-        assertThat(savedRide.getEndAddress()).isEqualTo("Campinas");
+        assertThat(savedRide.getStartAddress()).isEqualTo(address0);
+        assertThat(savedRide.getEndAddress()).isEqualTo(address1);
         assertThat(savedRide.getDepartureTime()).isEqualTo(departureTime);
         assertThat(savedRide.getDriver()).isEqualTo(driver);
         assertThat(savedRide.getCar()).isEqualTo(car);

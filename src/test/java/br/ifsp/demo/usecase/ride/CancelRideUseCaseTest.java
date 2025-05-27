@@ -40,6 +40,9 @@ public class CancelRideUseCaseTest {
     @InjectMocks
     CancelRideUseCase cancelRideUseCase;
 
+    Address address0;
+    Address address1;
+
     Ride ride;
     UUID rideId;
     UUID driverId;
@@ -57,7 +60,20 @@ public class CancelRideUseCaseTest {
                 new Passenger("Maria", "Souza", "maria@example.com", "132BBj#da", Cpf.of("111.444.777-35"), LocalDate.of(1999, 1, 12))
         );
 
-        ride = new Ride("São Paulo", "Campinas", futureTime, driver, car);
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+
+        ride = new Ride(address0, address1, futureTime, driver, car);
         ride.setRideStatus(RideStatus.WAITING);
         ride.setPassengers(passengers);
         rideId = ride.getId();

@@ -1,9 +1,6 @@
 package br.ifsp.demo.usecase.car;
 
-import br.ifsp.demo.domain.Car;
-import br.ifsp.demo.domain.Cpf;
-import br.ifsp.demo.domain.Driver;
-import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.CarInUseException;
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.exception.DriverNotFoundException;
@@ -41,6 +38,9 @@ class RemoveCarUseCaseTest {
     @InjectMocks
     RemoveCarUseCase removeCarUseCase;
 
+    Address address0;
+    Address address1;
+
     UUID driverId;
     UUID carId;
     Driver driver;
@@ -48,11 +48,23 @@ class RemoveCarUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        car = new Car("Fiat", "Uno","Red",5, "ABC1234");
-        driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
+        car = new Car("Fiat", "Uno", "Red", 5, "ABC1234");
+        driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
         carId = car.getId();
         driverId = driver.getId();
         driver.addCar(car);
+        address0 = new Address.AddressBuilder()
+                .street("Rua São João Bosco")
+                .number("1324")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
+        address1 = new Address.AddressBuilder()
+                .street("Av. Miguel Petroni")
+                .number("321")
+                .neighborhood("Planalto Paraíso")
+                .city("São Carlos")
+                .build();
     }
 
     @Tag("TDD")
@@ -142,7 +154,7 @@ class RemoveCarUseCaseTest {
 
     @Test
     void throwsExceptionIfCarIsLinkedToRide() {
-        Ride ride = new Ride("São Paulo", "Campinas", LocalDateTime.now().plusDays(2), driver, car);
+        Ride ride = new Ride(address0, address1, LocalDateTime.now().plusDays(2), driver, car);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
@@ -157,7 +169,7 @@ class RemoveCarUseCaseTest {
     @Tag("UnitTest")
     @DisplayName("Should throw if ride car is null")
     void shouldThrowIfRideCarIsNull() {
-        Ride ride = new Ride("São Paulo", "Campinas", LocalDateTime.now().plusDays(2), driver, null);
+        Ride ride = new Ride(address0, address1, LocalDateTime.now().plusDays(2), driver, null);
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
         assertThrows(IllegalStateException.class, () -> {
