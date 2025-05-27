@@ -42,6 +42,7 @@ public class CancelRideUseCaseTest {
 
     Ride ride;
     UUID rideId;
+    UUID driverId;
     LocalDateTime futureTime;
     List<Passenger> passengers;
 
@@ -60,6 +61,7 @@ public class CancelRideUseCaseTest {
         ride.setRideStatus(RideStatus.WAITING);
         ride.setPassengers(passengers);
         rideId = ride.getId();
+        driverId = driver.getId();
     }
 
     @Tag("TDD")
@@ -69,7 +71,7 @@ public class CancelRideUseCaseTest {
     void shouldCancelRideAndNotifyPassengers() {
         when(rideRepository.findById(rideId)).thenReturn(Optional.of(ride));
 
-        cancelRideUseCase.execute(rideId);
+        cancelRideUseCase.execute(rideId, driverId);
 
         assertEquals(RideStatus.CANCELED, ride.getRideStatus());
         verify(rideRepository).save(ride);
@@ -83,7 +85,7 @@ public class CancelRideUseCaseTest {
     void shouldThrowRideNotFoundExceptionWhenRideDoesNotExist() {
         when(rideRepository.findById(rideId)).thenReturn(Optional.empty());
 
-        assertThrows(RideNotFoundException.class, () -> cancelRideUseCase.execute(rideId));
+        assertThrows(RideNotFoundException.class, () -> cancelRideUseCase.execute(rideId, driverId));
         verify(rideRepository, never()).save(any());
         verify(notificationService, never()).notifyPassengers(any(), any(), any());
     }
@@ -96,7 +98,7 @@ public class CancelRideUseCaseTest {
         ride.setDepartureTime(LocalDateTime.now().plusMinutes(30));
         when(rideRepository.findById(rideId)).thenReturn(Optional.of(ride));
 
-        assertThrows(IllegalStateException.class, () -> cancelRideUseCase.execute(rideId));
+        assertThrows(IllegalStateException.class, () -> cancelRideUseCase.execute(rideId, driverId));
 
         verify(rideRepository, never()).save(any());
         verify(notificationService, never()).notifyPassengers(any(), any(), any());
@@ -111,9 +113,38 @@ public class CancelRideUseCaseTest {
         ride.setRideStatus(invalidStatus);
         when(rideRepository.findById(rideId)).thenReturn(Optional.of(ride));
 
-        assertThrows(IllegalStateException.class, () -> cancelRideUseCase.execute(rideId));
+        assertThrows(IllegalStateException.class, () -> cancelRideUseCase.execute(rideId, driverId));
 
         verify(rideRepository, never()).save(any());
         verify(notificationService, never()).notifyPassengers(any(), any(), any());
     }
+
+    @Tag("UnitTest")
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when driver is not assigned driver")
+    void shouldThrowExceptionWhenDriverIsNotAssigned() {
+        UUID invalidDriverId = UUID.randomUUID();
+        when(rideRepository.findById(rideId)).thenReturn(Optional.of(ride));
+
+        assertThrows(IllegalArgumentException.class, () -> cancelRideUseCase.execute(rideId, invalidDriverId));
+
+        verify(rideRepository, never()).save(any());
+        verify(notificationService, never()).notifyPassengers(any(), any(), any());
+    }
+
+    @Tag("UnitTest")
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when rideId is null")
+    void shouldThrowExceptionWhenRideIdIsNull() {
+        UUID driverId = ride.getDriver().getId();
+        assertThrows(IllegalArgumentException.class, () -> cancelRideUseCase.execute(null, driverId));
+    }
+
+    @Tag("UnitTest")
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when driverId is null")
+    void shouldThrowExceptionWhenDriverIdIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> cancelRideUseCase.execute(rideId, null));
+    }
+
 }
