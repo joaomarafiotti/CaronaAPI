@@ -13,6 +13,7 @@ import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.usecase.ride.RegisterRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import jdk.jfr.Description;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -131,5 +132,26 @@ public class RegisterRideUseCaseTest {
         verify(driverRepository, never()).findById(any());
         verify(carRepository, never()).findById(any());
         verify(rideRepository, never()).save(any());
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @DisplayName("Should Throw IllegalArgumentException when ride request is null")
+    void shouldThrowIllegalArgumentExceptionWhenRideRequestIsNull() {
+        UUID driverId = UUID.randomUUID();
+        assertThrows(IllegalArgumentException.class, () -> registerRideUseCase.execute(null, driverId));
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @DisplayName("Should Throw IllegalArgumentException when starting and arrival points are equals")
+    void shouldThrowIllegalArgumentExceptionWhenStartingAndArrivalPointsAreEquals() {
+        UUID driverId = UUID.randomUUID();
+        UUID carId = UUID.randomUUID();
+        LocalDateTime departureTime = LocalDateTime.now().plusMinutes(30);
+        var rideDTO = new RideRequestModel("Santos", "Santos", departureTime, carId);
+        assertThrows(IllegalArgumentException.class, () -> registerRideUseCase.execute(rideDTO, driverId));
     }
 }
