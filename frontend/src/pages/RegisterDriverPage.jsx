@@ -1,0 +1,40 @@
+import React from 'react';
+import AuthForm from '../components/AuthForm';
+
+function RegisterDriverPage({ onNavigate, onRegister }) {
+    const fields = [
+        { name: 'name', label: 'Nome', type: 'text', placeholder: 'Seu nome' },
+        { name: 'lastname', label: 'Sobrenome', type: 'text', placeholder: 'Seu sobrenome' },
+        { name: 'email', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
+        { name: 'cpf', label: 'CPF', type: 'text', placeholder: '000.000.000-00', pattern: '\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}', title: 'Formato: 000.000.000-00' },
+        { name: 'birthDate', label: 'Data de Nascimento', type: 'date' },
+        { name: 'password', label: 'Senha', type: 'password', placeholder: 'Crie uma senha forte' },
+        { name: 'confirmPassword', label: 'Confirme a Senha', type: 'password', placeholder: 'Repita a senha' },
+    ];
+
+    const handleRegister = (formData) => {
+        if (formData.password !== formData.confirmPassword) {
+            alert('As senhas não coincidem!');
+            return;
+        }
+        const { confirmPassword, ...registrationData } = formData;
+        console.log('Registering driver:', registrationData);
+        // TODO: Implement actual registration logic with role: 'driver'
+        onRegister({ ...registrationData, role: 'DRIVER' });
+    };
+
+    return (
+        <AuthForm
+            title="Cadastro de Motorista"
+            fields={fields}
+            buttonText="Cadastrar"
+            onSubmit={handleRegister}
+        >
+            <div className="auth-links">
+                <button onClick={() => onNavigate('login')} className="link-button">Já tem uma conta? Faça login</button>
+            </div>
+        </AuthForm>
+    );
+}
+
+export default RegisterDriverPage;
