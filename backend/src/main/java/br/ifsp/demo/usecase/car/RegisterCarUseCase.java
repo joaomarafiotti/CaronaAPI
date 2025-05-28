@@ -39,8 +39,6 @@ public class RegisterCarUseCase {
         driver.addCar(car);
         driverRepository.save(driver);
 
-        carRepository.save(car);
-
         return new CreateCarResponseModel(car.getId());
     }
 

@@ -29,7 +29,7 @@ public class CarController {
 
     @GetMapping
     public ResponseEntity<List<CarResponseModel>> getAllCars() {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         List<CarResponseModel> cars = getCarUseCase.allCars(driverId);
         return ResponseEntity.ok(cars);
     }
