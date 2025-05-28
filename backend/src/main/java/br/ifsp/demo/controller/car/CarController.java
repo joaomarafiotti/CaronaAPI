@@ -4,6 +4,8 @@ import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CarResponseModel;
 import br.ifsp.demo.models.response.CreateCarResponseModel;
 import br.ifsp.demo.security.auth.AuthenticationInfoService;
+import br.ifsp.demo.security.auth.UserAuthorizationVerifier;
+import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.usecase.car.GetCarUseCase;
 import br.ifsp.demo.usecase.car.RegisterCarUseCase;
 import br.ifsp.demo.usecase.car.RemoveCarUseCase;
@@ -23,6 +25,7 @@ public class CarController {
     private final GetCarUseCase getCarUseCase;
     private final RegisterCarUseCase registerCarUseCase;
     private final RemoveCarUseCase removeCarUseCase;
+    private final UserAuthorizationVerifier verifier;
 
     @GetMapping
     public ResponseEntity<List<CarResponseModel>> getAllCars() {
@@ -35,7 +38,7 @@ public class CarController {
     public ResponseEntity<CarResponseModel> getCarById(
             @PathVariable UUID carId
     ) {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         CarResponseModel car = getCarUseCase.byId(driverId, carId);
         return ResponseEntity.ok(car);
     }
@@ -44,7 +47,7 @@ public class CarController {
     public ResponseEntity<CreateCarResponseModel> registerCar(
             @RequestBody @Valid CarRequestModel request
     ) {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         CreateCarResponseModel response = registerCarUseCase.execute(request, driverId);
         return ResponseEntity.ok(response);
     }
@@ -53,7 +56,7 @@ public class CarController {
     public ResponseEntity<String> deleteCar(
             @PathVariable UUID carId
     ) {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         removeCarUseCase.execute(driverId, carId);
         return ResponseEntity.ok("Car deleted successfully");
     }

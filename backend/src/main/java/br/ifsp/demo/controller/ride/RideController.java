@@ -3,8 +3,8 @@ package br.ifsp.demo.controller.ride;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.models.response.CreateRideResponseModel;
 import br.ifsp.demo.models.response.RideResponseModel;
-import br.ifsp.demo.repositories.RideRepository;
-import br.ifsp.demo.security.auth.AuthenticationInfoService;
+import br.ifsp.demo.security.auth.UserAuthorizationVerifier;
+import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.usecase.ride.CancelRideUseCase;
 import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.usecase.ride.RegisterRideUseCase;
@@ -21,21 +21,21 @@ import java.util.UUID;
 @RequestMapping("/api/v1/ride")
 @RequiredArgsConstructor
 public class RideController {
-    private final AuthenticationInfoService authenticationInfoService;
     private final RegisterRideUseCase registerRideUseCase;
     private final CancelRideUseCase cancelRideUseCase;
     private final GetRideUseCase getRideUseCase;
+    private final UserAuthorizationVerifier verifier;
 
     @PostMapping
     public ResponseEntity<CreateRideResponseModel> createRide(@RequestBody @Valid RideRequestModel request) {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
-        CreateRideResponseModel response = registerRideUseCase.execute(request,driverId);
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
+        CreateRideResponseModel response = registerRideUseCase.execute(request, driverId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{rideId}")
     public ResponseEntity<Void> cancelRide(@PathVariable @NonNull UUID rideId) {
-        UUID driverId = authenticationInfoService.getAuthenticatedUserId();
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         cancelRideUseCase.execute(rideId, driverId);
         return ResponseEntity.noContent().build();
     }

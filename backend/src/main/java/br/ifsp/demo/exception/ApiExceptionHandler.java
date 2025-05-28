@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.*;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = NullPointerException.class)
-    public ResponseEntity<?> handleNullPointerException(NullPointerException e){
+    public ResponseEntity<?> handleNullPointerException(NullPointerException e) {
         final HttpStatus badRequest = BAD_REQUEST;
         final ApiException apiException = ApiException.builder()
                 .status(badRequest)
@@ -27,7 +27,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e){
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
         final HttpStatus badRequest = BAD_REQUEST;
         final ApiException apiException = ApiException.builder()
                 .status(badRequest)
@@ -39,7 +39,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = IllegalStateException.class)
-    public ResponseEntity<?> handleIllegalStateException(IllegalStateException e){
+    public ResponseEntity<?> handleIllegalStateException(IllegalStateException e) {
         final HttpStatus forbidden = FORBIDDEN;
         final ApiException apiException = ApiException.builder()
                 .status(forbidden)
@@ -51,7 +51,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e){
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
         final HttpStatus notFound = NOT_FOUND;
         final ApiException apiException = ApiException.builder()
                 .status(notFound)
@@ -63,7 +63,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = EntityAlreadyExistsException.class)
-    public ResponseEntity<?> handleEntityAlreadyExistsException(EntityAlreadyExistsException e){
+    public ResponseEntity<?> handleEntityAlreadyExistsException(EntityAlreadyExistsException e) {
         final HttpStatus conflict = CONFLICT;
         final ApiException apiException = ApiException.builder()
                 .status(conflict)
@@ -132,5 +132,17 @@ public class ApiExceptionHandler {
                 .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
                 .build();
         return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(UnauthorizedUserException.class)
+    public ResponseEntity<?> handleUnauthorizedException(UnauthorizedUserException e) {
+        final HttpStatus unauthorized = UNAUTHORIZED;
+        final ApiException apiException = ApiException.builder()
+                .status(unauthorized)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, unauthorized);
     }
 }
