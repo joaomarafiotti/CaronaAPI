@@ -7,7 +7,7 @@ function RegisterDriverPage({ onRegister }) {
         { name: 'name', label: 'Nome', type: 'text', placeholder: 'Seu nome' },
         { name: 'lastname', label: 'Sobrenome', type: 'text', placeholder: 'Seu sobrenome' },
         { name: 'email', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
-        { name: 'cpf', label: 'CPF', type: 'text', placeholder: '000.000.000-00', pattern: '\\\\d{3}\\\\.?\\\\d{3}\\\\.?\\\\d{3}-?\\\\d{2}', title: 'Formato: 000.000.000-00' },
+        { name: 'cpf', label: 'CPF', type: 'text', placeholder: '000.000.000-00', title: 'Formato: 000.000.000-00' },
         { name: 'birthDate', label: 'Data de Nascimento', type: 'date' },
         { name: 'password', label: 'Senha', type: 'password', placeholder: 'Crie uma senha forte' },
         { name: 'confirmPassword', label: 'Confirme a Senha', type: 'password', placeholder: 'Repita a senha' },

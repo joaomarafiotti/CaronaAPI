@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'; // Impo
 import LoginPage from './pages/LoginPage';
 import RegisterPassengerPage from './pages/RegisterPassengerPage';
 import RegisterDriverPage from './pages/RegisterDriverPage';
+import axios from 'axios';
 import './App.css';
 
 function Dashboard({ currentUser, onLogout }) {
@@ -21,6 +22,7 @@ function Dashboard({ currentUser, onLogout }) {
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (userData) => {
@@ -29,10 +31,24 @@ function App() {
     navigate('/dashboard');
   };
 
-  const handleRegister = (userData) => {
-    console.log("Registered:", userData.email, "as", userData.role);
-    alert(`Cadastro de ${userData.role === 'PASSENGER' ? 'passageiro' : 'motorista'} realizado com sucesso! Faça o login para continuar.`);
-    navigate('/login');
+  const handleRegister = async (userData) => {
+    if (loading) return; 
+    console.log('Registering user:');
+    setLoading(true);
+    try {
+      let response = await axios({
+          method: 'POST',
+          url: 'http://localhost:8080/api/v1/register',
+          data: userData,
+      })
+      navigate('/login');
+      setLoading(false);
+    } catch (error) {
+      let errorMessage = JSON.parse(error.request.response);
+      console.log(errorMessage.message);
+      alert(errorMessage.message || 'Erro ao registrar usuário. Tente novamente.');
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
