@@ -3,6 +3,7 @@ package br.ifsp.demo.security.user;
 import br.ifsp.demo.domain.Cpf;
 import jakarta.persistence.*;
 import lombok.*;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +32,7 @@ public class User implements UserDetails {
     private String name;
     @NonNull @Column(nullable = false)
     private String lastname;
-    @NonNull @Column(nullable = false)
+    @NonNull @Column(nullable = false, unique = true)
     private String email;
     @NonNull @Column(nullable = false)
     private Cpf cpf;
