@@ -112,12 +112,12 @@ public class GetRideSolicitationUseCaseTest {
         when(rideRepository.findRideByDriver_Id(driver.getId())).thenReturn(List.of(ride));
         when(solicitationRepository.findRideSolicitationByRide_Id(ride.getId())).thenReturn(List.of(s1, s2));
 
-        assertThat(sut.getPendingSolicitationsFrom(driver)).isEqualTo(List.of(s2));
+        assertThat(sut.getPendingSolicitationsFrom(driver.getId())).isEqualTo(List.of(s2));
     }
 
     @Test
     @DisplayName("Should return a empty list if there's no pending solicitations")
     public void shouldReturnEmptyListIfThereIsNoPendingSolicitations() {
-        assertThat(sut.getPendingSolicitationsFrom(driver)).isEmpty();
+        assertThat(sut.getPendingSolicitationsFrom(driver.getId())).isEmpty();
     }
 }

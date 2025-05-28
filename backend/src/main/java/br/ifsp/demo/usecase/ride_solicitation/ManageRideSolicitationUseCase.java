@@ -4,27 +4,30 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
+import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ManageRideSolicitationUseCase {
     private final RideSolicitationRepository solicitationRepository;
     private final RideRepository rideRepository;
+    private final DriverRepository driverRepository;
 
-    public ManageRideSolicitationUseCase(RideSolicitationRepository solicitationRepository, RideRepository rideRepository) {
-        this.solicitationRepository = solicitationRepository;
-        this.rideRepository = rideRepository;
-    }
-
-    public RideSolicitation acceptSolicitationFor(UUID solicitationId, Driver driver) {
+    public RideSolicitation acceptSolicitationFor(UUID solicitationId, UUID driverId) {
         RideSolicitation rideSolicitation = solicitationRepository
                 .findById(solicitationId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found"));
+
+        Driver driver = driverRepository
+                .findById(driverId)
+                .orElseThrow(() -> new EntityNotFoundException("Driver with id:" + driverId + " not found"));
 
         RideSolicitation acceptedSolicitation = driver.acceptIfIsTheOwner(rideSolicitation);
 
@@ -39,10 +42,13 @@ public class ManageRideSolicitationUseCase {
         return acceptedSolicitation;
     }
 
-    public RideSolicitation rejectSolicitationFor(UUID solicitationId, Driver driver) {
+    public RideSolicitation rejectSolicitationFor(UUID solicitationId, UUID driverId) {
         RideSolicitation rideSolicitation = solicitationRepository
                 .findById(solicitationId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found"));
+        Driver driver = driverRepository
+                .findById(driverId)
+                .orElseThrow(() -> new EntityNotFoundException("Driver with id:" + driverId + " not found"));
 
         RideSolicitation rejectedSolicitation = driver.rejectIfIsTheOwner(rideSolicitation);
 

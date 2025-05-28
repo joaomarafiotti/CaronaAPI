@@ -9,6 +9,7 @@ import br.ifsp.demo.utils.RideSolicitationStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,8 +22,8 @@ public class GetRideSolicitationUseCase {
         this.solicitationRepository = solicitationRepository;
     }
 
-    public List<RideSolicitation> getPendingSolicitationsFrom(Driver driver) {
-        List<Ride> driverRides = rideRepository.findRideByDriver_Id(driver.getId());
+    public List<RideSolicitation> getPendingSolicitationsFrom(UUID driverId) {
+        List<Ride> driverRides = rideRepository.findRideByDriver_Id(driverId);
 
         return driverRides.stream()
                 .map(r -> solicitationRepository.findRideSolicitationByRide_Id(r.getId()))

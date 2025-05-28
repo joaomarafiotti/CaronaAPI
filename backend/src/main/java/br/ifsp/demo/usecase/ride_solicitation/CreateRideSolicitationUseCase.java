@@ -5,21 +5,27 @@ import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
+import br.ifsp.demo.repositories.PassengerRepository;
+import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CreateRideSolicitationUseCase {
     private final RideSolicitationRepository solicitationRepository;
+    private final PassengerRepository passengerRepository;
+    private final RideRepository rideRepository;
 
-    public CreateRideSolicitationUseCase(RideSolicitationRepository solicitationRepository) {
-        this.solicitationRepository = solicitationRepository;
-    }
-
-    public RideSolicitation createAndRegisterRideSolicitationFor(Passenger passenger, Ride ride) {
+    public RideSolicitation createAndRegisterRideSolicitationFor(UUID passengerId, UUID rideId) {
+        Passenger passenger = passengerRepository.findById(passengerId).orElseThrow(() -> new EntityNotFoundException("Passenger with id:" + passengerId + " not found"));
+        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new EntityNotFoundException("Ride with id:" + rideId + " not found"));
         if (ride == null || passenger == null)
             throw new IllegalArgumentException("Ride and passenger must not be null");
 

@@ -131,7 +131,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldAcceptRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
 
-        RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver);
+        RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
         assertThat(acceptedS1.getStatus()).isEqualTo(RideSolicitationStatus.ACCEPTED);
     }
@@ -143,7 +143,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldRejectRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
 
-        RideSolicitation rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver);
+        RideSolicitation rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver.getId());
 
         assertThat(rejectedS1.getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
     }
@@ -151,8 +151,8 @@ public class ManageRideSolicitationUseCaseTest {
     @Test
     @DisplayName("Should throws EntityNotFoundException if the driver isn't the owner of the Ride")
     public void shouldThrowsEntityNotFoundExceptionIfTheDriverIsNotTheOwnerOfTheRide() {
-        assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(s2.getId(), driver));
-        assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver));
+        assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(s2.getId(), driver.getId()));
+        assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver.getId()));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldPassengerBeAddedIntoRideAfterTheSolicitationIsAccepted() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
 
-        sut.acceptSolicitationFor(s1.getId(), driver);
+        sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
         assertThat(r1.getPassengers()).contains(p1);
     }
