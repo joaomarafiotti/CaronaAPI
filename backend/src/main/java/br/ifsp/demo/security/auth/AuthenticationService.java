@@ -2,7 +2,6 @@ package br.ifsp.demo.security.auth;
 
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
-import br.ifsp.demo.exception.ApiExceptionHandler;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.PassengerRepository;
@@ -15,8 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -38,13 +35,13 @@ public class AuthenticationService {
 
         if (request.role() == Role.PASSENGER) {
             Passenger passenger = new Passenger(request.name(), request.lastname(), request.email(),
-                    encryptedPassword, request.cpf(), request.birthDate());
+            encryptedPassword,  request.cpf(), request.birthDate());
             passengerRepository.save(passenger);
             return new RegisterUserResponse(passenger.getId());
         }
         if (request.role() == Role.DRIVER) {
             Driver driver = new Driver(request.name(), request.lastname(), request.email(),
-                    encryptedPassword, request.cpf(), request.birthDate());
+            encryptedPassword,  request.cpf(), request.birthDate());
             driverRepository.save(driver);
             return new RegisterUserResponse(driver.getId());
         }
