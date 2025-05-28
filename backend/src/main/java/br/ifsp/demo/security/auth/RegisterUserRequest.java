@@ -19,7 +19,6 @@ public record RegisterUserRequest(
         Role role,
         @Schema(description = "Cpf", example = "111.222.333-45")
         Cpf cpf,
-
         @Schema(description = "Birth Date", example = "2005-05-26")
-        LocalDate bithDate
+        LocalDate birthDate
 ) {}

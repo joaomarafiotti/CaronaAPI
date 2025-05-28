@@ -31,19 +31,20 @@ public class AuthenticationService {
     public RegisterUserResponse register(RegisterUserRequest request) {
 
         userRepository.findByEmail(request.email()).ifPresent(unused -> {
-            throw new EntityAlreadyExistsException("Email already registered: " + request.email());});
+            throw new EntityAlreadyExistsException("Email already registered: " + request.email());
+        });
 
         String encryptedPassword = passwordEncoder.encode(request.password());
 
-        if(request.role() == Role.PASSENGER) {
+        if (request.role() == Role.PASSENGER) {
             Passenger passenger = new Passenger(request.name(), request.lastname(), request.email(),
-                    encryptedPassword,  request.cpf(), request.bithDate());
+                    encryptedPassword, request.cpf(), request.birthDate());
             passengerRepository.save(passenger);
             return new RegisterUserResponse(passenger.getId());
         }
-        if(request.role() == Role.DRIVER) {
+        if (request.role() == Role.DRIVER) {
             Driver driver = new Driver(request.name(), request.lastname(), request.email(),
-                    encryptedPassword,  request.cpf(), request.bithDate());
+                    encryptedPassword, request.cpf(), request.birthDate());
             driverRepository.save(driver);
             return new RegisterUserResponse(driver.getId());
         }
