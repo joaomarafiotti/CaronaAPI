@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 import AuthForm from '../components/AuthForm';
 
-function LoginPage({ onNavigate, onLogin }) {
+function LoginPage({ onLogin }) { 
     const fields = [
         { name: 'email', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
         { name: 'password', label: 'Senha', type: 'password', placeholder: 'Sua senha' },
@@ -9,8 +10,7 @@ function LoginPage({ onNavigate, onLogin }) {
 
     const handleLogin = (formData) => {
         console.log('Login attempt:', formData);
-        // TODO: Implement actual login logic
-        onLogin(formData); // Placeholder for actual login success
+        onLogin(formData);
     };
 
     return (
@@ -22,8 +22,8 @@ function LoginPage({ onNavigate, onLogin }) {
         >
             <div className="auth-links">
                 <p>Não tem uma conta?</p>
-                <button onClick={() => onNavigate('register-passenger')} className="link-button">Cadastre-se como Passageiro</button>
-                <button onClick={() => onNavigate('register-driver')} className="link-button">Cadastre-se como Motorista</button>
+                <Link to="/register-passenger" className="link-button">Cadastre-se como Passageiro</Link>
+                <Link to="/register-driver" className="link-button">Cadastre-se como Motorista</Link>
             </div>
         </AuthForm>
     );

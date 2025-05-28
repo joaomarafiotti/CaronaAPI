@@ -31,7 +31,6 @@ body {
   flex-direction: column;
 }
 
-/* Container principal do App */
 .app-container {
   flex-grow: 1;
   display: flex;
@@ -257,7 +256,6 @@ main {
 
   .form-group label {
     font-size: 0.95rem;
-    /* Reduz tamanho do label placeholder */
     left: 10px;
   }
 
