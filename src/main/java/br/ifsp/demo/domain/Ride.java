@@ -17,9 +17,23 @@ public class Ride {
     private UUID id;
 
     @Setter
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "start_street")),
+            @AttributeOverride(name = "neighborhood", column = @Column(name = "start_neighborhood")),
+            @AttributeOverride(name = "number", column = @Column(name = "start_number")),
+            @AttributeOverride(name = "city", column = @Column(name = "start_city"))
+    })
     private Address startAddress;
 
     @Setter
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "end_street")),
+            @AttributeOverride(name = "neighborhood", column = @Column(name = "end_neighborhood")),
+            @AttributeOverride(name = "number", column = @Column(name = "end_number")),
+            @AttributeOverride(name = "city", column = @Column(name = "end_city"))
+    })
     private Address endAddress;
 
     @Setter
