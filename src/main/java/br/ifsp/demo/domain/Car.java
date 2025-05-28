@@ -31,7 +31,7 @@ public class Car {
     private Integer seats;
 
     @Column(unique = true, nullable = false)
-    private String licensePlate;
+    private LicensePlate licensePlate;
 
     @ManyToOne
     @JoinColumn(name = "driver_id", nullable = false)
@@ -40,7 +40,7 @@ public class Car {
     protected Car() {
     }
 
-    public Car(String brand, String model, String color, Integer seats, String licensePlate) {
+    public Car(String brand, String model, String color, Integer seats, LicensePlate licensePlate) {
         this.id = UUID.randomUUID();
         this.brand = brand;
         this.model = model;
@@ -50,7 +50,7 @@ public class Car {
     }
 
     public CarResponseModel toResponseModel() {
-        return new CarResponseModel(this.getId(), this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate());
+        return new CarResponseModel(this.getId(), this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate().toString());
     }
 
     @Override

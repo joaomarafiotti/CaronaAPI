@@ -2,6 +2,7 @@ package br.ifsp.demo.usecase.car;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CreateCarResponseModel;
@@ -32,7 +33,7 @@ public class RegisterCarUseCase {
                 request.model(),
                 request.color(),
                 request.seats(),
-                request.licensePlate()
+                LicensePlate.parse(request.licensePlate())
         );
 
         driver.addCar(car);

@@ -53,7 +53,7 @@ public class CancelRideUseCaseTest {
     void setUp() {
         futureTime = LocalDateTime.now().plusHours(2);
         Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
-        Car car = new Car("Fiat", "Uno", "Red", 5, "12345");
+        Car car = new Car("Fiat", "Uno", "Red", 5, LicensePlate.parse("EJC8N43"));
 
         passengers = List.of(
                 new Passenger("João", "Matias", "joao@example.com", "31234BBds#", Cpf.of("123.456.789-09"), LocalDate.of(2000, 3, 12)),

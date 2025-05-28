@@ -1,5 +1,6 @@
 package br.ifsp.demo.models.request;
 
+import br.ifsp.demo.domain.LicensePlate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,10 +16,7 @@ public record CarRequestModel(
         @NotNull
         @Positive(message = "Seats must be a positive number")
         Integer seats,
+
         @NotBlank
-        @Pattern(
-                regexp = "^[A-Z]{3}[0-9][A-Z][0-9]{2}$|^[A-Z]{3}[0-9]{4}$",
-                message = "Invalid license plate format"
-        )
         String licensePlate
 ) {}

@@ -67,7 +67,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Palio",
                 "Prata",
                 5,
-                "DQC1-ADQ"
+                LicensePlate.parse("DQC1A18")
         );
 
         address0 = new Address.AddressBuilder()
@@ -208,7 +208,7 @@ public class CreateRideSolicitationUseCaseTest {
                 "Palio",
                 "Prata",
                 4,
-                "DQC1-ADQ"
+                LicensePlate.parse("KEG9C54")
         );
         Passenger passenger = new Passenger(
                 "Pedro",

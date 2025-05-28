@@ -28,7 +28,7 @@ public class GetCarUseCase {
                 .orElseThrow(() -> new CarNotFoundException(carId));
 
         if (!driver.getCars().contains(car)) {
-            throw new CarNotFoundException(carId); // ou nova exceção, como CarDoesNotBelongToDriverException
+            throw new CarNotFoundException(carId);
         }
 
         return car.toResponseModel();

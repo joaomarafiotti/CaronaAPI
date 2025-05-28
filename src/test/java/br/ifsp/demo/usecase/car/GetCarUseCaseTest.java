@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase.car;
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.exception.CarNotFoundException;
 import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.models.response.CarResponseModel;
@@ -43,8 +44,8 @@ class GetCarUseCaseTest {
         driverId = UUID.randomUUID();
         carId = UUID.randomUUID();
 
-        car = new Car("Toyota","Corolla","Black",5,"ABC1234");
-        Car car2 = new Car("Volkswagen", "Fusca", "White", 5, "GEK3245");
+        car = new Car("Toyota","Corolla","Black",5,LicensePlate.parse("ABC1C34"));
+        Car car2 = new Car("Volkswagen", "Fusca", "White", 5, LicensePlate.parse("GEK3C45"));
 
         driver = new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
         driverId = driver.getId();
@@ -67,7 +68,7 @@ class GetCarUseCaseTest {
         assertEquals("Corolla", response.model());
         assertEquals("Black", response.color());
         assertEquals(5, response.seats());
-        assertEquals("ABC1234", response.licensePlate());
+        assertEquals("ABC1C34", response.licensePlate());
     }
 
     @Test
@@ -96,7 +97,7 @@ class GetCarUseCaseTest {
     @Tag("UnitTest")
     @DisplayName("Should throw CarNotFoundException when car does not belong to driver")
     void shouldThrowCarNotFoundExceptionWhenCarDoesNotBelongToDriver() {
-        Car otherCar =  new Car("Toyota","Yaris","Black",5,"AAA1234");
+        Car otherCar =  new Car("Toyota","Yaris","Black",5,LicensePlate.parse("AAA-1234"));
 
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));

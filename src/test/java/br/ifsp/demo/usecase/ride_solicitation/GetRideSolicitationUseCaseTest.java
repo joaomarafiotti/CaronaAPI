@@ -57,7 +57,7 @@ public class GetRideSolicitationUseCaseTest {
                 "Palio",
                 "Prata",
                 4,
-                "DQC1-ADQ"
+                LicensePlate.parse("HEK9J76")
         );
 
         address0 = new Address.AddressBuilder()

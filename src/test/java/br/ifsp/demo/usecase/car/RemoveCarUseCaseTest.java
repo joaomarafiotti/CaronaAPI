@@ -46,7 +46,7 @@ class RemoveCarUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        car = new Car("Fiat", "Uno", "Red", 5, "ABC1234");
+        car = new Car("Fiat", "Uno", "Red", 5, LicensePlate.parse("ABC-1234"));
         driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
         carId = car.getId();
         driverId = driver.getId();
@@ -71,7 +71,7 @@ class RemoveCarUseCaseTest {
     @Description("Should Remove Car successfully when driverId and carId ar valid")
     void shouldRemoveCarSuccessfully() {
         Ride ride = new Ride(address0, address1, LocalDateTime.now().plusDays(2), driver, car);
-        Car otherCar = new Car("Ford", "Ka", "Blue", 5, "DEF5678");
+        Car otherCar = new Car("Ford", "Ka", "Blue", 5, LicensePlate.parse("DEF5J78"));
         driver.addCar(otherCar);
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
@@ -129,7 +129,7 @@ class RemoveCarUseCaseTest {
     @Tag("UnitTest")
     @Description("Should only remove specified car when multiple cars exists")
     void shouldOnlyRemoveSpecifiedCarWhenMultipleCarsExist() {
-        Car car2 = new Car("Ford", "Ka", "Blue", 5, "DEF5678");
+        Car car2 = new Car("Ford", "Ka", "Blue", 5, LicensePlate.parse("DEF5C78"));
         driver.addCar(car2);
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
