@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PassengerRideMenu from "../../../components/PassengerRideMenu";
+import CustomMenu from "../../../components/CustomMenu";
 import { Avatar, Button, Menu, Portal } from "@chakra-ui/react";
 
 export const PassengerHeader = () => {
   const navigate = useNavigate();
-  const [itens, setItens] = useState([
+  const [items, setItems] = useState([
     {
       label: "Disponíveis",
       value: "new-ride",
@@ -27,7 +27,7 @@ export const PassengerHeader = () => {
     <header className="header">
       <div className="header-left">
         <h1 className="header-title">Carona APP</h1>
-        <PassengerRideMenu itens={itens} />
+        <CustomMenu items={items} title={"Carona"} />
       </div>
       <nav>
         <Avatar.Root

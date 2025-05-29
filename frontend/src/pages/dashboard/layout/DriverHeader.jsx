@@ -1,36 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Avatar } from "@chakra-ui/react";
+import CustomMenu from "../../../components/CustomMenu";
 
 const DriverHeader = () => {
   const navigate = useNavigate();
+  const [items, setItems] = useState([
+    {
+      label: "Cadastrar Carro",
+      value: "register-car",
+      handler: () => navigate("/dashboard/driver/cars/register"),
+    },
+    {
+      label: "Visualizar Carros",
+      value: "view-cars",
+      handler: () => navigate("/dashboard/driver/cars/view"),
+    } 
+  ])
+
   return (
     <header className="header">
-      <h1 className="header-title">Carona APP</h1>
-      <nav className="header-nav">
-        <button
-          className="header-btn"
-          onClick={() => navigate("/dashboard/driver")}
+      <div className="header-left">
+        <h1 className="header-title">Carona APP</h1>
+        <CustomMenu items={items} title={"Carros"}/>
+      </div>
+      <nav>
+        <Avatar.Root
+          colorPalette="blue"
+          size="md"
+          onClick={() => navigate("/dashboard/driver/profile")}
+          cursor={"pointer"}
         >
-          Motorista
-        </button>
-        <button
-          className="header-btn"
-          onClick={() => navigate("/dashboard/driver/nova-carona")}
-        >
-          Nova Carona
-        </button>
-        <button
-          className="header-btn"
-          onClick={() => navigate("/dashboard/driver/cars/register")}
-        >
-          Cadastrar Carro
-        </button>
-        <button
-          className="header-btn"
-          onClick={() => navigate("/dashboard/driver/solicitacoes")}
-        >
-          Solicitações de Carona
-        </button>
+          <Avatar.Fallback />
+          <Avatar.Image src="https://bit.ly/broken-link" />
+        </Avatar.Root>
       </nav>
     </header>
   );

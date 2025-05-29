@@ -1,24 +1,24 @@
 import { Button, Menu, Portal } from "@chakra-ui/react";
 
-const PassengerRideMenu = ({ itens }) => {
+const CustomMenu = ({ items, title }) => {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm">
-          Caronas
+          { title }
         </Button>
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            {itens &&
-              itens.map((item) => (
+            {items &&
+              items.map((item) => (
                 <Menu.Item
                   key={item.value}
                   value={item.value}
                   onClick={() => {
                     console.log(`Selected: ${item.label}`);
-                    // item.handler && item.handler();
+                    item.handler && item.handler();
                   }}
                 >
                   {item.label}
@@ -31,4 +31,4 @@ const PassengerRideMenu = ({ itens }) => {
   );
 };
 
-export default PassengerRideMenu;
+export default CustomMenu;
