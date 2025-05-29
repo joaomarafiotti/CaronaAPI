@@ -31,7 +31,6 @@ const RegisterCarPage = () => {
     const [fields, setFields] = useState(initialState);
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
-    const [loading, setLoading] = useState(false);
     const { userToken } = useAuth();
 
     const handleChange = (e) => {

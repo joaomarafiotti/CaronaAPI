@@ -5,7 +5,7 @@ import CustomMenu from "../../../components/CustomMenu";
 
 const DriverHeader = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([
+  const [carItems, _] = useState([
     {
       label: "Cadastrar Carro",
       value: "register-car",
@@ -18,11 +18,26 @@ const DriverHeader = () => {
     } 
   ])
 
+  /*
+  const [rideItems, setRideItems] = useState([
+    {
+      label: "Criar Carona",
+      value: "register-ride",
+      handler: () => navigate("/dashboard/driver/rides/register"),
+    },
+    {
+      label: "Visualizar Caronas",
+      value: "view-rides",
+      handler: () => navigate("/dashboard/driver/rides/view"),
+    },
+  ]);
+  */
+ 
   return (
     <header className="header">
       <div className="header-left">
         <h1 className="header-title">Carona APP</h1>
-        <CustomMenu items={items} title={"Carros"}/>
+        <CustomMenu items={carItems} title={"Carros"}/>
       </div>
       <nav>
         <Avatar.Root

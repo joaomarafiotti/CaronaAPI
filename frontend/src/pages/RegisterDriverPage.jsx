@@ -18,7 +18,11 @@ function RegisterDriverPage() {
             let msg = 'Erro ao registrar usuário. Tente novamente.';
             if (error?.response?.data?.message) msg = error.response.data.message;
             else if (error?.request?.response) {
-                try { msg = JSON.parse(error.request.response).message; } catch { }
+                try {
+                    msg = JSON.parse(error.request.response).message; 
+                } catch(err) {
+                    console.error('Error parsing error response:', err);
+                }
             }
             alert(msg);
         } finally {

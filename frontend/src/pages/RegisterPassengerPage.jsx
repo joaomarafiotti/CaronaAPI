@@ -19,7 +19,11 @@ function RegisterPassengerPage() {
             let msg = 'Erro ao registrar usuário. Tente novamente.';
             if (error?.response?.data?.message) msg = error.response.data.message;
             else if (error?.request?.response) {
-                try { msg = JSON.parse(error.request.response).message; } catch { }
+                try { 
+                    msg = JSON.parse(error.request.response).message; 
+                } catch(error) {
+                    console.error('Error parsing error response:', error);
+                }
             }
             alert(msg);
         } finally {
