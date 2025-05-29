@@ -30,3 +30,5 @@ export const HeaderAvatar = ({ itens }) => (
     </Portal>
   </Menu.Root>
 );
+
+export default HeaderAvatar;

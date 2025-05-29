@@ -30,6 +30,15 @@ body {
   min-height: 100vh;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  padding: 2rem;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -86,6 +95,21 @@ nav {
   display: flex;
   align-items: center;
   margin-left: auto;
+}
+
+.ride-grid {
+  width: 100%;
+}
+
+.ride-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ride-row .chakra-data-list__item {
+  margin-bottom: 0;
 }
 
 @media (prefers-color-scheme: light) {

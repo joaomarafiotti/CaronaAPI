@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomMenu from "../../../components/CustomMenu";
+import HeaderAvatar from "../../../components/HeaderAvatar";
 
 export const PassengerHeader = () => {
   const navigate = useNavigate();
@@ -14,6 +15,11 @@ export const PassengerHeader = () => {
       label: "Minhas Caronas",
       value: "my-rides",
       handler: () => navigate("/dashboard/passenger/my-rides"),
+    },
+    {
+      label: "Solicitações Enviadas",
+      value: "my-ride-requests",
+      handler: () => navigate("/dashboard/passenger/my-ride-requests"),
     },
     {
       label: "Histórico",
