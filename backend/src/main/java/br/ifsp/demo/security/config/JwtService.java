@@ -1,5 +1,6 @@
 package br.ifsp.demo.security.config;
 
+import br.ifsp.demo.security.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,7 +29,15 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+        if (userDetails instanceof User) {
+            User user = (User) userDetails;
+            System.out.println(user.getRole());
+            if (user.getRole() != null) {
+                extraClaims.put("role", user.getRole().name());
+            }
+        }
+        return generateToken(extraClaims, userDetails);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
