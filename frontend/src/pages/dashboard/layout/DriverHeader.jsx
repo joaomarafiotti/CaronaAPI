@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Header.css"; // Opcional: para estilos específicos do Header
 
 export const DriverHeader = () => {
   const navigate = useNavigate();
@@ -14,12 +13,6 @@ export const DriverHeader = () => {
           onClick={() => navigate("/dashboard/driver")}
         >
           Motorista
-        </button>
-        <button
-          className="header-btn"
-          onClick={() => navigate("/dashboard/passenger")}
-        >
-          Passageiro
         </button>
       </nav>
     </header>

@@ -1,17 +1,23 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { getUserRole } from "../../../services/authService";
+import DriverHeader from "./DriverHeader";
+import PassengerHeader from "./PassengerHeader";
 
 const DashBoardLayout = () => {
   const { userToken } = useAuth();
+
+  if(!userToken) return <Navigate to="/login" replace={true} />;
+  
   const driverToken = getUserRole(userToken) === "DRIVER";
+
+  console.log("Driver Token:", driverToken);
 
   return (
     <>
-      driverToken ? <DriverHeader /> : <PassengerHeader />
+      {driverToken ? <DriverHeader /> : <PassengerHeader />}
       <Outlet />
-      <Footer/>
     </>
   );
 };

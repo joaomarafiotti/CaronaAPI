@@ -7,7 +7,7 @@ import { getUserRole } from  '../services/authService';
  * Componente de proteção de rota.
  * @param {React.ReactNode} children - O conteúdo da rota protegida.
  */
-const ProtectedPassengerRoute = ({ children }) => {
+const ProtectedDriverRoute = ({ children }) => {
     const { userToken } = useAuth();
     
     if (!userToken){
@@ -21,4 +21,4 @@ const ProtectedPassengerRoute = ({ children }) => {
     return children;
 };
 
-export default ProtectedPassengerRoute;
+export default ProtectedDriverRoute;

@@ -6,7 +6,9 @@ import api from '../services/api'
 function RegisterPassengerPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    
     const handleRegister = async (formData) => {
+        console.log('RegisterPassengerPage: handleRegister', formData);
         if (loading) return;
         setLoading(true);
         try {
@@ -36,7 +38,7 @@ function RegisterPassengerPage() {
     ];
 
     const onRegister = async (formData) => {
-        await handleRegister({formData, role: 'PASSENGER' });
+        await handleRegister({...formData, role: 'PASSENGER' });
     };
 
     return (
