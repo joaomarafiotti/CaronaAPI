@@ -8,6 +8,7 @@ import { AuthProvider } from "./context/AuthContext";
 import DashBoardLayout from "./pages/dashboard/layout/DashBoardLayout";
 import DriverDashBoard from "./pages/dashboard/DriverDashBoard";
 import PassengerDashBoard from "./pages/dashboard/PassengerDashBoard";
+import RegisterCarPage from "./pages/RegisterCarPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route index element={<DriverDashBoard />} />
           <Route path="driver" element={<DriverDashBoard />} />
           <Route path="passenger" element={<PassengerDashBoard />} />
+          <Route path="driver/cars/register" element={<RegisterCarPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register-passenger" element={<RegisterPassengerPage />} />

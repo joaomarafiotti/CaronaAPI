@@ -32,7 +32,6 @@ public class JwtService {
         Map<String, Object> extraClaims = new HashMap<>();
         if (userDetails instanceof User) {
             User user = (User) userDetails;
-            System.out.println(user.getRole());
             if (user.getRole() != null) {
                 extraClaims.put("role", user.getRole().name());
             }

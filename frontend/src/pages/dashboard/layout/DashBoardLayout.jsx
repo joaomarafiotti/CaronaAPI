@@ -17,8 +17,7 @@ const DashBoardLayout = () => {
 
   return (
     <>
-      {/* {driverToken ? <DriverHeader /> : <PassengerHeader />} */}
-      <PassengerHeader />
+      {driverToken ? <DriverHeader /> : <PassengerHeader />}
       <main>
         <Outlet />
       </main>
