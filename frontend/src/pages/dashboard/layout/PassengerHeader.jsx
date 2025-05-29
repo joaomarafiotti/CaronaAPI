@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomMenu from "../../../components/CustomMenu";
-import { Avatar, Button, Menu, Portal } from "@chakra-ui/react";
 
 export const PassengerHeader = () => {
   const navigate = useNavigate();
@@ -22,6 +21,21 @@ export const PassengerHeader = () => {
       handler: () => navigate("/dashboard/passenger/ride-history"),
     },
   ]);
+  const [avatarMenuItens, setAvatarMenuItens] = useState([
+    {
+      label: "Perfil",
+      value: "profile",
+      handler: () => navigate("/dashboard/passenger/profile"),
+    },
+    {
+      label: "Sair",
+      value: "logout",
+      handler: () => {
+        console.log("Logout clicked");
+        navigate("/login");
+      },
+    },
+  ]);
 
   return (
     <header className="header">
@@ -30,15 +44,7 @@ export const PassengerHeader = () => {
         <CustomMenu items={items} title={"Carona"} />
       </div>
       <nav>
-        <Avatar.Root
-          colorPalette="blue"
-          size="md"
-          onClick={() => navigate("/dashboard/passenger/profile")}
-          cursor={"pointer"}
-        >
-          <Avatar.Fallback />
-          <Avatar.Image src="https://bit.ly/broken-link" />
-        </Avatar.Root>
+        <HeaderAvatar itens={avatarMenuItens} />
       </nav>
     </header>
   );
