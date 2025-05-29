@@ -5,9 +5,10 @@ import RegisterDriverPage from "./pages/RegisterDriverPage";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
 import DashBoardLayout from "./pages/dashboard/layout/DashBoardLayout";
-import DriverDashBoard from "./pages/dashboard/DriverDashBoard";
-import PassengerDashBoard from "./pages/dashboard/PassengerDashBoard";
+import DriverDashBoard from "./pages/dashboard/driver/DriverDashBoard";
+import PassengerDashBoard from "./pages/dashboard/passenger/PassengerDashBoard";
 import RegisterCarPage from "./pages/RegisterCarPage";
+import AvailableRides from "./pages/dashboard/passenger/AvailableRides";
 
 function App() {
   return (
@@ -17,6 +18,12 @@ function App() {
           <Route index element={<DriverDashBoard />} />
           <Route path="driver" element={<DriverDashBoard />} />
           <Route path="passenger" element={<PassengerDashBoard />} />
+          <Route path="passenger/avalable-rides" element={<AvailableRides />} />
+          <Route path="passenger/rides" element={<PassengerDashBoard />} />
+          <Route
+            path="passenger/ride-requests"
+            element={<PassengerDashBoard />}
+          />
           <Route path="driver/cars/register" element={<RegisterCarPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />

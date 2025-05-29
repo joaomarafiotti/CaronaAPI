@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomMenu from "../../../components/CustomMenu";
-import HeaderAvatar from "../../../components/HeaderAvatar";
+import CustomMenu from "../../../../components/CustomMenu";
+import HeaderAvatar from "../../../../components/HeaderAvatar";
 
 export const PassengerHeader = () => {
   const navigate = useNavigate();

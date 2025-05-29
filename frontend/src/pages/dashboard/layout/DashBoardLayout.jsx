@@ -2,8 +2,8 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { getUserRole } from "../../../services/authService";
-import DriverHeader from "./DriverHeader";
-import PassengerHeader from "./PassengerHeader";
+import DriverHeader from "./header/DriverHeader";
+import PassengerHeader from "./header/PassengerHeader";
 import Footer from "./Footer";
 
 const DashBoardLayout = () => {

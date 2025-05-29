@@ -1,4 +1,4 @@
-import Ride from "../../components/Ride";
+import Ride from "../../../components/Ride";
 import { useState } from "react";
 import { Button } from "@chakra-ui/react";
 const PassengerDashBoard = () => {

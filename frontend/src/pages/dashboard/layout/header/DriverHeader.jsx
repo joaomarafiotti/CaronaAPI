@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@chakra-ui/react";
-import CustomMenu from "../../../components/CustomMenu";
+import CustomMenu from "../../../../components/CustomMenu";
 
 const DriverHeader = () => {
   const navigate = useNavigate();
