@@ -1,16 +1,35 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
-function LoginPage({ onLogin }) { 
+function LoginPage() {
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    const [loading, setLoading] = useState(false);
+    
     const fields = [
-        { name: 'email', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
+        { name: 'username', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
         { name: 'password', label: 'Senha', type: 'password', placeholder: 'Sua senha' },
     ];
 
-    const handleLogin = (formData) => {
-        console.log('Login attempt:', formData);
-        onLogin(formData);
+    const handleLogin = async (formData) => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            const { data: resData } = await api.post('/api/v1/authenticate', formData);
+            login(resData.token);
+            navigate('/dashboard');
+        } catch {
+            alert('Erro ao fazer login. Usuário ou senha inválidos.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const onLogin = async (formData) => {
+        await handleLogin(formData);
     };
 
     return (
@@ -18,7 +37,7 @@ function LoginPage({ onLogin }) {
             title="Login"
             fields={fields}
             buttonText="Entrar"
-            onSubmit={handleLogin}
+            onSubmit={onLogin}
         >
             <div className="auth-links">
                 <p>Não tem uma conta?</p>

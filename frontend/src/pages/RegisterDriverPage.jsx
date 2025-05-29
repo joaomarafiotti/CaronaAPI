@@ -1,8 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
+import api from '../services/api';
 
-function RegisterDriverPage({ onRegister }) { 
+function RegisterDriverPage() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const handleRegister = async (formData) => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            await api.post('/api/v1/register', formData);
+            alert('Cadastro realizado com sucesso!');
+            navigate('/login');
+        } catch (error) {
+            let msg = 'Erro ao registrar usuário. Tente novamente.';
+            if (error?.response?.data?.message) msg = error.response.data.message;
+            else if (error?.request?.response) {
+                try { msg = JSON.parse(error.request.response).message; } catch { }
+            }
+            alert(msg);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const fields = [
         { name: 'name', label: 'Nome', type: 'text', placeholder: 'Seu nome' },
         { name: 'lastname', label: 'Sobrenome', type: 'text', placeholder: 'Seu sobrenome' },
@@ -13,14 +36,8 @@ function RegisterDriverPage({ onRegister }) {
         { name: 'confirmPassword', label: 'Confirme a Senha', type: 'password', placeholder: 'Repita a senha' },
     ];
 
-    const handleRegister = (formData) => {
-        if (formData.password !== formData.confirmPassword) {
-            alert('As senhas não coincidem!');
-            return;
-        }
-        const { confirmPassword, ...registrationData } = formData;
-        console.log('Registering driver:', registrationData);
-        onRegister({ ...registrationData, role: 'DRIVER' });
+    const onRegister = async (formData) => {
+        await handleRegister(formData);
     };
 
     return (
@@ -28,7 +45,7 @@ function RegisterDriverPage({ onRegister }) {
             title="Cadastro de Motorista"
             fields={fields}
             buttonText="Cadastrar"
-            onSubmit={handleRegister}
+            onSubmit={onRegister}
         >
             <div className="auth-links">
                 <Link to="/login" className="link-button">Já tem uma conta? Faça login</Link>

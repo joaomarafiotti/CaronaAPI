@@ -37,21 +37,6 @@ body {
   flex-direction: column;
 }
 
-.app-header {
-  background-color: #1f1f1f;
-  color: #00aaff;
-  padding: 1rem 1.5rem;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid #00aaff;
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 700;
-}
-
 main {
   flex-grow: 1;
   padding: 1.5rem;
@@ -60,16 +45,6 @@ main {
   align-items: center;
   width: 100%;
   overflow-y: auto;
-}
-
-.app-footer {
-  background-color: #1f1f1f;
-  color: #888;
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.85rem;
-  border-top: 1px solid #333;
-  margin-top: auto;
 }
 
 .auth-container {
