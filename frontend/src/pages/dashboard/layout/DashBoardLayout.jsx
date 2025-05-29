@@ -18,13 +18,13 @@ const DashBoardLayout = () => {
   return (
     <>
       {/* {driverToken ? <DriverHeader /> : <PassengerHeader />} */}
-      <DriverHeader />
+      <PassengerHeader />
       <main>
         <Outlet />
       </main>
       <Footer />
     </>
-);
+  );
 };
 
 export default DashBoardLayout;
