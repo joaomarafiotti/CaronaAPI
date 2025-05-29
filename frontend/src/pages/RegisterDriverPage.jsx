@@ -37,7 +37,7 @@ function RegisterDriverPage() {
     ];
 
     const onRegister = async (formData) => {
-        await handleRegister(formData);
+        await handleRegister({...formData, role: 'DRIVER' });
     };
 
     return (

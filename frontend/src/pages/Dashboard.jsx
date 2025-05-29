@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-    const { logout } = useAuth();
+    const { logout, userToken } = useAuth();
     const navigate = useNavigate();
     
     const handleLogout = () => {

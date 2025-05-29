@@ -36,7 +36,7 @@ function RegisterPassengerPage() {
     ];
 
     const onRegister = async (formData) => {
-        await handleRegister(formData);
+        await handleRegister({formData, role: 'PASSENGER' });
     };
 
     return (

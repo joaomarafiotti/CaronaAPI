@@ -5,7 +5,7 @@ import RegisterPassengerPage from './pages/RegisterPassengerPage';
 import RegisterDriverPage from './pages/RegisterDriverPage';
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import { ProtectedPassengerRoute } from './components/ProtectedPassengerRoute';
 import Dashboard from './pages/Dashboard';
 
 function App() {
@@ -18,9 +18,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedPassengerRoute>
               <Dashboard />
-            </ProtectedRoute>
+            </ProtectedPassengerRoute>
           }
         />
         <Route path="*" element={<Navigate to="/login" replace={true} />} />
