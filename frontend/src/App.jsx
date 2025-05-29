@@ -5,11 +5,12 @@ import RegisterPassengerPage from "./pages/RegisterPassengerPage";
 import RegisterDriverPage from "./pages/RegisterDriverPage";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
-import {ProtectedDriverRoute} from "./components/ProtectedDriverRoute";
-import { ProtectedPassengerRoute } from "./components/ProtectedPssengerRoute";
+import { ProtectedDriverRoute } from "./components/ProtectedDriverRoute";
+import { ProtectedPassengerRoute } from "./components/ProtectedPassengerRoute";
 import Dashboard from "./pages/Dashboard";
-import DashBoardLayout from "./pages/dashboard/DashBoardLayout";
+import DashBoardLayout from "./pages/dashboard/layout/DashBoardLayout";
 import DriverDashBoard from "./pages/dashboard/DriverDashBoard";
+import PassengerDashBoard from "./pages/dashboard/PassengerDashBoard";
 
 function App() {
   return (
@@ -17,11 +18,7 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<DashBoardLayout />}>
           <Route path="driver" element={<DriverDashBoard />} />
-          <Route path="passenger" element={<Passenger />} />
-          <Route
-            path="*"
-            element={<Navigate to="/dashboard/driver" replace={true} />}
-          />
+          <Route path="passenger" element={<PassengerDashBoard />} />
         </Route>
         <Route path="/" element={<Driver />} />
         <Route path="/login" element={<LoginPage />} />
