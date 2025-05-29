@@ -14,6 +14,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/dashboard" element={<DashBoardLayout />}>
+          <Route index element={<DriverDashBoard />} />
           <Route path="driver" element={<DriverDashBoard />} />
           <Route path="passenger" element={<PassengerDashBoard />} />
         </Route>

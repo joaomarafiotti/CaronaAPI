@@ -63,17 +63,29 @@ button:focus-visible {
   color: #fff;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
 .header-title {
   margin: 0;
   font-size: 2rem;
-}
-
-.header-btn {
   margin-right: 1rem;
 }
 
-.header-btn:last-child {
+.header-btn {
+  margin-right: 0.5rem;
+}
+
+.header-btn-profile {
   margin-right: 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
 }
 
 @media (prefers-color-scheme: light) {
