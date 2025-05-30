@@ -14,6 +14,8 @@ import PassengerRides from "./pages/dashboard/passenger/PassengerRides";
 import PassengerRideRequests from "./pages/dashboard/passenger/PassengerRideRequests";
 import ProtectedPassengerRoute from "./components/ProtectedPassengerRoute";
 import ProtectedDriverRoute from "./components/ProtectedDriverRoute";
+import PassengerProfile from "./pages/dashboard/passenger/PassengerProfile";
+import DriverProfile from "./pages/dashboard/driver/DriverProfile";
 
 function App() {
   return (
@@ -45,6 +47,14 @@ function App() {
             }
           />
           <Route
+            path="passenger/profile"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerProfile />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
             path="passenger/rides"
             element={
               <ProtectedPassengerRoute>
@@ -58,6 +68,14 @@ function App() {
               <ProtectedPassengerRoute>
                 <PassengerRideRequests />
               </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="driver/profile"
+            element={
+              <ProtectedDriverRoute>
+                <DriverProfile />
+              </ProtectedDriverRoute>
             }
           />
           <Route

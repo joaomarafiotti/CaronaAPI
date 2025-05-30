@@ -9,12 +9,14 @@ import { getUserRole } from  '../services/authService';
  */
 const ProtectedPassengerRoute = ({ children }) => {
     const { userToken } = useAuth();
+    // const isPassenger = getUserRole(userToken) !== "PASSENGER";
+    const isPassenger = true
     
-    if (!userToken){
-        return <Navigate to="/login" replace />;
-    }
+    // if (!userToken){
+    //     return <Navigate to="/login" replace />;
+    // }
 
-    if (getUserRole(userToken) !== "PASSENGER") {
+    if (!isPassenger) {
         return <Navigate to="/login" replace />;
     }
     

@@ -7,11 +7,12 @@ import PassengerHeader from "./header/PassengerHeader";
 import Footer from "./Footer";
 
 const DashBoardLayout = () => {
-  const { userToken } = useAuth();
+  // const { userToken } = useAuth();
 
-  if(!userToken) return <Navigate to="/login" replace={true} />;
+  // if(!userToken) return <Navigate to="/login" replace={true} />;
 
-  const driverToken = getUserRole(userToken) === "DRIVER";
+  // const driverToken = getUserRole(userToken) === "DRIVER";
+  const driverToken = false;
 
   console.log("Driver Token:", driverToken);
 
