@@ -1,9 +1,8 @@
 import { useState } from "react";
-import Ride from "../../../components/Ride";
-import { Button } from "@chakra-ui/react";
+import RideSolicitation from "../../../components/RideSolicitation";
 
 //TODO - receber rides por requisição GET ao invés de props
-export const AvailableRides = () => {
+export const PassengerRideRequests = () => {
   const [rides, setRides] = useState([
     {
       id: 1,
@@ -15,6 +14,7 @@ export const AvailableRides = () => {
         seats: 5,
         licensePlate: "ABC1D23",
       },
+      requestDate: "2023-05-01",
       rideDate: "2023-10-01",
       rideTime: "10:00 AM",
       pickupLocation: "123 Main St",
@@ -32,63 +32,13 @@ export const AvailableRides = () => {
         seats: 5,
         licensePlate: "ABC1D23",
       },
+      requestDate: "2023-05-01",
       rideDate: "2023-10-01",
       rideTime: "10:00 AM",
       pickupLocation: "123 Main St",
       dropoffLocation: "456 Elm St",
       availableSeats: 3,
       passengers: ["Gustavo Contiero", "Bruno Mascioli"],
-    },
-    {
-      id: 3,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli", "Alice Silva"],
-    },
-    {
-      id: 4,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: [],
-    },
-    {
-      id: 5,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli", "Alice Silva"],
     },
   ]);
   return (
@@ -106,7 +56,7 @@ export const AvailableRides = () => {
         className="page-title"
         style={{ width: "fit-content", alignSelf: "center", marginTop: "20px" }}
       >
-        Caronas Disponíveis
+        Solicitações de Carona
       </h2>
       <div
         style={{
@@ -118,11 +68,11 @@ export const AvailableRides = () => {
         }}
       >
         {rides.map((ride) => (
-          <Ride stats={ride} isAvailable={true} key={ride.id} />
+          <RideSolicitation stats={ride} isAvailable={true} key={ride.id} />
         ))}
       </div>
     </div>
   );
 };
 
-export default AvailableRides;
+export default PassengerRideRequests;

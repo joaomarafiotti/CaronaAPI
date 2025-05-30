@@ -9,22 +9,22 @@ export const PassengerHeader = () => {
     {
       label: "Disponíveis",
       value: "new-ride",
-      handler: () => navigate("/dashboard/passenger/new-ride"),
+      handler: () => navigate("/dashboard/passenger/avalable-rides"),
     },
     {
       label: "Minhas Caronas",
       value: "my-rides",
-      handler: () => navigate("/dashboard/passenger/my-rides"),
+      handler: () => navigate("/dashboard/passenger/rides"),
     },
     {
       label: "Solicitações Enviadas",
       value: "my-ride-requests",
-      handler: () => navigate("/dashboard/passenger/my-ride-requests"),
+      handler: () => navigate("/dashboard/passenger/ride-requests"),
     },
     {
       label: "Histórico",
       value: "ride-history",
-      handler: () => navigate("/dashboard/passenger/ride-history"),
+      handler: () => navigate("/dashboard/passenger"),
     },
   ]);
   const [avatarMenuItens, setAvatarMenuItens] = useState([

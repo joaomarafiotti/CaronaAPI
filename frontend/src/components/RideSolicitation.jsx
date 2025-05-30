@@ -1,31 +1,24 @@
 import { Avatar, Button, Card, DataList } from "@chakra-ui/react";
-import { useState } from "react";
-export const Ride = ({ stats, isAvailable, isDone }) => {
-  let actionButton = null;
-  if (!isDone) {
-    actionButton = isAvailable ? (
-      <Button variant="outline" colorPalette="green">
-        Solicitar
-      </Button>
-    ) : (
-      <Button variant="outline" colorPalette="red">
-        Cancelar
-      </Button>
-    );
-  }
-
+export const RideSolicitation = ({ stats }) => {
   return (
-    <Card.Root
-      width="320px"
-      className={isDone ? "ride-done" : ""}
-    >
+    <Card.Root width="320px">
       <Card.Body gap="2">
         <Avatar.Root>
           <Avatar.Fallback />
         </Avatar.Root>
-        <Card.Title mt="2">{stats.driverName}</Card.Title>
+        <Card.Title mt="2">Solicitação</Card.Title>
         <div className="ride-grid">
           <DataList.Root>
+            <div className="ride-row">
+              <DataList.Item>
+                <DataList.ItemLabel>Nome do Motorista</DataList.ItemLabel>
+                <DataList.ItemValue>{stats.driverName}</DataList.ItemValue>
+              </DataList.Item>
+              <DataList.Item>
+                <DataList.ItemLabel>Solitação feita em</DataList.ItemLabel>
+                <DataList.ItemValue>{stats.requestDate}</DataList.ItemValue>
+              </DataList.Item>
+            </div>
             <div className="ride-row">
               <DataList.Item>
                 <DataList.ItemLabel>Modelo</DataList.ItemLabel>
@@ -82,9 +75,11 @@ export const Ride = ({ stats, isAvailable, isDone }) => {
             ))}
         </div>
       </Card.Body>
-      <Card.Footer justifyContent="flex-end">{actionButton}</Card.Footer>
+      <Card.Footer justifyContent="flex-end">
+        <Button variant="outline">Cancelar</Button>
+      </Card.Footer>
     </Card.Root>
   );
 };
 
-export default Ride;
+export default RideSolicitation;

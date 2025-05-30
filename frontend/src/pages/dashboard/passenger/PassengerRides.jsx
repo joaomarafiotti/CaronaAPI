@@ -3,7 +3,7 @@ import Ride from "../../../components/Ride";
 import { Button } from "@chakra-ui/react";
 
 //TODO - receber rides por requisição GET ao invés de props
-export const AvailableRides = () => {
+export const PassengerRides = () => {
   const [rides, setRides] = useState([
     {
       id: 1,
@@ -106,7 +106,7 @@ export const AvailableRides = () => {
         className="page-title"
         style={{ width: "fit-content", alignSelf: "center", marginTop: "20px" }}
       >
-        Caronas Disponíveis
+        Minhas Caronas
       </h2>
       <div
         style={{
@@ -118,11 +118,11 @@ export const AvailableRides = () => {
         }}
       >
         {rides.map((ride) => (
-          <Ride stats={ride} isAvailable={true} key={ride.id} />
+          <Ride stats={ride} isAvailable={true} key={ride.id} isDone={true} />
         ))}
       </div>
     </div>
   );
 };
 
-export default AvailableRides;
+export default PassengerRides;

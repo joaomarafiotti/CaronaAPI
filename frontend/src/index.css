@@ -116,6 +116,13 @@ nav {
   margin-bottom: 0;
 }
 
+.ride-done {
+  opacity: 0.55;
+  filter: grayscale(0.2) brightness(1.2);
+  pointer-events: none;
+  /* user-select: none; */
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
