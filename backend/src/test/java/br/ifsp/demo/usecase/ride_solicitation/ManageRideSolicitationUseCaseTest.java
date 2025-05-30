@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
@@ -26,6 +27,8 @@ import static org.mockito.Mockito.when;
 public class ManageRideSolicitationUseCaseTest {
     @Mock
     RideSolicitationRepository solicitationRepository;
+    @Mock
+    DriverRepository driverRepository;
     @Mock
     RideRepository rideRepository;
     @Mock
@@ -130,6 +133,7 @@ public class ManageRideSolicitationUseCaseTest {
     @DisplayName("Should the driver accept the ride solicitation if he is the owner of the Ride")
     public void shouldAcceptRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+        when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
 
         RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
@@ -142,6 +146,7 @@ public class ManageRideSolicitationUseCaseTest {
     @DisplayName("Should the driver reject the ride solicitation if he is the owner of the Ride")
     public void shouldRejectRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+        when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
 
         RideSolicitation rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver.getId());
 
@@ -161,6 +166,7 @@ public class ManageRideSolicitationUseCaseTest {
     @DisplayName("Should passenger be added into ride after the solicitation is accepted")
     public void shouldPassengerBeAddedIntoRideAfterTheSolicitationIsAccepted() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+        when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
 
         sut.acceptSolicitationFor(s1.getId(), driver.getId());
 

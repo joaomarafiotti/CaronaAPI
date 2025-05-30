@@ -24,10 +24,11 @@ public class CreateRideSolicitationUseCase {
     private final RideRepository rideRepository;
 
     public RideSolicitation createAndRegisterRideSolicitationFor(UUID passengerId, UUID rideId) {
+        if (rideId == null || passengerId == null)
+            throw new IllegalArgumentException("Ride and passenger must not be null");
+
         Passenger passenger = passengerRepository.findById(passengerId).orElseThrow(() -> new EntityNotFoundException("Passenger with id:" + passengerId + " not found"));
         Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new EntityNotFoundException("Ride with id:" + rideId + " not found"));
-        if (ride == null || passenger == null)
-            throw new IllegalArgumentException("Ride and passenger must not be null");
 
         if (rideIsAlreadyFull(ride)) throw new RideSolicitationForInvalidRideException("Ride is already full");
 

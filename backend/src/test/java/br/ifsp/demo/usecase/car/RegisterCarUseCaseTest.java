@@ -52,11 +52,11 @@ class RegisterCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(driverRepository.save(any(Driver.class))).thenReturn(driver);
-        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
-            Car car = invocation.getArgument(0);
-            car.setId(UUID.randomUUID());
-            return car;
-        });
+//        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
+//            Car car = invocation.getArgument(0);
+//            car.setId(UUID.randomUUID());
+//            return car;
+//        });
 
         CreateCarResponseModel result = sut.execute(carRequest, driverId);
 
@@ -102,11 +102,11 @@ class RegisterCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(driverRepository.save(any(Driver.class))).thenReturn(driver);
-        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
-            Car car = invocation.getArgument(0);
-            car.setId(UUID.randomUUID());
-            return car;
-        });
+//        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
+//            Car car = invocation.getArgument(0);
+//            car.setId(UUID.randomUUID());
+//            return car;
+//        });
 
         sut.execute(carRequest, driverId);
 

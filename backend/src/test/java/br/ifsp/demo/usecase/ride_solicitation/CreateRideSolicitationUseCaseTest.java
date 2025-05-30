@@ -3,7 +3,10 @@ package br.ifsp.demo.usecase.ride_solicitation;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
+import br.ifsp.demo.repositories.PassengerRepository;
+import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -19,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -31,6 +35,10 @@ import static org.mockito.Mockito.when;
 public class CreateRideSolicitationUseCaseTest {
     @Mock
     private RideSolicitationRepository solicitationRepo;
+    @Mock
+    private PassengerRepository passengerRepo;
+    @Mock
+    private RideRepository rideRepo;
     @InjectMocks
     private CreateRideSolicitationUseCase sut;
 
@@ -165,8 +173,10 @@ public class CreateRideSolicitationUseCaseTest {
     public void shouldCreateAndRegisterRideSolicitation() {
         when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class)))
                 .thenReturn(List.of(new RideSolicitation(ride1, p0)));
+        when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
+        when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
 
-        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0, ride0);
+        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
 
         assertThat(rideSolicitation).isNotNull();
     }
@@ -176,11 +186,13 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @DisplayName("Should not create two equals solicitations")
     public void shouldNotCreateTwoEqualsSolicitations() {
-        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0, ride0);
+        when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
+        when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
+        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
 
         when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
 
-        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride0));
+        assertThrows(EntityAlreadyExistsException.class, () -> sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId()));
     }
 
 
@@ -189,8 +201,8 @@ public class CreateRideSolicitationUseCaseTest {
     @Tag("TDD")
     @MethodSource("nullArgsSource")
     @DisplayName("Should Throw IllegalArgumentException when receiving wrong args")
-    public void shouldThrowIllegalArgumentExceptionWhenReceivingWrongArgs(Passenger passenger, Ride ride) {
-        assertThrows(IllegalArgumentException.class, () -> sut.createAndRegisterRideSolicitationFor(passenger, ride));
+    public void shouldThrowIllegalArgumentExceptionWhenReceivingWrongArgs(UUID passengerID, UUID rideID) {
+        assertThrows(IllegalArgumentException.class, () -> sut.createAndRegisterRideSolicitationFor(passengerID, rideID));
     }
 
     private static Stream<Arguments> nullArgsSource() {
@@ -238,8 +250,8 @@ public class CreateRideSolicitationUseCaseTest {
         );
 
         return Stream.of(
-                Arguments.of(null, ride),
-                Arguments.of(passenger, null)
+                Arguments.of(null, ride.getId(), passenger, ride),
+                Arguments.of(passenger.getRide(), null, passenger, ride)
         );
     }
 
@@ -252,7 +264,9 @@ public class CreateRideSolicitationUseCaseTest {
         ride0.addPassenger(p2);
         ride0.addPassenger(p3);
         ride0.addPassenger(p4);
+        when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
+        when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
 
-        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0, ride0));
+        assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId()));
     }
 }
