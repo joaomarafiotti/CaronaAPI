@@ -1,5 +1,7 @@
 package br.ifsp.demo.security.auth;
 
+import br.ifsp.demo.security.config.JwtService;
+import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,10 +11,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/api/v1")
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Operation(
             summary = "Register a new user.",
@@ -73,5 +79,39 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         final AuthResponse response = authenticationService.authenticate(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @Operation(
+            summary = "Validate a JWT token.",
+            description = "Returns 200 OK if token is valid, otherwise 401 Unauthorized."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200", description = "Token is valid.",
+                    content = @Content(schema = @Schema(hidden = true))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Token is invalid or expired.",
+                    content = @Content(schema = @Schema(hidden = true))
+            )
+    })
+    @PostMapping("/validate-token")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            String prefix = "Bearer ";
+            if (authorizationHeader == null || !authorizationHeader.startsWith(prefix)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            String token = authorizationHeader.substring(prefix.length());
+            String username = jwtService.extractUsername(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            boolean isValid = jwtService.isTokenValid(token, userDetails);
+            if (isValid) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } catch (JwtException | UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
