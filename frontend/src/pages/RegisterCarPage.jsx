@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registerCar } from '../services/carService';
 import { useAuth } from '../context/AuthContext';
+
 const initialState = {
     brand: '',
     model: '',
@@ -28,6 +30,7 @@ const validate = (fields) => {
 };
 
 const RegisterCarPage = () => {
+    const navigate = useNavigate();
     const [fields, setFields] = useState(initialState);
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
@@ -52,11 +55,7 @@ const RegisterCarPage = () => {
         if (Object.keys(validation).length === 0) {
             try {
                 let response = await registerCar(fields, userToken);
-                if (response.status === 201) {
-                    console.log('Car registered successfully:', response.data);
-                } else {
-                    console.error('Failed to register car:', response);
-                }
+                navigate('/dashboard/driver/cars/view');
             } catch (error) {
                 console.log('Error registering car:', error);
             }

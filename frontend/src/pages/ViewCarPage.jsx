@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Button, Spinner } from "@chakra-ui/react"
+import { Button, Spinner } from "@chakra-ui/react";
 
-import { getDriverCars } from '../services/carService';
+import { getDriverCars, deleteCar } from '../services/carService';
 import { useAuth } from '../context/AuthContext';
 import Car from '../components/Car';
 
 const ViewCarPage = () => {
     const { userToken } = useAuth();
     const [cars, setCars] = useState(null);
+
+    const deleteCarHandler = async (carId) => {
+        try {
+            await deleteCar(carId, userToken);
+            setCars(prevCars => prevCars.filter(c => c.id !== carId));
+            alert('Carro excluído com sucesso!');
+        } catch (error) {
+            console.error('Erro ao excluir carro:', error);
+            alert('Erro ao excluir carro. Tente novamente.');
+        }
+    };
 
     useEffect(() => {
         const fetchCars = async () => {
@@ -16,22 +27,31 @@ const ViewCarPage = () => {
                 setCars(response.data);
                 console.log('Cars fetched successfully:', response.data);
             } catch (error) {
-                console.error('Error fetching car details:', error);
+                console.error('Erro ao buscar carros:', error);
             }
         };
-        fetchCars();
-    }, []);
+        if (userToken) {
+            fetchCars();
+        }
+    }, [userToken]);
 
     return (
         <div className="view-car-page">
             {cars ? (
                 cars.map((car, index) => (
-                    <div key={index} className="car-item">
-                        <Car stats={{ ...car, index }} cardButton={
-                            <Button variant="outline" colorScheme="red">
-                                Excluir
-                            </Button>
-                        } />
+                    <div key={car.id} className="car-item">
+                        <Car
+                            stats={{...car, index}}
+                            cardButton={
+                                <Button
+                                    variant="outline"
+                                    colorScheme="red"
+                                    onClick={() => deleteCarHandler(car.id)}
+                                >
+                                    Excluir
+                                </Button>
+                            }
+                        />
                     </div>
                 ))
             ) : (
@@ -42,5 +62,6 @@ const ViewCarPage = () => {
             )}
         </div>
     );
-}
+};
+
 export default ViewCarPage;

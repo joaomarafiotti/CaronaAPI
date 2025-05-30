@@ -17,3 +17,12 @@ export async function registerCar(fields, token) {
         },
     });
 }
+
+export async function deleteCar(carId, token) {
+    return api.delete(`/api/v1/drivers/cars/${carId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+}
