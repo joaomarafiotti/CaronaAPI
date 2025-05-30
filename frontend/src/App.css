@@ -172,6 +172,15 @@ body {
   background-color: #00aaff;
 }
 
+.view-car-page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  align-items: center;
+  padding: 2rem;
+}
+
 @media (max-width: 768px) {
   .app-header h1 {
     font-size: 1.6rem;

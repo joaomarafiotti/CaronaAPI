@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar } from "@chakra-ui/react";
 import CustomMenu from "../../../../components/CustomMenu";
+import HeaderAvatar from "../../../../components/HeaderAvatar";
 
 const DriverHeader = () => {
   const navigate = useNavigate();
-  const [carItems, _] = useState([
+  const [carItems, setCarItems] = useState([
     {
       label: "Cadastrar Carro",
       value: "register-car",
@@ -18,7 +18,6 @@ const DriverHeader = () => {
     } 
   ])
 
-  /*
   const [rideItems, setRideItems] = useState([
     {
       label: "Criar Carona",
@@ -31,24 +30,45 @@ const DriverHeader = () => {
       handler: () => navigate("/dashboard/driver/rides/view"),
     },
   ]);
-  */
- 
+  
+  const [solicitationItems, setSolicitationItems] = useState([
+    {
+      label: "Solicitações Pendentes",
+      value: "pending-solicitations",
+      handler: () => navigate("/dashboard/driver/solicitations/pending"),
+    },
+    {
+      label: "Histórico de Solicitações",
+      value: "solicitation-history",
+      handler: () => navigate("/dashboard/driver/solicitations/history"),
+    },
+  ]);
+
+  const [avatarMenuItens, setAvatarMenuItens] = useState([
+    {
+      label: "Perfil",
+      value: "profile",
+      handler: () => navigate("/dashboard/passenger/profile"),
+    },
+    {
+      label: "Sair",
+      value: "logout",
+      handler: () => {
+        console.log("Logout clicked");
+        navigate("/login");
+      },
+    },
+  ]);
+
   return (
     <header className="header">
       <div className="header-left">
         <h1 className="header-title">Carona APP</h1>
         <CustomMenu items={carItems} title={"Carros"}/>
+        <CustomMenu items={rideItems} title={"Caronas"}/>
       </div>
       <nav>
-        <Avatar.Root
-          colorPalette="blue"
-          size="md"
-          onClick={() => navigate("/dashboard/driver/profile")}
-          cursor={"pointer"}
-        >
-          <Avatar.Fallback />
-          <Avatar.Image src="https://bit.ly/broken-link" />
-        </Avatar.Root>
+        <HeaderAvatar itens={avatarMenuItens} />
       </nav>
     </header>
   );

@@ -9,7 +9,7 @@ import Footer from "./Footer";
 const DashBoardLayout = () => {
   const { userToken } = useAuth();
 
-  // if(!userToken) return <Navigate to="/login" replace={true} />;
+  if(!userToken) return <Navigate to="/login" replace={true} />;
 
   const driverToken = getUserRole(userToken) === "DRIVER";
 
