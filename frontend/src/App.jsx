@@ -12,22 +12,70 @@ import AvailableRides from "./pages/dashboard/passenger/AvailableRides";
 import ViewCarPage from "./pages/ViewCarPage";
 import PassengerRides from "./pages/dashboard/passenger/PassengerRides";
 import PassengerRideRequests from "./pages/dashboard/passenger/PassengerRideRequests";
+import ProtectedPassengerRoute from "./components/ProtectedPassengerRoute";
+import ProtectedDriverRoute from "./components/ProtectedDriverRoute";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route path="/dashboard" element={<DashBoardLayout />}>
-          <Route path="driver" element={<DriverDashBoard />} />
-          <Route path="passenger" element={<PassengerDashBoard />} />
-          <Route path="passenger/avalable-rides" element={<AvailableRides />} />
-          <Route path="passenger/rides" element={<PassengerRides />} />
+          <Route
+            path="driver"
+            element={
+              <ProtectedDriverRoute>
+                <DriverDashBoard />
+              </ProtectedDriverRoute>
+            }
+          />
+          <Route
+            path="passenger"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerDashBoard />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="passenger/avalable-rides"
+            element={
+              <ProtectedPassengerRoute>
+                <AvailableRides />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="passenger/rides"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerRides />
+              </ProtectedPassengerRoute>
+            }
+          />
           <Route
             path="passenger/ride-requests"
-            element={<PassengerRideRequests />}
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerRideRequests />
+              </ProtectedPassengerRoute>
+            }
           />
-          <Route path="driver/cars/register" element={<RegisterCarPage />} />
-          <Route path="driver/cars/view" element={<ViewCarPage />} />
+          <Route
+            path="driver/cars/register"
+            element={
+              <ProtectedDriverRoute>
+                <RegisterCarPage />
+              </ProtectedDriverRoute>
+            }
+          />
+          <Route
+            path="driver/cars/view"
+            element={
+              <ProtectedDriverRoute>
+                <ViewCarPage />
+              </ProtectedDriverRoute>
+            }
+          />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register-passenger" element={<RegisterPassengerPage />} />

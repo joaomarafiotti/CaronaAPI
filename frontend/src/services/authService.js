@@ -26,3 +26,16 @@ export const registerUser = async (formData) => {
     await api.post('/api/v1/register', formData);
 };
 
+export const isValidToken = async (token) => {
+    await api.post('/api/v1/validate-token', null, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).catch((error) => {
+        if (error.response && (error.response.status === 401 || error.response.status === 404)) {
+            throw new Error('Token is invalid or expired');
+        } else {
+            throw new Error('An error occurred while validating the token');
+        }
+    });
+};
