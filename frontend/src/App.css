@@ -174,10 +174,10 @@ body {
 
 .view-car-page {
   display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: row;
+  min-width: 100%;
+  min-height: 100%;
   align-items: center;
+  justify-content: center;
   padding: 2rem;
 }
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
-import api from '../services/api';
+import { loginUser, registerUser } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
     const navigate = useNavigate();
     const { login } = useAuth();
     const [loading, setLoading] = useState(false);
-    
+
     const fields = [
         { name: 'username', label: 'Email', type: 'email', placeholder: 'seu@email.com' },
         { name: 'password', label: 'Senha', type: 'password', placeholder: 'Sua senha' },
@@ -18,7 +18,7 @@ function LoginPage() {
         if (loading) return;
         setLoading(true);
         try {
-            const { data: resData } = await api.post('/api/v1/authenticate', formData);
+            const resData = await loginUser(formData);
             login(resData.token);
             navigate('/dashboard');
         } catch {

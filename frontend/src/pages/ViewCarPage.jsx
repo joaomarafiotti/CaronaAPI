@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
-import api from '../services/api';
+import { Button, Spinner } from "@chakra-ui/react"
+
+import { getDriverCars } from '../services/carService';
 import { useAuth } from '../context/AuthContext';
 import Car from '../components/Car';
-import { Button, Spinner } from "@chakra-ui/react"
 
 const ViewCarPage = () => {
     const { userToken } = useAuth();
     const [cars, setCars] = useState(null);
-    
+
     useEffect(() => {
         const fetchCars = async () => {
             try {
-                const response = await api.get('/api/v1/drivers/cars', {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${userToken}`,
-                    }
-                });
+                const response = await getDriverCars(userToken);
                 setCars(response.data);
                 console.log('Cars fetched successfully:', response.data);
             } catch (error) {
@@ -28,14 +24,14 @@ const ViewCarPage = () => {
 
     return (
         <div className="view-car-page">
-            { cars ? (
+            {cars ? (
                 cars.map((car, index) => (
                     <div key={index} className="car-item">
-                        <Car stats={{...car, index}} cardButton={
-                            <Button variant="outline" colorScheme="blue">
+                        <Car stats={{ ...car, index }} cardButton={
+                            <Button variant="outline" colorScheme="red">
                                 Excluir
                             </Button>
-                        }/>
+                        } />
                     </div>
                 ))
             ) : (

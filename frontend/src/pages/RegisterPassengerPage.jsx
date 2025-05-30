@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
-import api from '../services/api'
+import { registerUser } from '../services/authService';
 
 function RegisterPassengerPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    
+
     const handleRegister = async (formData) => {
-        console.log('RegisterPassengerPage: handleRegister', formData);
         if (loading) return;
         setLoading(true);
         try {
-            await api.post('/api/v1/register', formData);
+            await registerUser({ ...formData, role: 'PASSENGER' });
             alert('Cadastro realizado com sucesso!');
             navigate('/login');
         } catch (error) {
             let msg = 'Erro ao registrar usuário. Tente novamente.';
             if (error?.response?.data?.message) msg = error.response.data.message;
             else if (error?.request?.response) {
-                try { 
-                    msg = JSON.parse(error.request.response).message; 
-                } catch(error) {
+                try {
+                    msg = JSON.parse(error.request.response).message;
+                } catch (error) {
                     console.error('Error parsing error response:', error);
                 }
             }
@@ -42,7 +41,7 @@ function RegisterPassengerPage() {
     ];
 
     const onRegister = async (formData) => {
-        await handleRegister({...formData, role: 'PASSENGER' });
+        await handleRegister(formData);
     };
 
     return (

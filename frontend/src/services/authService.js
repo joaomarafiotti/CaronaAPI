@@ -1,3 +1,5 @@
+import api from './api';
+
 export const parseJwt = (token) => {
     if (!token) return null;
     try {
@@ -13,5 +15,14 @@ export const parseJwt = (token) => {
 export const getUserRole = (token) => {
     const decodedToken = parseJwt(token);
     return decodedToken ? decodedToken.role : null;
+};
+
+export const loginUser = async (formData) => {
+    const { data } = await api.post('/api/v1/authenticate', formData);
+    return data;
+};
+
+export const registerUser = async (formData) => {
+    await api.post('/api/v1/register', formData);
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
-import api from '../services/api';
+import { registerUser } from '../services/authService';
 
 function RegisterDriverPage() {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ function RegisterDriverPage() {
         if (loading) return;
         setLoading(true);
         try {
-            await api.post('/api/v1/register', formData);
+            await registerUser({ ...formData, role: 'DRIVER' });
             alert('Cadastro realizado com sucesso!');
             navigate('/login');
         } catch (error) {
@@ -19,8 +19,8 @@ function RegisterDriverPage() {
             if (error?.response?.data?.message) msg = error.response.data.message;
             else if (error?.request?.response) {
                 try {
-                    msg = JSON.parse(error.request.response).message; 
-                } catch(err) {
+                    msg = JSON.parse(error.request.response).message;
+                } catch (err) {
                     console.error('Error parsing error response:', err);
                 }
             }
@@ -41,7 +41,7 @@ function RegisterDriverPage() {
     ];
 
     const onRegister = async (formData) => {
-        await handleRegister({...formData, role: 'DRIVER' });
+        await handleRegister(formData);
     };
 
     return (

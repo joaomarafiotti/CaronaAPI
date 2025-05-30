@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from '../services/api';
+import { registerCar } from '../services/carService';
 import { useAuth } from '../context/AuthContext';
 const initialState = {
     brand: '',
@@ -51,13 +51,7 @@ const RegisterCarPage = () => {
 
         if (Object.keys(validation).length === 0) {
             try {
-                let response = await api.post('/api/v1/drivers/cars', fields, {
-                    headers: {
-                        'Authorization': `Bearer ${userToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
+                let response = await registerCar(fields, userToken);
                 if (response.status === 201) {
                     console.log('Car registered successfully:', response.data);
                 } else {
