@@ -16,6 +16,7 @@ import ProtectedPassengerRoute from "./components/ProtectedPassengerRoute";
 import ProtectedDriverRoute from "./components/ProtectedDriverRoute";
 import PassengerProfile from "./pages/dashboard/passenger/PassengerProfile";
 import DriverProfile from "./pages/dashboard/driver/DriverProfile";
+import RegisterRidePage from "./pages/RegisterRidePage";
 
 function App() {
   return (
@@ -91,6 +92,14 @@ function App() {
             element={
               <ProtectedDriverRoute>
                 <ViewCarPage />
+              </ProtectedDriverRoute>
+            }
+          />
+          <Route
+            path="driver/rides/register"
+            element={
+              <ProtectedDriverRoute>
+                <RegisterRidePage />
               </ProtectedDriverRoute>
             }
           />

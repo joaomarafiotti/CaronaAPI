@@ -5,10 +5,6 @@ import {
   Avatar,
   Heading,
   Text,
-  Badge,
-  SimpleGrid,
-  Divider,
-  Container,
 } from "@chakra-ui/react";
 
 const PassengerProfile = () => {

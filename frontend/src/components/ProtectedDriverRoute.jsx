@@ -10,6 +10,7 @@ import { getUserRole } from  '../services/authService';
 const ProtectedDriverRoute = ({ children }) => {
     const { userToken } = useAuth();
     
+    /*
     if (!userToken){
         return <Navigate to="/login" replace />;
     }
@@ -17,7 +18,7 @@ const ProtectedDriverRoute = ({ children }) => {
     if (getUserRole(userToken) !== "DRIVER") {
         return <Navigate to="/login" replace />;
     }
-    
+    */
     return children;
 };
 
