@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface RideSolicitationRepository extends JpaRepository<RideSolicitation, UUID> {
     List<RideSolicitation> findRideSolicitationByRide_Id(UUID rideId);
+//    List<RideSolicitation> findRideSolicitationsByPassenger_Id(UUID passengerId);
 }

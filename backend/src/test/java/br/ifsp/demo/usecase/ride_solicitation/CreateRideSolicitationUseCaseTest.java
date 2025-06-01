@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase.ride_solicitation;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
@@ -176,7 +177,7 @@ public class CreateRideSolicitationUseCaseTest {
         when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
         when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
 
-        RideSolicitation rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
+        RideSolicitationResponseModel rideSolicitation = sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
 
         assertThat(rideSolicitation).isNotNull();
     }
@@ -188,7 +189,8 @@ public class CreateRideSolicitationUseCaseTest {
     public void shouldNotCreateTwoEqualsSolicitations() {
         when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
         when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
-        RideSolicitation r1 = sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
+        RideSolicitation r1 = new RideSolicitation(ride0, p0);
+        sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
 
         when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
 

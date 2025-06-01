@@ -1,5 +1,6 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,14 @@ public class RideSolicitation {
 
         this.ride = ride;
         this.passenger = passenger;
+    }
+
+    public RideSolicitationResponseModel toResponseModel() {
+        return new RideSolicitationResponseModel(
+                this.getId(),
+                this.getRide().toResponseModel(),
+                this.getPassenger().toResponseModel()
+        );
     }
 
     @Override

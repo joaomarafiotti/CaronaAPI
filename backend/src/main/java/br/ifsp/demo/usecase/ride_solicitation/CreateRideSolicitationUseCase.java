@@ -5,6 +5,7 @@ import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
 import br.ifsp.demo.exception.EntityAlreadyExistsException;
 import br.ifsp.demo.exception.RideSolicitationForInvalidRideException;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
@@ -23,7 +24,7 @@ public class CreateRideSolicitationUseCase {
     private final PassengerRepository passengerRepository;
     private final RideRepository rideRepository;
 
-    public RideSolicitation createAndRegisterRideSolicitationFor(UUID passengerId, UUID rideId) {
+    public RideSolicitationResponseModel createAndRegisterRideSolicitationFor(UUID passengerId, UUID rideId) {
         if (rideId == null || passengerId == null)
             throw new IllegalArgumentException("Ride and passenger must not be null");
 
@@ -43,10 +44,13 @@ public class CreateRideSolicitationUseCase {
             throw new EntityAlreadyExistsException("Ride solicitation with the same passenger and ride already exists");
 
         solicitationRepository.save(solicitation);
-        return solicitation;
+        return solicitation.toResponseModel();
     }
+
+
 
     private boolean rideIsAlreadyFull(Ride ride) {
         return ride.getPassengers().size() + 1 >= ride.getCar().getSeats();
     }
+
 }

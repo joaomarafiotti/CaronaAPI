@@ -134,6 +134,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldAcceptRideSolicitationIfTheDriverIsTheOwnerOfTheRide() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
         when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
+        when(car.getSeats()).thenReturn(5);
 
         RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
@@ -167,6 +168,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldPassengerBeAddedIntoRideAfterTheSolicitationIsAccepted() {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
         when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
+        when(car.getSeats()).thenReturn(5);
 
         sut.acceptSolicitationFor(s1.getId(), driver.getId());
 

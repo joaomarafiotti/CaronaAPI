@@ -44,4 +44,23 @@ public class GetRideUseCase {
 
         return r.toResponseModel();
     }
+
+    public List<RideResponseModel> byPassengerId(UUID passengerId) {
+        List<Ride> rides = rideRepository.findRideByPassengers_Id(passengerId);
+        System.out.println(rides);
+
+        return rides.stream()
+                .map(r -> new RideResponseModel(
+                                r.getId(),
+                                r.getDepartureTime(),
+                                r.getStartAddress(),
+                                r.getEndAddress(),
+                                r.getAvailableSeats(),
+                                r.getRideStatus(),
+                                r.getDriver().toResponseModel(),
+                                r.getCar().toResponseModel()
+                        )
+                )
+                .toList();
+    }
 }

@@ -51,4 +51,11 @@ public class RideController {
         RideResponseModel ride = getRideUseCase.byId(rideId);
         return ResponseEntity.ok(ride);
     }
+
+    @GetMapping("/passenger")
+    public ResponseEntity<List<RideResponseModel>> getRidesByPassengerId() {
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+        List<RideResponseModel> rides = getRideUseCase.byPassengerId(passengerId);
+        return ResponseEntity.ok(rides);
+    }
 }

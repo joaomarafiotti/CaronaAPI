@@ -1,6 +1,7 @@
 package br.ifsp.demo.controller.rideSolicitation;
 
 import br.ifsp.demo.domain.RideSolicitation;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.security.auth.UserAuthorizationVerifier;
 import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.usecase.ride_solicitation.CreateRideSolicitationUseCase;
@@ -24,11 +25,11 @@ public class RideSolicitationController {
     private final UserAuthorizationVerifier verifier;
 
     @PostMapping
-    public ResponseEntity<RideSolicitation> createSolicitation(@RequestParam UUID rideId) {
+    public ResponseEntity<RideSolicitationResponseModel> createSolicitation(@RequestParam UUID rideId) {
         UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
 
-        RideSolicitation solicitation = createRideSolicitationUseCase.createAndRegisterRideSolicitationFor(passengerId, rideId);
-        return ResponseEntity.ok(solicitation);
+        RideSolicitationResponseModel response = createRideSolicitationUseCase.createAndRegisterRideSolicitationFor(passengerId, rideId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/pending")
