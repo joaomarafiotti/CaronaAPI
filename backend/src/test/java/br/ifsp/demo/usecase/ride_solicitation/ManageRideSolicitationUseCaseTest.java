@@ -1,6 +1,7 @@
 package br.ifsp.demo.usecase.ride_solicitation;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
@@ -136,9 +137,9 @@ public class ManageRideSolicitationUseCaseTest {
         when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
         when(car.getSeats()).thenReturn(5);
 
-        RideSolicitation acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver.getId());
+        RideSolicitationResponseModel acceptedS1 = sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
-        assertThat(acceptedS1.getStatus()).isEqualTo(RideSolicitationStatus.ACCEPTED);
+        assertThat(acceptedS1.status()).isEqualTo(RideSolicitationStatus.ACCEPTED);
     }
 
     @Test
@@ -149,9 +150,9 @@ public class ManageRideSolicitationUseCaseTest {
         when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
         when(driverRepository.findById(any(UUID.class))).thenReturn(Optional.of(driver));
 
-        RideSolicitation rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver.getId());
+        RideSolicitationResponseModel rejectedS1 = sut.rejectSolicitationFor(s1.getId(), driver.getId());
 
-        assertThat(rejectedS1.getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
+        assertThat(rejectedS1.status()).isEqualTo(RideSolicitationStatus.REJECTED);
     }
 
     @Test

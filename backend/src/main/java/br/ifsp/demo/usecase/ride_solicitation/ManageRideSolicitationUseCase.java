@@ -4,6 +4,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
@@ -20,7 +21,7 @@ public class ManageRideSolicitationUseCase {
     private final RideRepository rideRepository;
     private final DriverRepository driverRepository;
 
-    public RideSolicitation acceptSolicitationFor(UUID solicitationId, UUID driverId) {
+    public RideSolicitationResponseModel acceptSolicitationFor(UUID solicitationId, UUID driverId) {
         RideSolicitation rideSolicitation = solicitationRepository
                 .findById(solicitationId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found"));
@@ -39,10 +40,10 @@ public class ManageRideSolicitationUseCase {
         rideRepository.save(ride);
         solicitationRepository.save(acceptedSolicitation);
 
-        return acceptedSolicitation;
+        return acceptedSolicitation.toResponseModel();
     }
 
-    public RideSolicitation rejectSolicitationFor(UUID solicitationId, UUID driverId) {
+    public RideSolicitationResponseModel rejectSolicitationFor(UUID solicitationId, UUID driverId) {
         RideSolicitation rideSolicitation = solicitationRepository
                 .findById(solicitationId)
                 .orElseThrow(() -> new EntityNotFoundException("Ride solicitation with id " + solicitationId + " not found"));
@@ -54,6 +55,6 @@ public class ManageRideSolicitationUseCase {
 
         solicitationRepository.save(rejectedSolicitation);
 
-        return driver.rejectIfIsTheOwner(rideSolicitation);
+        return rejectedSolicitation.toResponseModel();
     }
 }

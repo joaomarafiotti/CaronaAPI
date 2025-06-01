@@ -43,6 +43,7 @@ public class RideSolicitation {
     public RideSolicitationResponseModel toResponseModel() {
         return new RideSolicitationResponseModel(
                 this.getId(),
+                this.getStatus(),
                 this.getRide().toResponseModel(),
                 this.getPassenger().toResponseModel()
         );

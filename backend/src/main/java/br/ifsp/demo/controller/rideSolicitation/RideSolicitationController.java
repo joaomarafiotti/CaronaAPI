@@ -32,27 +32,35 @@ public class RideSolicitationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/pending")
-    public ResponseEntity<List<RideSolicitation>> getPendingSolicitations() {
+    @GetMapping("driver/pending")
+    public ResponseEntity<List<RideSolicitationResponseModel>> getPendingSolicitationsOfDriver() {
         UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
 
-        List<RideSolicitation> pendingSolicitations = getRideSolicitationUseCase.getPendingSolicitationsFrom(driverId);
+        List<RideSolicitationResponseModel> pendingSolicitations = getRideSolicitationUseCase.getPendingSolicitationsFromDriver(driverId);
+        return ResponseEntity.ok(pendingSolicitations);
+    }
+
+    @GetMapping("passenger/pending")
+    public ResponseEntity<List<RideSolicitationResponseModel>> getPendingSolicitationsOfPassenger() {
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+
+        List<RideSolicitationResponseModel> pendingSolicitations = getRideSolicitationUseCase.getPendingSolicitationsFromPassenger(passengerId);
         return ResponseEntity.ok(pendingSolicitations);
     }
 
     @PostMapping("{solicitationId}/accept")
-    public ResponseEntity<RideSolicitation> acceptSolicitation(@PathVariable UUID solicitationId) {
+    public ResponseEntity<RideSolicitationResponseModel> acceptSolicitation(@PathVariable UUID solicitationId) {
         UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
 
-        RideSolicitation accepted = manageRideSolicitationUseCase.acceptSolicitationFor(solicitationId, driverId);
+        RideSolicitationResponseModel accepted = manageRideSolicitationUseCase.acceptSolicitationFor(solicitationId, driverId);
         return ResponseEntity.ok(accepted);
     }
 
     @PostMapping("{solicitationId}/reject")
-    public ResponseEntity<RideSolicitation> rejectSolicitation(@PathVariable UUID solicitationId) {
+    public ResponseEntity<RideSolicitationResponseModel> rejectSolicitation(@PathVariable UUID solicitationId) {
         UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
 
-        RideSolicitation rejected = manageRideSolicitationUseCase.rejectSolicitationFor(solicitationId, driverId);
+        RideSolicitationResponseModel rejected = manageRideSolicitationUseCase.rejectSolicitationFor(solicitationId, driverId);
         return ResponseEntity.ok(rejected);
     }
 }

@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase.ride_solicitation;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.domain.RideSolicitation;
+import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
@@ -22,13 +23,21 @@ public class GetRideSolicitationUseCase {
         this.solicitationRepository = solicitationRepository;
     }
 
-    public List<RideSolicitation> getPendingSolicitationsFrom(UUID driverId) {
+    public List<RideSolicitationResponseModel> getPendingSolicitationsFromDriver(UUID driverId) {
         List<Ride> driverRides = rideRepository.findRideByDriver_Id(driverId);
 
         return driverRides.stream()
                 .map(r -> solicitationRepository.findRideSolicitationByRide_Id(r.getId()))
                 .flatMap(List::stream)
                 .filter(solicitation -> solicitation.getStatus().equals(RideSolicitationStatus.WAITING))
+                .map(RideSolicitation::toResponseModel)
+                .toList();
+    }
+
+    public List<RideSolicitationResponseModel> getPendingSolicitationsFromPassenger(UUID passengerId) {
+        return solicitationRepository.findRideSolicitationsByPassenger_Id(passengerId)
+                .stream()
+                .map(RideSolicitation::toResponseModel)
                 .toList();
     }
 }
