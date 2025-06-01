@@ -17,7 +17,7 @@ const PassengerDashBoard = () => {
     rideDate: "2023-10-01",
     rideTime: "10:00 AM",
     pickupLocation: "123 Main St",
-    dropoffLocation: "456 Elm St",
+    dropOffLocation: "456 Elm St",
     availableSeats: 3,
   });
   return (
