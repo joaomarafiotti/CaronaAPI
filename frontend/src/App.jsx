@@ -4,8 +4,6 @@ import RegisterPassengerPage from "./pages/RegisterPassengerPage";
 import RegisterDriverPage from "./pages/RegisterDriverPage";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
-import DriverDashBoard from "./pages/dashboard/driver/DriverDashBoard";
-import PassengerDashBoard from "./pages/dashboard/passenger/PassengerDashBoard";
 import RegisterCarPage from "./pages/RegisterCarPage";
 import AvailableRides from "./pages/dashboard/passenger/AvailableRides";
 import ViewCarPage from "./pages/ViewCarPage";
