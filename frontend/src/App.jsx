@@ -25,14 +25,6 @@ function App() {
       <Routes>
         <Route path="/dashboard/driver" element={<DriverDashBoardLayout />}>
           <Route
-            path=""
-            element={
-              <ProtectedDriverRoute>
-                <DriverDashBoard />
-              </ProtectedDriverRoute>
-            }
-          />
-          <Route
             path="profile"
             element={
               <ProtectedDriverRoute>
@@ -69,14 +61,6 @@ function App() {
           path="/dashboard/passenger"
           element={<PassengerDashBoardLayout />}
         >
-          <Route
-            path=""
-            element={
-              <ProtectedPassengerRoute>
-                <PassengerDashBoard />
-              </ProtectedPassengerRoute>
-            }
-          />
           <Route
             path="avalable-rides"
             element={

@@ -36,9 +36,9 @@ function LoginPage() {
       }
 
       if (getUserRole(userToken) === "DRIVER") {
-        return navigate("/dashboard/driver");
+        return navigate("/dashboard/driver/profile");
       } else if (getUserRole(userToken) === "PASSENGER") {
-        return navigate("/dashboard/passenger");
+        return navigate("/dashboard/passenger/profile");
       }
     } catch {
       alert("Erro ao fazer login. Usuário ou senha inválidos.");
