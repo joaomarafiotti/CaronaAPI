@@ -1,5 +1,6 @@
 package br.ifsp.demo.domain;
 
+import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.utils.RideStatus;
 import com.thoughtworks.qdox.model.expression.Add;
 import jakarta.persistence.*;
@@ -48,7 +49,12 @@ public class Ride {
     private Driver driver;
 
     @Setter
-    @OneToMany(mappedBy = "ride")
+    @ManyToMany
+    @JoinTable(
+            name = "ride_passenger",
+            joinColumns = @JoinColumn(name = "ride_id"),
+            inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
     private List<Passenger> passengers;
 
     @Setter
@@ -77,6 +83,9 @@ public class Ride {
     }
 
     public void addPassenger(Passenger passenger) {
+        if(getAvailableSeats() <= 0) {
+            throw new IllegalArgumentException("No available seats.");
+        }
         this.passengers.add(passenger);
     }
 
@@ -88,18 +97,29 @@ public class Ride {
         passengers.remove(passenger.get());
     }
 
+    public RideResponseModel toResponseModel() {
+        return new RideResponseModel(
+                this.getId(),
+                this.getDepartureTime(),
+                this.getStartAddress(),
+                this.getEndAddress(),
+                this.getAvailableSeats(),
+                this.getRideStatus(),
+                this.getDriver().toResponseModel(),
+                this.getCar().toResponseModel()
+        );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ride ride = (Ride) o;
-        return Objects.equals(id, ride.id) && Objects.equals(startAddress, ride.startAddress)
-               && Objects.equals(endAddress, ride.endAddress) && Objects.equals(departureTime, ride.departureTime)
-               && rideStatus == ride.rideStatus && Objects.equals(driver, ride.driver) && Objects.equals(passengers, ride.passengers);
+        return Objects.equals(id, ride.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, startAddress, endAddress, departureTime, rideStatus, driver, passengers, car);
+        return Objects.hash(id);
     }
 }

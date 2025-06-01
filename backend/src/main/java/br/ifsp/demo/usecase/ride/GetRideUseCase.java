@@ -42,15 +42,6 @@ public class GetRideUseCase {
                 .findById(rideUUID)
                 .orElseThrow(() -> new IllegalArgumentException("Ride not found"));
 
-        return new RideResponseModel(
-                r.getId(),
-                r.getDepartureTime(),
-                r.getStartAddress(),
-                r.getEndAddress(),
-                r.getAvailableSeats(),
-                r.getRideStatus(),
-                r.getDriver().toResponseModel(),
-                r.getCar().toResponseModel()
-        );
+        return r.toResponseModel();
     }
 }

@@ -11,8 +11,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 public class Passenger extends User {
-    @ManyToOne
-    @JoinColumn(name = "ride_id")
+    @ManyToMany(mappedBy = "passengers")
     private Ride ride;
 
     protected Passenger(){

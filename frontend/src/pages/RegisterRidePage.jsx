@@ -69,8 +69,7 @@ const RegisterRidePage = () => {
                     <button
                         className="auth-button"
                         style={{ padding: '10px 24px', fontSize: 16 }}
-                        onClick={() => navigate('/dashboard/driver/cars/register')
-}
+                        onClick={() => navigate('/dashboard/driver/cars/register')}
                         type="button"
                     >
                         Registrar Carro
