@@ -70,6 +70,12 @@ public class Ride {
         this.passengers = new ArrayList<>();
     }
 
+    public int getAvailableSeats() {
+        int availableSeats = this.car.getSeats() - this.passengers.size() - 1;
+        if (availableSeats < 0) availableSeats = 0;
+        return availableSeats;
+    }
+
     public void addPassenger(Passenger passenger) {
         this.passengers.add(passenger);
     }
