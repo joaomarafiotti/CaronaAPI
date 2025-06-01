@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Stack,
-  Avatar,
-  Heading,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Stack, Avatar, Heading, Text } from "@chakra-ui/react";
 
 const PassengerProfile = () => {
   const passenger = {
@@ -16,15 +9,21 @@ const PassengerProfile = () => {
   };
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" p={6} boxShadow="md">
-      <Flex align="center" mb={4}>
-        <Avatar name={passenger.nome} size="xl" mr={4} />
-        <Box>
-          <Heading size="md">{passenger.nome}</Heading>
-          <Text color="gray.500">{passenger.email}</Text>
-        </Box>
-      </Flex>
-      <Stack spacing={2}>
+    <Box
+      className="passenger-profile-box"
+      borderWidth="1px"
+      borderRadius="lg"
+      p={6}
+      boxShadow="md"
+    >
+      <Avatar.Root colorPalette="blue" size="2xl" cursor="pointer">
+        <Avatar.Fallback name={passenger.nome} />
+      </Avatar.Root>
+      <Box>
+        <Heading size="md">{passenger.nome}</Heading>
+        <Text color="gray.500">{passenger.email}</Text>
+      </Box>
+      <Stack spacing={2} className="passenger-details">
         <Text>
           <strong>CPF:</strong> {passenger.cpf}
         </Text>

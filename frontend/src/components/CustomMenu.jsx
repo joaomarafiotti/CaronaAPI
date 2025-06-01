@@ -4,7 +4,7 @@ const CustomMenu = ({ items, title }) => {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <Button variant="outline" size="sm">
+        <Button shadow={"sm"} variant="outline" size="sm">
           { title }
         </Button>
       </Menu.Trigger>

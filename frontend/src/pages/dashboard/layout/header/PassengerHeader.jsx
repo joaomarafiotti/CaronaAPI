@@ -21,11 +21,6 @@ export const PassengerHeader = () => {
       value: "my-ride-requests",
       handler: () => navigate("/dashboard/passenger/ride-requests"),
     },
-    {
-      label: "Histórico",
-      value: "ride-history",
-      handler: () => navigate("/dashboard/passenger"),
-    },
   ]);
   const [avatarMenuItens, setAvatarMenuItens] = useState([
     {

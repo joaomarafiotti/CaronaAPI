@@ -48,7 +48,7 @@ const DriverHeader = () => {
     {
       label: "Perfil",
       value: "profile",
-      handler: () => navigate("/dashboard/passenger/profile"),
+      handler: () => navigate("/dashboard/driver/profile"),
     },
     {
       label: "Sair",
