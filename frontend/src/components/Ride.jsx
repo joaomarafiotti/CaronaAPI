@@ -15,10 +15,7 @@ export const Ride = ({ stats, isAvailable, isDone }) => {
   }
 
   return (
-    <Card.Root
-      width="320px"
-      className={isDone ? "ride-done" : ""}
-    >
+    <Card.Root width="320px" className={isDone ? "ride-done" : ""}>
       <Card.Body gap="2">
         <Avatar.Root>
           <Avatar.Fallback />
@@ -43,7 +40,7 @@ export const Ride = ({ stats, isAvailable, isDone }) => {
             <div className="ride-row">
               <DataList.Item>
                 <DataList.ItemLabel>Início</DataList.ItemLabel>
-                <DataList.ItemValue>{`${stats.rideDate} ${stats.rideTime}`}</DataList.ItemValue>
+                <DataList.ItemValue>{`${stats.startTime}`}</DataList.ItemValue>
               </DataList.Item>
               <DataList.Item>
                 <DataList.ItemLabel>Vagas Disponíveis</DataList.ItemLabel>
@@ -53,11 +50,11 @@ export const Ride = ({ stats, isAvailable, isDone }) => {
             <div className="ride-row">
               <DataList.Item>
                 <DataList.ItemLabel>Local de Partida</DataList.ItemLabel>
-                <DataList.ItemValue>{stats.pickupLocation}</DataList.ItemValue>
+                <DataList.ItemValue>{`${stats.pickupLocation.street}, ${stats.pickupLocation.number}`}</DataList.ItemValue>
               </DataList.Item>
               <DataList.Item>
                 <DataList.ItemLabel>Local de Chegada</DataList.ItemLabel>
-                <DataList.ItemValue>{stats.dropoffLocation}</DataList.ItemValue>
+                <DataList.ItemValue>{`${stats.dropOffLocation.street}, ${stats.dropOffLocation.number}`}</DataList.ItemValue>
               </DataList.Item>
             </div>
           </DataList.Root>

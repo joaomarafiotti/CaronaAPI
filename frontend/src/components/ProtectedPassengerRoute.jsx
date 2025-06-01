@@ -1,26 +1,25 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { getUserRole } from  '../services/authService';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { getUserRole } from "../services/authService";
 
 /**
  * Componente de proteção de rota.
  * @param {React.ReactNode} children - O conteúdo da rota protegida.
  */
 const ProtectedPassengerRoute = ({ children }) => {
-    const { userToken } = useAuth();
-    // const isPassenger = getUserRole(userToken) !== "PASSENGER";
-    const isPassenger = true
-    
-    // if (!userToken){
-    //     return <Navigate to="/login" replace />;
-    // }
+  const { userToken } = useAuth();
+  const isPassenger = getUserRole(userToken) === "PASSENGER";
 
-    if (!isPassenger) {
-        return <Navigate to="/login" replace />;
-    }
-    
-    return children;
+  if (!userToken) {
+    return <Navigate to="/login" replace />;
+  }
+  console.log("Passenger Token:", isPassenger);
+  if (!isPassenger) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedPassengerRoute;

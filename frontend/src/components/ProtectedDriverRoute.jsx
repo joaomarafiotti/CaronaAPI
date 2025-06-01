@@ -1,25 +1,23 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { getUserRole } from  '../services/authService';
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { getUserRole } from "../services/authService";
 
 /**
  * Componente de proteção de rota.
  * @param {React.ReactNode} children - O conteúdo da rota protegida.
  */
 const ProtectedDriverRoute = ({ children }) => {
-    const { userToken } = useAuth();
-    
-    /*
-    if (!userToken){
-        return <Navigate to="/login" replace />;
-    }
+  const { userToken } = useAuth();
 
-    if (getUserRole(userToken) !== "DRIVER") {
-        return <Navigate to="/login" replace />;
-    }
-    */
-    return children;
+  if (!userToken) {
+    return <Navigate to="/login" replace />;
+  }
+  console.log("Driver Token:", userToken);
+  if (getUserRole(userToken) !== "DRIVER") {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 };
 
 export default ProtectedDriverRoute;

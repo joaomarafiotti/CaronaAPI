@@ -4,7 +4,6 @@ import RegisterPassengerPage from "./pages/RegisterPassengerPage";
 import RegisterDriverPage from "./pages/RegisterDriverPage";
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
-import DashBoardLayout from "./pages/dashboard/layout/DashBoardLayout";
 import DriverDashBoard from "./pages/dashboard/driver/DriverDashBoard";
 import PassengerDashBoard from "./pages/dashboard/passenger/PassengerDashBoard";
 import RegisterCarPage from "./pages/RegisterCarPage";
@@ -17,14 +16,16 @@ import ProtectedDriverRoute from "./components/ProtectedDriverRoute";
 import PassengerProfile from "./pages/dashboard/passenger/PassengerProfile";
 import DriverProfile from "./pages/dashboard/driver/DriverProfile";
 import RegisterRidePage from "./pages/RegisterRidePage";
+import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayout";
+import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/dashboard" element={<DashBoardLayout />}>
+        <Route path="/dashboard/driver" element={<DriverDashBoardLayout />}>
           <Route
-            path="driver"
+            path=""
             element={
               <ProtectedDriverRoute>
                 <DriverDashBoard />
@@ -32,47 +33,7 @@ function App() {
             }
           />
           <Route
-            path="passenger"
-            element={
-              <ProtectedPassengerRoute>
-                <PassengerDashBoard />
-              </ProtectedPassengerRoute>
-            }
-          />
-          <Route
-            path="passenger/avalable-rides"
-            element={
-              <ProtectedPassengerRoute>
-                <AvailableRides />
-              </ProtectedPassengerRoute>
-            }
-          />
-          <Route
-            path="passenger/profile"
-            element={
-              <ProtectedPassengerRoute>
-                <PassengerProfile />
-              </ProtectedPassengerRoute>
-            }
-          />
-          <Route
-            path="passenger/rides"
-            element={
-              <ProtectedPassengerRoute>
-                <PassengerRides />
-              </ProtectedPassengerRoute>
-            }
-          />
-          <Route
-            path="passenger/ride-requests"
-            element={
-              <ProtectedPassengerRoute>
-                <PassengerRideRequests />
-              </ProtectedPassengerRoute>
-            }
-          />
-          <Route
-            path="driver/profile"
+            path="profile"
             element={
               <ProtectedDriverRoute>
                 <DriverProfile />
@@ -80,7 +41,7 @@ function App() {
             }
           />
           <Route
-            path="driver/cars/register"
+            path="cars/register"
             element={
               <ProtectedDriverRoute>
                 <RegisterCarPage />
@@ -88,7 +49,7 @@ function App() {
             }
           />
           <Route
-            path="driver/cars/view"
+            path="cars/view"
             element={
               <ProtectedDriverRoute>
                 <ViewCarPage />
@@ -96,11 +57,56 @@ function App() {
             }
           />
           <Route
-            path="driver/rides/register"
+            path="rides/register"
             element={
               <ProtectedDriverRoute>
                 <RegisterRidePage />
               </ProtectedDriverRoute>
+            }
+          />
+        </Route>
+        <Route
+          path="/dashboard/passenger"
+          element={<PassengerDashBoardLayout />}
+        >
+          <Route
+            path=""
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerDashBoard />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="avalable-rides"
+            element={
+              <ProtectedPassengerRoute>
+                <AvailableRides />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerProfile />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="rides"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerRides />
+              </ProtectedPassengerRoute>
+            }
+          />
+          <Route
+            path="ride-requests"
+            element={
+              <ProtectedPassengerRoute>
+                <PassengerRideRequests />
+              </ProtectedPassengerRoute>
             }
           />
         </Route>
