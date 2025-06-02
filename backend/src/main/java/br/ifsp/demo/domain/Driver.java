@@ -46,13 +46,18 @@ public class Driver extends User {
 
     public RideSolicitation acceptIfIsTheOwner(RideSolicitation solicitation) {
         if (solicitation == null) throw new IllegalArgumentException("Ride solicitation is null");
-
+        if (isInValidSolicitationState(solicitation))
+            throw new IllegalStateException("Ride solicitation status is not pending");
         if (solicitation.getRide().getDriver().equals(this)) {
             solicitation.setStatus(RideSolicitationStatus.ACCEPTED);
             return solicitation;
         }
 
         throw new EntityNotFoundException("Ride solicitation with id " + solicitation.getId() + " not found");
+    }
+
+    private static boolean isInValidSolicitationState(RideSolicitation solicitation) {
+        return solicitation.getStatus().equals(RideSolicitationStatus.ACCEPTED) || solicitation.getStatus().equals(RideSolicitationStatus.REJECTED) || solicitation.getStatus().equals(RideSolicitationStatus.CANCELLED);
     }
 
     public RideSolicitation rejectIfIsTheOwner(RideSolicitation solicitation) {
