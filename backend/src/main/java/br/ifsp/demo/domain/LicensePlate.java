@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ public class LicensePlate {
     private static final Pattern MERCOSUL_PATTERN = Pattern.compile("^[A-Z]{3}\\d[A-Z]\\d{2}$");
 
     @NotBlank
+    @Column(name = "license_plate", nullable = false, unique = true)
     private String plate;
 
     protected LicensePlate() {

@@ -29,7 +29,7 @@ public class Car {
     @Column(nullable = false)
     private Integer seats;
 
-    @Column(unique = true, nullable = false)
+    @Embedded
     private LicensePlate licensePlate;
 
     @ManyToOne

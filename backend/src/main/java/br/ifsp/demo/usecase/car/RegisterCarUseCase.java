@@ -4,6 +4,7 @@ import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.exception.DriverNotFoundException;
+import br.ifsp.demo.exception.LicensePlateAlreadyRegisteredException;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CreateCarResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
@@ -28,6 +29,12 @@ public class RegisterCarUseCase {
         }
 
         Driver driver = isDriverRegistered(driverId);
+
+        String plate = request.licensePlate().trim().toUpperCase();
+
+        carRepository.findByLicensePlate(plate).ifPresent(car -> {
+            throw new LicensePlateAlreadyRegisteredException(plate);
+        });
 
         Car car = new Car(request.brand(),
                 request.model(),

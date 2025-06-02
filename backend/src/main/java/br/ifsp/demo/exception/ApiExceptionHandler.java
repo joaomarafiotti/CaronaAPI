@@ -145,4 +145,16 @@ public class ApiExceptionHandler {
                 .build();
         return new ResponseEntity<>(apiException, unauthorized);
     }
+
+    @ExceptionHandler(LicensePlateAlreadyRegisteredException.class)
+    public ResponseEntity<?> handleLicensePlateAlreadyRegisteredException(LicensePlateAlreadyRegisteredException e) {
+        final HttpStatus conflict = HttpStatus.CONFLICT;
+        final ApiException apiException = ApiException.builder()
+                .status(conflict)
+                .message(e.getMessage())
+                .developerMessage(e.getClass().getName())
+                .timestamp(ZonedDateTime.now(ZoneId.of("Z")))
+                .build();
+        return new ResponseEntity<>(apiException, conflict);
+    }
 }
