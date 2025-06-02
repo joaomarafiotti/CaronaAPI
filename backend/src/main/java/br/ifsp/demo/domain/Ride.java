@@ -58,7 +58,7 @@ public class Ride {
     private List<Passenger> passengers;
 
     @Setter
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
