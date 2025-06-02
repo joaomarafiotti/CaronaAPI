@@ -15,14 +15,23 @@ import RegisterRidePage from "./pages/RegisterRidePage";
 import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayout";
 import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
 import ViewRidesPage from "./pages/ViewRidesPage";
-import UserProfile from "./pages/dashboard/passenger/UserProfile"
+import UserProfile from "./pages/dashboard/passenger/UserProfile";
+// import DriverRideSolicitations from "./pages/dashboard/driver/DriverRideSolicitations";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        { /* Driver Routes */}
+        {/* Driver Routes */}
         <Route path="/dashboard/driver" element={<DriverDashBoardLayout />}>
+          <Route
+            path="solicitations/pending"
+            element={
+              <ProtectedDriverRoute>
+                <RegisterCarPage />
+              </ProtectedDriverRoute>
+            }
+          />
           <Route
             path=""
             element={<Navigate to="/dashboard/driver/profile" replace={true} />}
@@ -69,8 +78,11 @@ function App() {
           />
         </Route>
 
-        { /* Passenger Routes */}
-        <Route path="/dashboard/passenger" element={<PassengerDashBoardLayout />}>
+        {/* Passenger Routes */}
+        <Route
+          path="/dashboard/passenger"
+          element={<PassengerDashBoardLayout />}
+        >
           <Route
             path=""
             element={

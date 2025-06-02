@@ -37,11 +37,11 @@ const DriverHeader = () => {
       value: "pending-solicitations",
       handler: () => navigate("/dashboard/driver/solicitations/pending"),
     },
-    {
-      label: "Histórico de Solicitações",
-      value: "solicitation-history",
-      handler: () => navigate("/dashboard/driver/solicitations/history"),
-    },
+    // {
+    //   label: "Histórico de Solicitações",
+    //   value: "solicitation-history",
+    //   handler: () => navigate("/dashboard/driver/solicitations/history"),
+    // },
   ]);
 
   const [avatarMenuItens, setAvatarMenuItens] = useState([
@@ -66,6 +66,7 @@ const DriverHeader = () => {
         <h1 className="header-title">Carona APP</h1>
         <CustomMenu items={carItems} title={"Carros"}/>
         <CustomMenu items={rideItems} title={"Caronas"}/>
+        <CustomMenu items={solicitationItems} title={"Solicitações"}/>
       </div>
       <nav>
         <HeaderAvatar itens={avatarMenuItens} />
