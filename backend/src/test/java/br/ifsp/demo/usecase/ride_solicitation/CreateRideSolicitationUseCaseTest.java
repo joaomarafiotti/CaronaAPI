@@ -7,7 +7,6 @@ import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -253,7 +252,7 @@ public class CreateRideSolicitationUseCaseTest {
 
         return Stream.of(
                 Arguments.of(null, ride.getId(), passenger, ride),
-                Arguments.of(passenger.getRide(), null, passenger, ride)
+                Arguments.of(passenger.getRides(), null, passenger, ride)
         );
     }
 

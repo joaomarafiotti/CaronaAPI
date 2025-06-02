@@ -37,6 +37,7 @@ public class GetRideSolicitationUseCase {
     public List<RideSolicitationResponseModel> getPendingSolicitationsFromPassenger(UUID passengerId) {
         return solicitationRepository.findRideSolicitationsByPassenger_Id(passengerId)
                 .stream()
+                .filter(s -> s.getStatus().equals(RideSolicitationStatus.WAITING))
                 .map(RideSolicitation::toResponseModel)
                 .toList();
     }

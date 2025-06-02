@@ -63,4 +63,11 @@ public class RideSolicitationController {
         RideSolicitationResponseModel rejected = manageRideSolicitationUseCase.rejectSolicitationFor(solicitationId, driverId);
         return ResponseEntity.ok(rejected);
     }
+
+    @PutMapping("{solicitationId}/cancel")
+    public ResponseEntity<RideSolicitationResponseModel> cancelSolicitation(@PathVariable UUID solicitationId) {
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+        RideSolicitationResponseModel cancelled = manageRideSolicitationUseCase.cancelSolicitationFor(solicitationId, passengerId);
+        return ResponseEntity.ok(cancelled);
+    }
 }

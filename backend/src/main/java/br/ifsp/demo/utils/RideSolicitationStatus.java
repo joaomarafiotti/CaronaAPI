@@ -4,4 +4,5 @@ public enum RideSolicitationStatus {
     WAITING,
     ACCEPTED,
     REJECTED,
+    CANCELLED;
 }

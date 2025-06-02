@@ -3,6 +3,7 @@ package br.ifsp.demo.domain;
 import br.ifsp.demo.models.response.PassengerResponseModel;
 import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.security.user.User;
+import br.ifsp.demo.utils.RideSolicitationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Passenger extends User {
     @ManyToMany(mappedBy = "passengers")
-    private List<Ride> ride;
+    private List<Ride> rides;
 
     protected Passenger() {
     }
@@ -24,7 +25,18 @@ public class Passenger extends User {
         super(UUID.randomUUID(), name, lastname, email, cpf, birthDate, password, Role.PASSENGER);
     }
 
+    public RideSolicitation cancelSolicitation(RideSolicitation rideSolicitation) {
+        if (rideSolicitation == null) throw new IllegalArgumentException("Ride solicitation is null");
+        if (passengerIsTheOwnerOfSolicitation(rideSolicitation))
+            rideSolicitation.setStatus(RideSolicitationStatus.CANCELLED);
+        return rideSolicitation;
+    }
+
     public PassengerResponseModel toResponseModel() {
         return new PassengerResponseModel(this.getName(), this.getCpf(), this.getBirthDate());
+    }
+
+    private boolean passengerIsTheOwnerOfSolicitation(RideSolicitation rideSolicitation) {
+        return rideSolicitation.getPassenger().equals(this);
     }
 }
