@@ -1,5 +1,5 @@
 package br.ifsp.demo.utils;
 
 public enum RideStatus {
-    WAITING, STARTED, FULL, CANCELED, FINISHED;
+    WAITING, STARTED, FULL, CANCELLED, FINISHED;
 }

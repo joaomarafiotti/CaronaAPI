@@ -37,7 +37,7 @@ public class CancelRideUseCase {
             throw new IllegalStateException("Cannot cancel ride less than 1 hour before departure");
         }
 
-        ride.setRideStatus(RideStatus.CANCELED);
+        ride.setRideStatus(RideStatus.CANCELLED);
 
         rideRepository.save(ride);
 
