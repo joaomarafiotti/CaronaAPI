@@ -68,6 +68,6 @@ public class Driver extends User {
     }
 
     public DriverResponseModel toResponseModel() {
-        return new DriverResponseModel(this.getName(), this.getBirthDate());
+        return new DriverResponseModel(this.getName(), this.getCpf().toString(), this.getEmail(), this.getBirthDate());
     }
 }

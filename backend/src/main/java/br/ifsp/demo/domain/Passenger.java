@@ -33,7 +33,7 @@ public class Passenger extends User {
     }
 
     public PassengerResponseModel toResponseModel() {
-        return new PassengerResponseModel(this.getName(), this.getCpf(), this.getBirthDate());
+        return new PassengerResponseModel(this.getName(), this.getCpf().toString(), this.getEmail(), this.getBirthDate());
     }
 
     private boolean passengerIsTheOwnerOfSolicitation(RideSolicitation rideSolicitation) {
