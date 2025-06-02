@@ -32,7 +32,7 @@ public class RegisterCarUseCase {
 
         String plate = request.licensePlate().trim().toUpperCase();
 
-        carRepository.findByLicensePlate(plate).ifPresent(car -> {
+        carRepository.findByLicensePlate(LicensePlate.parse(plate)).ifPresent(car -> {
             throw new LicensePlateAlreadyRegisteredException(plate);
         });
 
