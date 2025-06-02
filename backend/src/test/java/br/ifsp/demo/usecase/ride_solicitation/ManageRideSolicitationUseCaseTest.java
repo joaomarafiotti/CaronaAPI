@@ -3,6 +3,7 @@ package br.ifsp.demo.usecase.ride_solicitation;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
+import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideSolicitationStatus;
@@ -32,6 +33,10 @@ public class ManageRideSolicitationUseCaseTest {
     DriverRepository driverRepository;
     @Mock
     RideRepository rideRepository;
+
+    @Mock
+    PassengerRepository passengerRepository;
+
     @Mock
     private Car car;
     @InjectMocks
@@ -160,6 +165,7 @@ public class ManageRideSolicitationUseCaseTest {
     public void shouldThrowsEntityNotFoundExceptionIfTheDriverIsNotTheOwnerOfTheRide() {
         assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(s2.getId(), driver.getId()));
         assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(s4.getId(), driver.getId()));
+        assertThrows(EntityNotFoundException.class, () -> sut.cancelSolicitationFor(s2.getId(), driver.getId()));
     }
 
     @Test
@@ -174,6 +180,21 @@ public class ManageRideSolicitationUseCaseTest {
         sut.acceptSolicitationFor(s1.getId(), driver.getId());
 
         assertThat(r1.getPassengers()).contains(p1);
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Functional")
+    @DisplayName("Should save cancelled solicitation in repository after cancellation")
+    public void shouldSaveCancelledSolicitation() {
+        when(solicitationRepository.findById(any(UUID.class))).thenReturn(Optional.of(s1));
+        when(passengerRepository.findById(any(UUID.class))).thenReturn(Optional.of(p1));
+        when(solicitationRepository.save(any(RideSolicitation.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        RideSolicitationResponseModel response = sut.cancelSolicitationFor(s1.getId(), p1.getId());
+
+        assertThat(response.status()).isEqualTo(RideSolicitationStatus.CANCELLED);
+        assertThat(s1.getStatus()).isEqualTo(RideSolicitationStatus.CANCELLED);
     }
 
 }
