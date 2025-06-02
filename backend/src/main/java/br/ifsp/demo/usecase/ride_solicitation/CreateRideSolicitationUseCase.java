@@ -38,6 +38,7 @@ public class CreateRideSolicitationUseCase {
         Optional<RideSolicitation> equalSolicitationAlreadyPersisted = solicitations
                 .stream()
                 .filter(s -> s.equals(solicitation))
+                .filter(s -> s.getStatus().equals(solicitation.getStatus()))
                 .findAny();
 
         if (equalSolicitationAlreadyPersisted.isPresent())
