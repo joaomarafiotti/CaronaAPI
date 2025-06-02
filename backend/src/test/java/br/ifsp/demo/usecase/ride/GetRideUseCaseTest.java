@@ -244,4 +244,50 @@ public class GetRideUseCaseTest {
 
         assertThrows(IllegalArgumentException.class, () -> sut.byId(uuid));
     }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Functional")
+    @DisplayName("Should return a list of rides by driver ID")
+    void shouldReturnAListOfRidesByDriverId() {
+        UUID driverId = UUID.randomUUID();
+        LocalDateTime now = LocalDateTime.now();
+
+        Ride r1 = new Ride(address0, address1, now, driver, car);
+
+        Ride r2 = new Ride(address2, address3, now.plusHours(1), driver, car);
+
+        RideResponseModel r1Resp = r1.toResponseModel();
+
+        RideResponseModel r2Resp = r2.toResponseModel();
+
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(r1, r2));
+
+        List<RideResponseModel> result = sut.byDriverId(driverId);
+
+        assertThat(result).isEqualTo(List.of(r1Resp, r2Resp));
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Functional")
+    @DisplayName("Should return a list of rides by passenger ID")
+    void shouldReturnAListOfRidesByPassengerId() {
+        UUID passengerId = UUID.randomUUID();
+        LocalDateTime now = LocalDateTime.now();
+
+        Ride r1 = new Ride(address4, address5, now, driver, car);
+
+        Ride r2 = new Ride(address6, address7, now.plusHours(2), driver, car);
+
+        RideResponseModel r1Resp = r1.toResponseModel();
+
+        RideResponseModel r2Resp = r2.toResponseModel();
+
+        when(rideRepository.findRideByPassengers_Id(passengerId)).thenReturn(List.of(r1, r2));
+
+        List<RideResponseModel> result = sut.byPassengerId(passengerId);
+
+        assertThat(result).isEqualTo(List.of(r1Resp, r2Resp));
+    }
 }
