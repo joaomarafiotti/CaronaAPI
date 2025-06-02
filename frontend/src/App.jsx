@@ -11,12 +11,11 @@ import PassengerRides from "./pages/dashboard/passenger/PassengerRides";
 import PassengerRideRequests from "./pages/dashboard/passenger/PassengerRideRequests";
 import ProtectedPassengerRoute from "./components/ProtectedPassengerRoute";
 import ProtectedDriverRoute from "./components/ProtectedDriverRoute";
-import PassengerProfile from "./pages/dashboard/passenger/PassengerProfile";
-import DriverProfile from "./pages/dashboard/driver/DriverProfile";
 import RegisterRidePage from "./pages/RegisterRidePage";
 import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayout";
 import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
 import ViewRidesPage from "./pages/ViewRidesPage";
+import UserProfile from "./pages/dashboard/passenger/UserProfile
 
 function App() {
   return (
@@ -27,14 +26,6 @@ function App() {
           <Route
             path=""
             element={<Navigate to="/dashboard/driver/profile" replace={true} />}
-          />
-          <Route
-            path="profile"
-            element={
-              <ProtectedDriverRoute>
-                <DriverProfile />
-              </ProtectedDriverRoute>
-            }
           />
           <Route
             path="cars/register"
@@ -68,6 +59,14 @@ function App() {
               </ProtectedDriverRoute>
             }
           />
+          <Route
+            path="profile"
+            element={
+              <ProtectedDriverRoute>
+                <UserProfile />
+              </ProtectedDriverRoute>
+            }
+          />
         </Route>
 
         { /* Passenger Routes */}
@@ -90,7 +89,7 @@ function App() {
             path="profile"
             element={
               <ProtectedPassengerRoute>
-                <PassengerProfile />
+                <UserProfile />
               </ProtectedPassengerRoute>
             }
           />

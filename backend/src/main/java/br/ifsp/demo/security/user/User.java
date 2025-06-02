@@ -1,6 +1,7 @@
 package br.ifsp.demo.security.user;
 
 import br.ifsp.demo.domain.Cpf;
+import br.ifsp.demo.models.response.UserResponseModel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -90,5 +91,9 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public UserResponseModel toResponseModel() {
+        return new UserResponseModel(this.getName(), this.getCpf().toString(), this.getEmail(), this.getBirthDate());
     }
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getUserByToken } from "../../../services/userService";
 import { useAuth } from "../../../context/AuthContext";
 
-const PassengerProfile = () => {
+const UserProfile = () => {
   const [passenger, setPassenger] = useState({});
   const { userToken } = useAuth();
 
@@ -47,4 +47,4 @@ const PassengerProfile = () => {
   );
 };
 
-export default PassengerProfile;
+export default UserProfile;

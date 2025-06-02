@@ -1,7 +1,6 @@
 package br.ifsp.demo.domain;
 
 import br.ifsp.demo.exception.CarNotFoundException;
-import br.ifsp.demo.models.response.DriverResponseModel;
 import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.security.user.User;
 import br.ifsp.demo.utils.RideSolicitationStatus;
@@ -65,9 +64,5 @@ public class Driver extends User {
         }
 
         throw new EntityNotFoundException("Ride solicitation with id " + solicitation.getId() + " not found");
-    }
-
-    public DriverResponseModel toResponseModel() {
-        return new DriverResponseModel(this.getName(), this.getCpf().toString(), this.getEmail(), this.getBirthDate());
     }
 }

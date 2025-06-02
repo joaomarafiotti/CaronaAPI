@@ -8,6 +8,6 @@ public record RideSolicitationResponseModel(
         UUID rideSolicitationId,
         RideSolicitationStatus status,
         RideResponseModel ride,
-        PassengerResponseModel passenger
+        UserResponseModel passenger
 ) {
 }

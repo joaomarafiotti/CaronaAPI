@@ -1,9 +1,10 @@
 package br.ifsp.demo.usecase.user;
 
-import br.ifsp.demo.models.response.DriverResponseModel;
-import br.ifsp.demo.models.response.PassengerResponseModel;
+import br.ifsp.demo.models.response.UserResponseModel;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.PassengerRepository;
+import br.ifsp.demo.security.user.JpaUserRepository;
+import br.ifsp.demo.security.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,11 @@ import java.util.UUID;
 public class GetUserUseCase {
     private final PassengerRepository passengerRepository;
     private final DriverRepository driverRepository;
+    private final JpaUserRepository userRepository;
 
-    public PassengerResponseModel getPassengerById(UUID passengerId) {
-        return passengerRepository.findById(passengerId)
-                .orElseThrow(() -> new EntityNotFoundException("Passenger with id: " + passengerId + "was not found"))
-                .toResponseModel();
-    }
-
-    public DriverResponseModel getDriverById(UUID driverId) {
-        return driverRepository.findById(driverId)
-                .orElseThrow(() -> new EntityNotFoundException("Driver with id: " + driverId + "was not found"))
-                .toResponseModel();
+    public UserResponseModel getUserById(UUID userId) {
+        return userRepository.findById(userId)
+                .map(User::toResponseModel)
+                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " was not found"));
     }
 }

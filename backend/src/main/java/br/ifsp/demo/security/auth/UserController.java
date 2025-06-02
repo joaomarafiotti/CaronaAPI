@@ -1,5 +1,6 @@
 package br.ifsp.demo.security.auth;
 
+import br.ifsp.demo.models.response.UserResponseModel;
 import br.ifsp.demo.security.config.JwtService;
 import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.usecase.user.GetUserUseCase;
@@ -31,6 +32,7 @@ public class UserController {
     private final UserDetailsService userDetailsService;
     private final UserAuthorizationVerifier verifier;
     private final GetUserUseCase getUserUseCase;
+    private final AuthenticationInfoService authenticationInfoService;
 
     @Operation(
             summary = "Register a new user.",
@@ -121,15 +123,8 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getUserByToken() {
-        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
-        if (passengerId != null) {
-            return ResponseEntity.ok(getUserUseCase.getPassengerById(passengerId));
-        }
-        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
-        if (driverId != null) {
-            return ResponseEntity.ok(getUserUseCase.getDriverById(driverId));
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<UserResponseModel> getUserByToken() {
+        UUID userId = authenticationInfoService.getAuthenticatedUserId();
+        return ResponseEntity.ok(getUserUseCase.getUserById(userId));
     }
 }

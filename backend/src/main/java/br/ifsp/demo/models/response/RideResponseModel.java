@@ -1,6 +1,7 @@
 package br.ifsp.demo.models.response;
 
 import br.ifsp.demo.domain.Address;
+import br.ifsp.demo.security.user.User;
 import br.ifsp.demo.utils.RideStatus;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public record RideResponseModel(
         Address dropOffLocation,
         Integer availableSeats,
         RideStatus status,
-        DriverResponseModel driver,
+        UserResponseModel driver,
         CarResponseModel car
 ) {
 }
