@@ -79,7 +79,7 @@ class RemoveCarUseCaseTest {
         sut.execute(driverId, otherCar.getId());
 
         verify(driverRepository).save(driver);
-        verify(carRepository).deleteById(otherCar.getId());
+        verify(carRepository).save(otherCar);
         assertFalse(driver.getCars().contains(otherCar));
     }
 
@@ -93,7 +93,7 @@ class RemoveCarUseCaseTest {
         assertThrows(DriverNotFoundException.class, () -> sut.execute(driverId, carId));
 
         verify(driverRepository, never()).save(any());
-        verify(carRepository, never()).deleteById(any());
+        verify(carRepository, never()).save(any());
     }
 
     @Tag("TDD")
@@ -107,7 +107,7 @@ class RemoveCarUseCaseTest {
         assertThrows(CarNotFoundException.class, () -> sut.execute(driverId, carId));
 
         verify(driverRepository, never()).save(any());
-        verify(carRepository, never()).deleteById(any());
+        verify(carRepository, never()).save(any());
     }
 
     @Test
@@ -121,7 +121,7 @@ class RemoveCarUseCaseTest {
         assertThrows(CarNotFoundException.class, () -> sut.execute(driverId, otherCarId));
 
         verify(driverRepository, never()).save(any());
-        verify(carRepository, never()).deleteById(any());
+        verify(carRepository, never()).save(any());
     }
 
     @Test
@@ -140,7 +140,7 @@ class RemoveCarUseCaseTest {
         assertTrue(driver.getCars().contains(car2));
 
         verify(driverRepository).save(driver);
-        verify(carRepository).deleteById(carId);
+        verify(carRepository).save(car);
     }
 
     @Test

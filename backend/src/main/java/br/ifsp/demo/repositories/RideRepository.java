@@ -13,4 +13,6 @@ import java.util.UUID;
 public interface RideRepository extends JpaRepository<Ride, UUID> {
     List<Ride> findRideByDriver_Id(UUID driverId);
     List<Ride> findRideByPassengers_Id(UUID passengerId);
+
+    boolean existsByDriverIdAndCarId(UUID driverId, UUID carId);
 }

@@ -39,6 +39,7 @@ public class GetCarUseCase {
                 .orElseThrow(() -> new DriverNotFoundException(driverId));
 
         return driver.getCars().stream()
+                .filter(car -> car.getIsActive())
                 .map(Car::toResponseModel)
                 .toList();
     }

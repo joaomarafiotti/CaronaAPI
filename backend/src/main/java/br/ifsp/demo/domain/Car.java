@@ -36,6 +36,9 @@ public class Car {
     @JoinColumn(name = "driver_id", nullable = false)
     private Driver driver;
 
+    @Column(nullable = false)
+    private Boolean isActive;
+
     protected Car() {
     }
 
@@ -46,10 +49,15 @@ public class Car {
         this.color = color;
         this.seats = seats;
         this.licensePlate = licensePlate;
+        this.isActive = true;
     }
 
     public CarResponseModel toResponseModel() {
-        return new CarResponseModel(this.getId(), this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate().toString());
+        return new CarResponseModel(this.getId(), this.getBrand(), this.getModel(), this.getColor(), this.getSeats(), this.getLicensePlate().toString(), this.isActive);
+    }
+
+    public void deactivate() {
+        this.isActive = false;
     }
 
     @Override
