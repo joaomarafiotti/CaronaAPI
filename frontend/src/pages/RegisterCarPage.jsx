@@ -34,6 +34,7 @@ const RegisterCarPage = () => {
     const [fields, setFields] = useState(initialState);
     const [errors, setErrors] = useState({});
     const [submitted, setSubmitted] = useState(false);
+    const [responseError, setResponseError] = useState('');
     const { userToken } = useAuth();
 
     const handleChange = (e) => {
@@ -58,6 +59,7 @@ const RegisterCarPage = () => {
                 navigate('/dashboard/driver/cars/view');
             } catch (error) {
                 console.log('Error registering car:', error);
+                setResponseError('Failed to register car.', error.message);
             }
             setFields(initialState);
             setSubmitted(false);
@@ -140,6 +142,11 @@ const RegisterCarPage = () => {
                     {submitted && errors.licensePlate && <span className="form-error">{errors.licensePlate}</span>}
                 </div>
                 <button type="submit" className="auth-button">Register</button>
+                {responseError && (
+                    <div className="form-error" style={{ marginTop: 8, borderRadius: 6, fontSize: 15, color: '#c53030', background: '#fff5f5', padding: '8px 12px' }}>
+                        ❌ {responseError}
+                    </div>
+                )}
             </form>
         </div>
     );
