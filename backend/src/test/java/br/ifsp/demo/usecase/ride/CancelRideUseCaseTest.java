@@ -4,7 +4,6 @@ import br.ifsp.demo.domain.*;
 import br.ifsp.demo.exception.RideNotFoundException;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.service.NotificationService;
-import br.ifsp.demo.usecase.ride.CancelRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -89,7 +88,7 @@ public class CancelRideUseCaseTest {
 
         cancelRideUseCase.execute(rideId, driverId);
 
-        assertEquals(RideStatus.CANCELED, ride.getRideStatus());
+        assertEquals(RideStatus.CANCELLED, ride.getRideStatus());
         verify(rideRepository).save(ride);
         verify(notificationService).notifyPassengers(eq(passengers), anyString(), anyString());
     }
@@ -123,7 +122,7 @@ public class CancelRideUseCaseTest {
     @Tag("TDD")
     @Tag("UnitTest")
     @ParameterizedTest
-    @EnumSource(value = RideStatus.class, names = {"STARTED", "FULL", "CANCELED", "FINISHED"})
+    @EnumSource(value = RideStatus.class, names = {"STARTED", "FULL", "CANCELLED", "FINISHED"})
     @DisplayName("Should throw IllegalStateException when ride status is not WAITING")
     void shouldThrowExceptionWhenRideStatusIsNotWaiting(RideStatus invalidStatus) {
         ride.setRideStatus(invalidStatus);

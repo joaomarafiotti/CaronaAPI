@@ -6,7 +6,6 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
-import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -163,34 +162,16 @@ public class GetRideUseCaseTest {
         );
         r1.setRideStatus(RideStatus.WAITING);
         r2.setRideStatus(RideStatus.FULL);
-        r3.setRideStatus(RideStatus.CANCELED);
+        r3.setRideStatus(RideStatus.CANCELLED);
         r4.setRideStatus(RideStatus.FINISHED);
         r5.setRideStatus(RideStatus.STARTED);
 
-        RideResponseModel r1Resp = new RideResponseModel(
-                r1.getId(),
-                now,
-                address0,
-                address1,
-                r1.getAvailableSeats(),
-                RideStatus.WAITING,
-                driver.toResponseModel(),
-                car.toResponseModel()
-        );
-        RideResponseModel r2Resp = new RideResponseModel(
-                r2.getId(),
-                r2Start,
-                address2,
-                address3,
-                r2.getAvailableSeats(),
-                RideStatus.FULL,
-                driver.toResponseModel(),
-                car.toResponseModel()
-        );
+        RideResponseModel r1Resp = r1.toResponseModel();
+        RideResponseModel r2Resp = r2.toResponseModel();
 
         when(rideRepository.findAll()).thenReturn(List.of(r1, r2, r3, r4, r5));
 
-        assertThat(sut.availableOnes()).isEqualTo(List.of(r1Resp, r2Resp));
+        assertThat(sut.availableOnes(UUID.randomUUID())).isEqualTo(List.of(r1Resp, r2Resp));
     }
 
     @Test
@@ -200,7 +181,7 @@ public class GetRideUseCaseTest {
     void shouldReturnEmptyListWhenSystemHasNoAvailableOnes() {
         when(rideRepository.findAll()).thenReturn(List.of());
 
-        assertThat(sut.availableOnes()).isEmpty();
+        assertThat(sut.availableOnes(UUID.randomUUID())).isEmpty();
     }
 
     @Test
@@ -218,15 +199,7 @@ public class GetRideUseCaseTest {
         );
 
         r1.setRideStatus(RideStatus.WAITING);
-        RideResponseModel r1Resp = new RideResponseModel(r1.getId(),
-                now,
-                address0,
-                address1,
-                r1.getAvailableSeats(),
-                RideStatus.WAITING,
-                driver.toResponseModel(),
-                car.toResponseModel()
-        );
+        RideResponseModel r1Resp = r1.toResponseModel();
 
         when(rideRepository.findById(r1.getId())).thenReturn(Optional.of(r1));
 
