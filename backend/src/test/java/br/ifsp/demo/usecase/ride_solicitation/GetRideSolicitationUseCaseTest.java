@@ -120,4 +120,26 @@ public class GetRideSolicitationUseCaseTest {
     public void shouldReturnEmptyListIfThereIsNoPendingSolicitations() {
         assertThat(sut.getPendingSolicitationsFromDriver(driver.getId())).isEmpty();
     }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("TDD")
+    @DisplayName("Should get only pending solicitations from passenger")
+    public void shouldGetOnlyPendingSolicitationsFromPassenger() {
+        RideSolicitation s1 = new RideSolicitation(ride, passenger1);
+        RideSolicitation s2 = new RideSolicitation(ride, passenger1);
+        RideSolicitation s3 = new RideSolicitation(ride, passenger1);
+
+        s1.setStatus(RideSolicitationStatus.WAITING);
+        s2.setStatus(RideSolicitationStatus.REJECTED);
+        s3.setStatus(RideSolicitationStatus.WAITING);
+
+        when(solicitationRepository.findRideSolicitationsByPassenger_Id(passenger1.getId()))
+                .thenReturn(List.of(s1, s2, s3));
+
+        var result = sut.getPendingSolicitationsFromPassenger(passenger1.getId());
+
+        assertThat(result).containsExactlyInAnyOrder(s1.toResponseModel(), s3.toResponseModel());
+    }
+
 }
