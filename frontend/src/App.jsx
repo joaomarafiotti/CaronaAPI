@@ -15,7 +15,7 @@ import RegisterRidePage from "./pages/RegisterRidePage";
 import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayout";
 import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
 import ViewRidesPage from "./pages/ViewRidesPage";
-import UserProfile from "./pages/dashboard/passenger/UserProfile
+import UserProfile from "./pages/dashboard/passenger/UserProfile"
 
 function App() {
   return (

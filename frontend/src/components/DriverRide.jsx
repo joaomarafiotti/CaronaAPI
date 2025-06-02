@@ -2,7 +2,7 @@ import { Avatar, Button, Card, DataList } from "@chakra-ui/react";
 
 const DriverRide = ({ ride, onCancel }) => {
   const isWaiting = ride.status === "WAITING";
-  const isDone = ride.status === "FINISHED";
+  const isDone = ride.status === "FINISHED" || ride.status === "CANCELLED";
 
   const actionButton = !isDone && isWaiting ? (
     <Button variant="outline" colorScheme="red" onClick={() => onCancel(ride.uuid)}>

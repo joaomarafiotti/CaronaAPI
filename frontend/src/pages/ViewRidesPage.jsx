@@ -29,7 +29,13 @@ const ViewRidesPage = () => {
   const onCancelRide = (rideId) => {
     try {
       cancelRideById(rideId, userToken);
-      setRides((prevRides) => prevRides.filter((ride) => ride.uuid !== rideId));
+     
+      setRides((prevRides) =>
+        prevRides.map((r) =>
+          r.uuid === rideId ? { ...r, status: 'CANCELLED' } : r
+        )
+      );
+    
     } catch (err) {
       setError('Erro ao cancelar carona');
     }
@@ -47,7 +53,7 @@ const ViewRidesPage = () => {
         groups.notStarted.push(ride);
       } else if (ride.status === "STARTED") {
         groups.inProgress.push(ride);
-      } else if (ride.status === "CANCELED" || ride.status === "FINISHED") {
+      } else if (ride.status === "CANCELLED" || ride.status === "FINISHED") {
         groups.finished.push(ride);
       }
     });
