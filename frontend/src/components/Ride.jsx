@@ -1,15 +1,29 @@
-import { Avatar, Button, Card, DataList } from "@chakra-ui/react";
+import { Avatar, Button, Card, DataList, Spinner } from "@chakra-ui/react";
 import { useState } from "react";
-export const Ride = ({ stats, isAvailable, isDone }) => {
+import { useCreateSolicitation } from "../services/rideSolicitationService";
+
+export const Ride = ({
+  stats,
+  isAvailable,
+  isDone,
+  solicitationHandler,
+  abandonHandler,
+  isLoading,
+}) => {
   let actionButton = null;
   if (!isDone) {
     actionButton = isAvailable ? (
-      <Button variant="outline" colorPalette="green">
+      <Button
+        variant="outline"
+        colorPalette="green"
+        onClick={solicitationHandler}
+        isLoading={isLoading}
+      >
         Solicitar
       </Button>
     ) : (
-      <Button variant="outline" colorPalette="red">
-        Cancelar
+      <Button variant="outline" colorPalette="red" onClick={abandonHandler}>
+        Abandonar
       </Button>
     );
   }
@@ -79,7 +93,9 @@ export const Ride = ({ stats, isAvailable, isDone }) => {
             ))}
         </div>
       </Card.Body>
-      <Card.Footer justifyContent="flex-end">{actionButton}</Card.Footer>
+      <Card.Footer justifyContent="flex-end">
+        {isLoading ? <Spinner /> : actionButton}
+      </Card.Footer>
     </Card.Root>
   );
 };

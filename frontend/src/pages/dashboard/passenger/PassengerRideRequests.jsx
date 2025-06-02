@@ -1,26 +1,43 @@
 import { useEffect, useState } from "react";
 import RideSolicitation from "../../../components/RideSolicitation";
-import { useGetPendingSolicitations } from "../../../services/rideSolicitationService";
+import {
+  useGetPendingSolicitations,
+  useCancelSolicitation,
+} from "../../../services/rideSolicitationService";
 import { useAuth } from "../../../context/AuthContext";
+
 //TODO - receber rides por requisição GET ao invés de props
 export const PassengerRideRequests = () => {
   const { userToken } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [solictitations, setSolicitations] = useState([]);
+  const updateSolicitations = async () => {
+    try {
+      setIsLoading(true);
+      const solicitations = await useGetPendingSolicitations(userToken);
+      console.log("Updated Rides:", solicitations);
+      setSolicitations(solicitations);
+    } catch (error) {
+      console.error("Error attempting to update solicitations:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const updateSolicitations = async () => {
-      try {
-        const solicitations = await useGetPendingSolicitations(userToken);
-        console.log("Updated Rides:", solicitations);
-        setSolicitations(solicitations);
-      } catch (error) {
-        console.error("Error attempting to update solicitations:", error);
-      }
-    };
-
     updateSolicitations();
   }, []);
+
+  const handleCancelSolicitation = async (solicitationId) => {
+    try {
+      const response = await useCancelSolicitation(userToken, solicitationId);
+      console.log("Solicitation canceled successfully:", response);
+      updateSolicitations();
+    } catch (error) {
+      console.error("Error attempting to cancel solicitation:", error);
+    }
+  };
 
   return (
     <div
@@ -52,6 +69,10 @@ export const PassengerRideRequests = () => {
           <RideSolicitation
             stats={solicitation}
             key={solicitation.rideSolicitationId}
+            isLoading={isLoading}
+            cancelSolicitationHandler={() =>
+              handleCancelSolicitation(solicitation.rideSolicitationId)
+            }
           />
         ))}
       </div>

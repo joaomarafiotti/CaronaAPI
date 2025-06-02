@@ -1,26 +1,43 @@
 import { useState, useEffect } from "react";
 import Ride from "../../../components/Ride";
-import { useGetRides } from "../../../services/rideService";
+import { useGetRides, useAbandonRide } from "../../../services/rideService";
 import { useAuth } from "../../../context/AuthContext";
 
 //TODO - receber rides por requisição GET ao invés de props
 export const PassengerRides = () => {
   const { userToken } = useAuth();
   const [rides, setRides] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const updateRides = async () => {
+    try {
+      setIsLoading(true);
+      const rides = await useGetRides(userToken);
+      console.log("Updated Rides:", rides);
+      setRides(rides);
+    } catch (error) {
+      console.error("Error attempting to update rides:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const updateRides = async () => {
-      try {
-        const rides = await useGetRides(userToken);
-        console.log("Updated Rides:", rides);
-        setRides(rides);
-      } catch (error) {
-        console.error("Error attempting to update rides:", error);
-      }
-    };
-
     updateRides();
   }, []);
+
+  const handleAbandonRide = async (rideId) => {
+    try {
+      console.log("Abandoning ride:", rideId);
+      setIsLoading(true);
+      await useAbandonRide(userToken, rideId);
+      await updateRides();
+    } catch (error) {
+      console.error("Error attempting to abandon ride:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div
@@ -51,9 +68,11 @@ export const PassengerRides = () => {
         {rides.map((ride) => (
           <Ride
             stats={ride}
-            isAvailable={ride.status === "AVAILABLE"}
+            isAvailable={ride.status === "WAITING"}
             key={ride.uuid}
             isDone={ride.status === "FINISHED" || ride.status === "CANCELLED"}
+            isLoading={isLoading}
+            abandonHandler={() => handleAbandonRide(ride.uuid)}
           />
         ))}
       </div>

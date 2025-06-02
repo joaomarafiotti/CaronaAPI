@@ -1,24 +1,39 @@
 import { useState, useEffect } from "react";
 import Ride from "../../../components/Ride";
-import { Button } from "@chakra-ui/react";
 import { useGetAvailableRides } from "../../../services/rideService";
 import { useAuth } from "../../../context/AuthContext";
+import { useCreateSolicitation } from "../../../services/rideSolicitationService";
 
 //TODO - receber rides por requisição GET ao invés de props
 export const AvailableRides = () => {
   const { userToken } = useAuth();
   const [rides, setRides] = useState([]);
-  useEffect(() => {
-    const updateRides = async () => {
-      try {
-        const rides = await useGetAvailableRides(userToken);
-        console.log("Updated Rides:", rides);
-        setRides(rides);
-      } catch (error) {
-        console.error("Error attempting to update rides:", error);
-      }
-    };
+  const [isLoading, setIsLoading] = useState(false);
 
+  const updateRides = async () => {
+    try {
+      const rides = await useGetAvailableRides(userToken);
+      console.log("Updated Rides:", rides);
+      setRides(rides);
+    } catch (error) {
+      console.error("Error attempting to update rides:", error);
+    }
+  };
+
+  const handleSolicitation = async (rideId) => {
+    try {
+      setIsLoading(true);
+      console.log(rideId);
+      await useCreateSolicitation(userToken, rideId);
+    } catch (error) {
+      console.error("Erro ao solicitar carona:", error);
+    } finally {
+      setIsLoading(false);
+      updateRides();
+    }
+  };
+
+  useEffect(() => {
     updateRides();
   }, []);
 
@@ -51,9 +66,11 @@ export const AvailableRides = () => {
         {rides.map((ride) => (
           <Ride
             stats={ride}
-            isAvailable={ride.status === "AVAILABLE"}
+            isAvailable={ride.status === "WAITING"}
             key={ride.uuid}
             isDone={ride.status === "FINISHED" || ride.status === "CANCELLED"}
+            solicitationHandler={() => handleSolicitation(ride.uuid)}
+            isLoading={isLoading}
           />
         ))}
       </div>

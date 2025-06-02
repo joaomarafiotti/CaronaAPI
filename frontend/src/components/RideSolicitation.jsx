@@ -1,5 +1,9 @@
-import { Avatar, Button, Card, DataList } from "@chakra-ui/react";
-export const RideSolicitation = ({ stats }) => {
+import { Avatar, Button, Card, DataList, Spinner } from "@chakra-ui/react";
+export const RideSolicitation = ({
+  stats,
+  cancelSolicitationHandler,
+  isLoading,
+}) => {
   return (
     <Card.Root width="320px">
       <Card.Body gap="2">
@@ -80,7 +84,13 @@ export const RideSolicitation = ({ stats }) => {
         </div>
       </Card.Body>
       <Card.Footer justifyContent="flex-end">
-        <Button variant="outline">Cancelar</Button>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Button variant="outline" onClick={cancelSolicitationHandler}>
+            Cancelar
+          </Button>
+        )}
       </Card.Footer>
     </Card.Root>
   );
