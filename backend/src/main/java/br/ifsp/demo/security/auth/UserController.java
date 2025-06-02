@@ -1,6 +1,8 @@
 package br.ifsp.demo.security.auth;
 
 import br.ifsp.demo.security.config.JwtService;
+import br.ifsp.demo.security.user.Role;
+import br.ifsp.demo.usecase.user.GetUserUseCase;
 import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,6 +29,8 @@ public class UserController {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final UserAuthorizationVerifier verifier;
+    private final GetUserUseCase getUserUseCase;
 
     @Operation(
             summary = "Register a new user.",
@@ -80,6 +84,7 @@ public class UserController {
         final AuthResponse response = authenticationService.authenticate(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @Operation(
             summary = "Validate a JWT token.",
             description = "Returns 200 OK if token is valid, otherwise 401 Unauthorized."
@@ -113,5 +118,18 @@ public class UserController {
         } catch (JwtException | UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> getUserByToken() {
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+        if (passengerId != null) {
+            return ResponseEntity.ok(getUserUseCase.getPassengerById(passengerId));
+        }
+        UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
+        if (driverId != null) {
+            return ResponseEntity.ok(getUserUseCase.getDriverById(driverId));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
