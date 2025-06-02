@@ -23,7 +23,7 @@ public class RideSolicitation {
     @JoinColumn(name = "ride_id")
     private Ride ride;
 
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "passenger_id")
     private Passenger passenger;
