@@ -1,96 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Ride from "../../../components/Ride";
-import { Button } from "@chakra-ui/react";
+import { useGetRides } from "../../../services/rideService";
+import { useAuth } from "../../../context/AuthContext";
 
 //TODO - receber rides por requisição GET ao invés de props
 export const PassengerRides = () => {
-  const [rides, setRides] = useState([
-    {
-      id: 1,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero"],
-    },
-    {
-      id: 2,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli"],
-    },
-    {
-      id: 3,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli", "Alice Silva"],
-    },
-    {
-      id: 4,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: [],
-    },
-    {
-      id: 5,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli", "Alice Silva"],
-    },
-  ]);
+  const { userToken } = useAuth();
+  const [rides, setRides] = useState([]);
+
+  useEffect(() => {
+    const updateRides = async () => {
+      try {
+        const rides = await useGetRides(userToken);
+        console.log("Updated Rides:", rides);
+        setRides(rides);
+      } catch (error) {
+        console.error("Error attempting to update rides:", error);
+      }
+    };
+
+    updateRides();
+  }, []);
+
   return (
     <div
       style={{
@@ -118,7 +49,12 @@ export const PassengerRides = () => {
         }}
       >
         {rides.map((ride) => (
-          <Ride stats={ride} isAvailable={true} key={ride.id} isDone={true} />
+          <Ride
+            stats={ride}
+            isAvailable={ride.status === "AVAILABLE"}
+            key={ride.uuid}
+            isDone={ride.status === "FINISHED" || ride.status === "CANCELLED"}
+          />
         ))}
       </div>
     </div>

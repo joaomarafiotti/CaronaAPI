@@ -1,46 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RideSolicitation from "../../../components/RideSolicitation";
-
+import { useGetPendingSolicitations } from "../../../services/rideSolicitationService";
+import { useAuth } from "../../../context/AuthContext";
 //TODO - receber rides por requisição GET ao invés de props
 export const PassengerRideRequests = () => {
-  const [rides, setRides] = useState([
-    {
-      id: 1,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      requestDate: "2023-05-01",
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero"],
-    },
-    {
-      id: 2,
-      driverName: "John Doe",
-      car: {
-        brand: "Toyota",
-        model: "Corolla",
-        color: "Silver",
-        seats: 5,
-        licensePlate: "ABC1D23",
-      },
-      requestDate: "2023-05-01",
-      rideDate: "2023-10-01",
-      rideTime: "10:00 AM",
-      pickupLocation: "123 Main St",
-      dropoffLocation: "456 Elm St",
-      availableSeats: 3,
-      passengers: ["Gustavo Contiero", "Bruno Mascioli"],
-    },
-  ]);
+  const { userToken } = useAuth();
+
+  const [solictitations, setSolicitations] = useState([]);
+
+  useEffect(() => {
+    const updateSolicitations = async () => {
+      try {
+        const solicitations = await useGetPendingSolicitations(userToken);
+        console.log("Updated Rides:", solicitations);
+        setSolicitations(solicitations);
+      } catch (error) {
+        console.error("Error attempting to update solicitations:", error);
+      }
+    };
+
+    updateSolicitations();
+  }, []);
+
   return (
     <div
       style={{
@@ -67,8 +48,11 @@ export const PassengerRideRequests = () => {
           justifyContent: "center",
         }}
       >
-        {rides.map((ride) => (
-          <RideSolicitation stats={ride} isAvailable={true} key={ride.id} />
+        {solictitations.map((solicitation) => (
+          <RideSolicitation
+            stats={solicitation}
+            key={solicitation.rideSolicitationId}
+          />
         ))}
       </div>
     </div>

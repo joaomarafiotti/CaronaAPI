@@ -36,3 +36,13 @@ export async function useGetAvailableRides(token) {
   });
   return response.data;
 }
+
+export async function useGetRides(token) {
+  const response = await api.get("/api/v1/ride/passenger", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+}
