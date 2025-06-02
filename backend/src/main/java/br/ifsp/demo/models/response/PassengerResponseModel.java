@@ -4,5 +4,5 @@ import br.ifsp.demo.domain.Cpf;
 
 import java.time.LocalDate;
 
-public record PassengerResponseModel(String name, Cpf cpf, LocalDate birthDate) {
+public record PassengerResponseModel(String name, String cpf, String email, LocalDate birthDate) {
 }
