@@ -23,17 +23,7 @@ public class GetRideUseCase {
 
         return rides.stream()
                 .filter(r -> r.getRideStatus().equals(RideStatus.WAITING) || r.getRideStatus().equals(RideStatus.FULL))
-                .map(r -> new RideResponseModel(
-                                r.getId(),
-                                r.getDepartureTime(),
-                                r.getStartAddress(),
-                                r.getEndAddress(),
-                                r.getAvailableSeats(),
-                                r.getRideStatus(),
-                                r.getDriver().toResponseModel(),
-                                r.getCar().toResponseModel()
-                        )
-                )
+                .map(Ride::toResponseModel)
                 .toList();
     }
 
@@ -47,20 +37,11 @@ public class GetRideUseCase {
 
     public List<RideResponseModel> byPassengerId(UUID passengerId) {
         List<Ride> rides = rideRepository.findRideByPassengers_Id(passengerId);
-        System.out.println(rides);
+        return rides.stream().map(Ride::toResponseModel).toList();
+    }
 
-        return rides.stream()
-                .map(r -> new RideResponseModel(
-                                r.getId(),
-                                r.getDepartureTime(),
-                                r.getStartAddress(),
-                                r.getEndAddress(),
-                                r.getAvailableSeats(),
-                                r.getRideStatus(),
-                                r.getDriver().toResponseModel(),
-                                r.getCar().toResponseModel()
-                        )
-                )
-                .toList();
+    public List<RideResponseModel> byDriverId(UUID driverId) {
+        List<Ride> rides = rideRepository.findRideByDriver_Id(driverId);
+        return rides.stream().map(Ride::toResponseModel).toList();
     }
 }
