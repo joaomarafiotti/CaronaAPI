@@ -16,11 +16,13 @@ import DriverProfile from "./pages/dashboard/driver/DriverProfile";
 import RegisterRidePage from "./pages/RegisterRidePage";
 import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayout";
 import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
+import ViewRidesPage from "./pages/ViewRidesPage";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
+        { /* Driver Routes */}
         <Route path="/dashboard/driver" element={<DriverDashBoardLayout />}>
           <Route
             path=""
@@ -58,11 +60,18 @@ function App() {
               </ProtectedDriverRoute>
             }
           />
+          <Route
+            path="rides/view"
+            element={
+              <ProtectedDriverRoute>
+                <ViewRidesPage />
+              </ProtectedDriverRoute>
+            }
+          />
         </Route>
-        <Route
-          path="/dashboard/passenger"
-          element={<PassengerDashBoardLayout />}
-        >
+
+        { /* Passenger Routes */}
+        <Route path="/dashboard/passenger" element={<PassengerDashBoardLayout />}>
           <Route
             path=""
             element={

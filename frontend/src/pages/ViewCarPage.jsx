@@ -55,10 +55,7 @@ const ViewCarPage = () => {
                     </div>
                 ))
             ) : (
-                <Spinner
-                    color="red.500"
-                    css={{ "--spinner-track-color": "colors.gray.200" }}
-                />
+                <Spinner size="lg"/>
             )}
         </div>
     );

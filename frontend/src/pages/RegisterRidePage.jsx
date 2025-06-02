@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getDriverCars } from '../services/carService';
 import { registerRide } from '../services/rideService';
+import { Spinner } from '@chakra-ui/react';
 
 const RegisterRidePage = () => {
     const { userToken } = useAuth();
@@ -17,13 +18,19 @@ const RegisterRidePage = () => {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        getDriverCars(userToken)
-            .then(response => {
+        async function fetchCars() {
+            try {
+                setLoading(true);
+                let response = await getDriverCars(userToken);
                 setCars(response.data);
-            })
-            .catch(error => {
+            } catch (error) {
+                console.error('Error fetching cars:', error);
                 setError('Error fetching cars');
-            });
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchCars();
     }, [userToken]);
 
     const validate = () => {
@@ -58,6 +65,10 @@ const RegisterRidePage = () => {
             setLoading(false);
         }
     };
+
+    if (loading) {
+        return <Spinner size="lg" />;
+    }
 
     return (
         <div className="auth-container">
