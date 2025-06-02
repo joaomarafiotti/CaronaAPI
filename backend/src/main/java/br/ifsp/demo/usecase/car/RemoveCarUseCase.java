@@ -34,15 +34,11 @@ public class RemoveCarUseCase {
         boolean carIsInUse = rideRepository.findRideByDriver_Id(driverId).stream()
                 .filter(ride ->
                         ride.getRideStatus().equals(RideStatus.WAITING) ||
-                        ride.getRideStatus().equals(RideStatus.FULL)    ||
+                        ride.getRideStatus().equals(RideStatus.FULL) ||
                         ride.getRideStatus().equals(RideStatus.STARTED))
                 .filter(ride -> ride.getCar() != null)
-                .anyMatch(ride -> {
-                            if (ride.getCar() == null)
-                                throw new IllegalStateException("ride with a null car");
-                            Car rideCar = ride.getCar();
-                            return rideCar.getIsActive() && rideCar.getId().equals(carId);
-                        }
+                .anyMatch(ride ->
+                        ride.getCar().getIsActive() && ride.getCar().getId().equals(carId)
                 );
 
         if (carIsInUse) {
