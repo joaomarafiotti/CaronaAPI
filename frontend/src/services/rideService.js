@@ -55,3 +55,17 @@ export async function useGetRides(token) {
   });
   return response.data;
 }
+
+export async function useAbandonRide(token, rideId) {
+  const response = await api.put(
+    `/api/v1/ride/${rideId}/passenger/abandon`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}
