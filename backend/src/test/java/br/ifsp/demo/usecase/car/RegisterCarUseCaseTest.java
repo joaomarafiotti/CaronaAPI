@@ -3,7 +3,9 @@ package br.ifsp.demo.usecase.car;
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.exception.DriverNotFoundException;
+import br.ifsp.demo.exception.LicensePlateAlreadyRegisteredException;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.response.CreateCarResponseModel;
 import br.ifsp.demo.repositories.CarRepository;
@@ -52,11 +54,6 @@ class RegisterCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(driverRepository.save(any(Driver.class))).thenReturn(driver);
-//        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
-//            Car car = invocation.getArgument(0);
-//            car.setId(UUID.randomUUID());
-//            return car;
-//        });
 
         CreateCarResponseModel result = sut.execute(carRequest, driverId);
 
@@ -102,14 +99,51 @@ class RegisterCarUseCaseTest {
 
         when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
         when(driverRepository.save(any(Driver.class))).thenReturn(driver);
-//        when(carRepository.save(any(Car.class))).thenAnswer(invocation -> {
-//            Car car = invocation.getArgument(0);
-//            car.setId(UUID.randomUUID());
-//            return car;
-//        });
 
         sut.execute(carRequest, driverId);
 
         assertThat(driver.getCars()).hasSize(1);
     }
+
+    @Test
+    @Tag("Functional")
+    @Tag("UnitTest")
+    @DisplayName("Should throw exception when license plate is not valid")
+    void shouldThrowExceptionWhenLicensePlateIsNotValid() {
+        Driver driver =  new Driver("Jose", "Alfredo", "joao@example.com","123123BBdjk", Cpf.of("529.982.247-25"), LocalDate.of(2003, 3,20));
+        UUID driverId = driver.getId();
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        CarRequestModel carRequest = new CarRequestModel(
+                "Toyota", "Corolla", "Azul", 5, "ABC1PD23"
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> sut.execute(carRequest, driverId));
+    }
+
+    @Test
+    @Tag("Functional")
+    @Tag("UnitTest")
+    @DisplayName("Should throw exception when license plate is already registered")
+    void shouldThrowExceptionWhenLicensePlateIsAlreadyRegistered() {
+        Driver driver = new Driver("Jose", "Alfredo", "joao@example.com", "123123BBdjk",
+                Cpf.of("529.982.247-25"), LocalDate.of(2003, 3, 20));
+        UUID driverId = driver.getId();
+
+        String plateString = "ABC-1234";
+        LicensePlate plate = LicensePlate.parse(plateString);
+
+        Car existingCar = new Car("Fiat", "Uno", "Preto", 5, plate);
+
+        CarRequestModel carRequest = new CarRequestModel(
+                "Toyota", "Corolla", "Azul", 5, plateString
+        );
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(carRepository.findByLicensePlate(plate.toString())).thenReturn(Optional.of(existingCar));
+
+        assertThrows(LicensePlateAlreadyRegisteredException.class, () -> sut.execute(carRequest, driverId));
+    }
+
 }
