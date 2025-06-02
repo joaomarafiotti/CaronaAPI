@@ -42,7 +42,8 @@ public class RideController {
 
     @GetMapping
     public ResponseEntity<List<RideResponseModel>> getAvailableRides() {
-        List<RideResponseModel> rides = getRideUseCase.availableOnes();
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+        List<RideResponseModel> rides = getRideUseCase.availableOnes(passengerId);
         return ResponseEntity.ok(rides);
     }
 
