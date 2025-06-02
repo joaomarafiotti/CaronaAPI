@@ -1,6 +1,9 @@
 package br.ifsp.demo.usecase.passenger;
 
+import br.ifsp.demo.domain.Ride;
+import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,10 +17,10 @@ public class AbandonRideUseCase {
         this.rideRepository = rideRepository;
     }
 
-    public void abandonFor(UUID passengerId, UUID rideId) {
-        rideRepository.findById(rideId).ifPresent(ride -> {
-            ride.removePassenger(passengerId);
-            rideRepository.save(ride);
-        });
+    public RideResponseModel abandonFor(UUID passengerId, UUID rideId) {
+        Ride ride = rideRepository.findById(rideId).orElseThrow(() -> new EntityNotFoundException("Ride with id " + rideId + " not found"));
+        ride.removePassenger(passengerId);
+        rideRepository.save(ride);
+        return ride.toResponseModel();
     }
 }

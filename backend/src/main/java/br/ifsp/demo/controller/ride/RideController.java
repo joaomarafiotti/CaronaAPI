@@ -5,6 +5,7 @@ import br.ifsp.demo.models.response.CreateRideResponseModel;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.security.auth.UserAuthorizationVerifier;
 import br.ifsp.demo.security.user.Role;
+import br.ifsp.demo.usecase.passenger.AbandonRideUseCase;
 import br.ifsp.demo.usecase.ride.CancelRideUseCase;
 import br.ifsp.demo.usecase.ride.GetRideUseCase;
 import br.ifsp.demo.usecase.ride.RegisterRideUseCase;
@@ -23,6 +24,7 @@ import java.util.UUID;
 public class RideController {
     private final RegisterRideUseCase registerRideUseCase;
     private final CancelRideUseCase cancelRideUseCase;
+    private final AbandonRideUseCase abandonRideUseCase;
     private final GetRideUseCase getRideUseCase;
     private final UserAuthorizationVerifier verifier;
 
@@ -38,6 +40,13 @@ public class RideController {
         UUID driverId = verifier.verifyAndReturnUuidOf(Role.DRIVER);
         cancelRideUseCase.execute(rideId, driverId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{rideId}/passenger/abandon")
+    public ResponseEntity<RideResponseModel> abandonRide(@PathVariable @NonNull UUID rideId) {
+        UUID passengerId = verifier.verifyAndReturnUuidOf(Role.PASSENGER);
+        RideResponseModel response = abandonRideUseCase.abandonFor(passengerId, rideId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
