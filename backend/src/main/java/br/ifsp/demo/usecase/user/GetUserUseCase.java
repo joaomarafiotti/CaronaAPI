@@ -20,7 +20,7 @@ public class GetUserUseCase {
 
     public UserResponseModel getUserById(UUID userId) {
         return userRepository.findById(userId)
-                .map(User::toResponseModel)
-                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " was not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id: " + userId + " was not found"))
+                .toResponseModel();
     }
 }
