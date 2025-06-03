@@ -129,4 +129,18 @@ class GetCarUseCaseTest {
 
         assertThrows(DriverNotFoundException.class, () -> getCarUseCase.allCars(driverId));
     }
+
+    @Test
+    @Tag("Mutation")
+    @Tag("UnitTest")
+    @DisplayName("Should not return inactive cars when listing all cars")
+    void shouldNotReturnInactiveCarsWhenListingAllCars() {
+        car.deactivate();
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+
+        List<CarResponseModel> cars = getCarUseCase.allCars(driverId);
+
+        assertEquals(1, cars.size());
+        assertEquals("Volkswagen", cars.get(0).brand());
+    }
 }
