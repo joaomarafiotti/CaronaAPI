@@ -7,6 +7,7 @@ import br.ifsp.demo.exception.DriverNotFoundException;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.utils.RideStatus;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -160,5 +161,67 @@ class RemoveCarUseCaseTest {
         } catch (CarNotFoundException e) {
             assertThat(e.getMessage()).isEqualTo("driver is not the owner of car with id: " + otherCarId);
         }
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @Description("Should not consider ride if status is finished")
+    void shouldNotConsiderRideIfStatusIsFinished() {
+        Ride ride = new Ride(address0, address1, LocalDateTime.now(), driver, car);
+        ride.setRideStatus(RideStatus.FINISHED);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+
+        sut.execute(driverId, car.getId());
+
+        assertFalse(car.getIsActive());
+        verify(carRepository).save(car);
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @Description("Should not consider ride if car is inactive")
+    void shouldNotConsiderRideIfCarIsInactive() {
+        Ride ride = new Ride(address0, address1, LocalDateTime.now(), driver, car);
+        ride.setRideStatus(RideStatus.WAITING);
+        car.deactivate();
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+
+        sut.execute(driverId, car.getId());
+
+        verify(carRepository).save(car);
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @Description("Should throw CarInUseException when ride has status FULL and car is active")
+    void shouldThrowIfRideIsFullAndCarIsActive() {
+        Ride ride = new Ride(address0, address1, LocalDateTime.now(), driver, car);
+        ride.setRideStatus(RideStatus.FULL);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+
+        assertThrows(CarInUseException.class, () -> sut.execute(driverId, car.getId()));
+    }
+
+    @Test
+    @Tag("Structural")
+    @Tag("UnitTest")
+    @Description("Should throw CarInUseException when ride has status STARTED and car is active")
+    void shouldThrowIfRideIsStartedAndCarIsActive() {
+        Ride ride = new Ride(address0, address1, LocalDateTime.now(), driver, car);
+        ride.setRideStatus(RideStatus.STARTED);
+
+        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
+        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
+
+        assertThrows(CarInUseException.class, () -> sut.execute(driverId, car.getId()));
     }
 }

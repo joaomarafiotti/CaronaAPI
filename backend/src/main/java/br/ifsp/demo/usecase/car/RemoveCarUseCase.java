@@ -36,7 +36,6 @@ public class RemoveCarUseCase {
                         ride.getRideStatus().equals(RideStatus.WAITING) ||
                         ride.getRideStatus().equals(RideStatus.FULL) ||
                         ride.getRideStatus().equals(RideStatus.STARTED))
-                .filter(ride -> ride.getCar() != null)
                 .anyMatch(ride ->
                         ride.getCar().getIsActive() && ride.getCar().getId().equals(carId)
                 );

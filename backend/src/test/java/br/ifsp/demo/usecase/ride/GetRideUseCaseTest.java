@@ -6,6 +6,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Ride;
 import br.ifsp.demo.models.response.RideResponseModel;
 import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.repositories.RideSolicitationRepository;
 import br.ifsp.demo.utils.RideStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +36,9 @@ public class GetRideUseCaseTest {
 
     @Mock
     RideRepository rideRepository;
+
+    @Mock
+    RideSolicitationRepository rideSolicitationRepository;
 
     @InjectMocks
     GetRideUseCase sut;
