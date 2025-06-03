@@ -86,4 +86,14 @@ public class AbandonRideUseCaseTest {
         when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
         assertThrows(EntityNotFoundException.class, () -> sut.abandonFor(p1.getId(), ride.getId()));
     }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
+    public void shouldReturnNotNull() {
+        when(car.getSeats()).thenReturn(5);
+        ride.addPassenger(p1);
+        when(rideRepository.findById(ride.getId())).thenReturn(Optional.of(ride));
+        assertThat(sut.abandonFor(p1.getId(), ride.getId())).isNotNull();
+    }
 }
