@@ -90,6 +90,15 @@ public class AbandonRideUseCaseTest {
     @Test
     @Tag("UnitTest")
     @Tag("Mutation")
+    @DisplayName("Should throws if passenger is not in the ride")
+    public void shouldThrowWhenRideDontExists() {
+        when(rideRepository.findById(ride.getId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sut.abandonFor(p1.getId(), ride.getId()));
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
     public void shouldReturnNotNull() {
         when(car.getSeats()).thenReturn(5);
         ride.addPassenger(p1);
