@@ -1,4 +1,6 @@
 
+# Frontend
+
 # React + Vite
 
 -- Para executar o projeto basta executar os comandos abaixo no diretório do projeto na ordem mostrada.
@@ -23,6 +25,10 @@
 	- Cria solicitações de carona
 	- Cancela solicitações de carona que ainda estão pendentes
 	- Visualiza histórico de carona
+
+# Backend
+
+-- Para o backend basta executar o projeto através do arquivo DemoAuthAppApplication
 
 
 
