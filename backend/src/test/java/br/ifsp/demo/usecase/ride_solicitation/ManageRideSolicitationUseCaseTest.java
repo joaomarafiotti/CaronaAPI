@@ -197,4 +197,39 @@ public class ManageRideSolicitationUseCaseTest {
         assertThat(s1.getStatus()).isEqualTo(RideSolicitationStatus.CANCELLED);
     }
 
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
+    @DisplayName("Should throw EntityNotFoundException when driver is not found during solicitation acceptance")
+    public void shouldThrowExceptionWhenDriverNotFoundDuringAcceptance() {
+        UUID solicitationId = UUID.randomUUID();
+        when(solicitationRepository.findById(any())).thenReturn(Optional.of(s1));
+        when(driverRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> sut.acceptSolicitationFor(solicitationId, UUID.randomUUID()));
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
+    @DisplayName("Should throw EntityNotFoundException when driver is not found during solicitation rejection")
+    public void shouldThrowExceptionWhenDriverNotFoundDuringRejection() {
+        UUID solicitationId = UUID.randomUUID();
+        when(solicitationRepository.findById(any())).thenReturn(Optional.of(s1));
+        when(driverRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> sut.rejectSolicitationFor(solicitationId, UUID.randomUUID()));
+    }
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
+    @DisplayName("Should throw EntityNotFoundException when passenger is not found during solicitation cancellation")
+    public void shouldThrowExceptionWhenPassengerNotFoundDuringCancellation() {
+        UUID solicitationId = UUID.randomUUID();
+        when(solicitationRepository.findById(any())).thenReturn(Optional.of(s1));
+        when(passengerRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> sut.cancelSolicitationFor(solicitationId, UUID.randomUUID()));
+    }
 }
