@@ -37,21 +37,16 @@ public class Cpf implements Serializable {
         return cpf.replaceAll("\\D+", "");
     }
 
-
     private static boolean isValidCheckDigits(String digits) {
-        if (!hasValidLength(digits) || isAllSameCharacter(digits)) {
+        if (isAllSameCharacter(digits)) {
             return false;
         }
         String base = digits.substring(0, 9);
         int firstCheck  = calculateCheckDigit(base, 10);
         int secondCheck = calculateCheckDigit(base + firstCheck, 11);
-
+        // 502.979.848-02
         return digits.charAt(9) - '0' == firstCheck
                && digits.charAt(10) - '0' == secondCheck;
-    }
-
-    private static boolean hasValidLength(String digits) {
-        return digits != null && digits.length() == 11;
     }
 
     private static boolean isAllSameCharacter(String digits) {

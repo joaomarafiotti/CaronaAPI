@@ -23,10 +23,10 @@ public class Address {
                     String number,
                     String city) {
         validate(street, neighborhood, number, city);
-        this.street       = street;
+        this.street = street;
         this.neighborhood = neighborhood;
-        this.number       = number;
-        this.city         = city;
+        this.number = number;
+        this.city = city;
     }
 
     public static AddressBuilder builder() {
@@ -61,14 +61,17 @@ public class Address {
             this.street = street;
             return this;
         }
+
         public AddressBuilder neighborhood(String neighborhood) {
             this.neighborhood = neighborhood;
             return this;
         }
+
         public AddressBuilder number(String number) {
             this.number = number;
             return this;
         }
+
         public AddressBuilder city(String city) {
             this.city = city;
             return this;
@@ -83,6 +86,9 @@ public class Address {
                           String neighborhood,
                           String number,
                           String city) {
+        if (containsInvalidChars(street) || containsInvalidChars(neighborhood) || containsInvalidChars(city)) {
+            throw new IllegalArgumentException("Fields must not contain special characters: !@#$%¨&*(){}?|\\<>,");
+        }
         if (isNullOrBlank(street)) {
             throw new IllegalArgumentException("Street cannot be null or blank");
         }
@@ -105,5 +111,9 @@ public class Address {
 
     private boolean isValidNumber(String num) {
         return num != null && num.matches("\\d+[A-Za-z]?$");
+    }
+
+    private boolean containsInvalidChars(String value) {
+        return value != null && value.matches(".*[!@#$%¨&*(){}?|\\\\<>,].*");
     }
 }
