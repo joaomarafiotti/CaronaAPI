@@ -7,6 +7,8 @@ import br.ifsp.demo.models.response.RideSolicitationResponseModel;
 import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.repositories.RideSolicitationRepository;
+import br.ifsp.demo.utils.RideSolicitationStatus;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -269,5 +271,55 @@ public class CreateRideSolicitationUseCaseTest {
         when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
 
         assertThrows(RideSolicitationForInvalidRideException.class, () -> sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId()));
+    }
+
+
+    @Test
+    @Tag("UnitTest")
+    @Tag("Mutation")
+    @DisplayName("Should not create two equals solicitations")
+    public void shouldCreateTwoSolicitationsIfTheStatusIsDifferent() {
+        when(passengerRepo.findById(p0.getId())).thenReturn(Optional.of(p0));
+        when(rideRepo.findById(ride0.getId())).thenReturn(Optional.of(ride0));
+        RideSolicitation r1 = new RideSolicitation(ride0, p0);
+        r1.setStatus(RideSolicitationStatus.CANCELLED);
+        sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId());
+
+        when(solicitationRepo.findRideSolicitationByRide_Id(any(UUID.class))).thenReturn(List.of(r1));
+
+        assertThat(sut.createAndRegisterRideSolicitationFor(p0.getId(), ride0.getId())).isNotNull();
+    }
+
+    @Test
+    @Tag("Mutation")
+    @Tag("UnitTest")
+    @DisplayName("Should throw when ride does not exist")
+    void shouldThrowEntityNotFoundExceptionWhenRideDoesNotExist() {
+
+        UUID passengerId = UUID.randomUUID();
+        UUID rideId = UUID.randomUUID();
+
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.of(p1));
+        when(rideRepo.findById(rideId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                sut.createAndRegisterRideSolicitationFor(passengerId, rideId)
+        );
+    }
+
+    @Test
+    @Tag("Mutation")
+    @Tag("UnitTest")
+    @DisplayName("Should throw when passenger does not exist")
+    void shouldThrowEntityNotFoundExceptionWhenPassengerDoesNotExist() {
+
+        UUID passengerId = UUID.randomUUID();
+        UUID rideId = UUID.randomUUID();
+
+        when(passengerRepo.findById(passengerId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                sut.createAndRegisterRideSolicitationFor(passengerId, rideId)
+        );
     }
 }
