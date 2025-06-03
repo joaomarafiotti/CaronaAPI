@@ -32,7 +32,6 @@ export const PassengerHeader = () => {
       label: "Sair",
       value: "logout",
       handler: () => {
-        console.log("Logout clicked");
         navigate("/login");
       },
     },

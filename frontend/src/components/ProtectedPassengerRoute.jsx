@@ -14,7 +14,6 @@ const ProtectedPassengerRoute = ({ children }) => {
   if (!userToken) {
     return <Navigate to="/login" replace />;
   }
-  console.log("Passenger Token:", isPassenger);
   if (!isPassenger) {
     return <Navigate to="/login" replace />;
   }

@@ -25,7 +25,6 @@ const ViewCarPage = () => {
             try {
                 const response = await getDriverCars(userToken);
                 setCars(response.data);
-                console.log('Cars fetched successfully:', response.data);
             } catch (error) {
                 console.error('Erro ao buscar carros:', error);
             }

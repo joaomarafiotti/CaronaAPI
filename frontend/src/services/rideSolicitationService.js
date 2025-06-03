@@ -1,6 +1,6 @@
 import api from "./api";
 
-export async function useGetPendingSolicitations(token) {
+export async function useGetPassengerPendingSolicitations(token) {
   const response = await api.get(
     "/api/v1/ride-solicitations/passenger/pending",
     {
@@ -10,6 +10,16 @@ export async function useGetPendingSolicitations(token) {
       },
     }
   );
+  return response.data;
+}
+
+export async function useGetDriverPendingSolicitations(token) {
+  const response = await api.get("/api/v1/ride-solicitations/driver/pending", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
   return response.data;
 }
 
@@ -28,9 +38,36 @@ export async function useCreateSolicitation(token, rideId) {
 }
 
 export async function useCancelSolicitation(token, solicitationId) {
-  console.log(solicitationId);
   const response = await api.put(
     `/api/v1/ride-solicitations/${solicitationId}/cancel`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function useAcceptSolicitation(token, rideSolicitationId) {
+  const response = await api.post(
+    `/api/v1/ride-solicitations/${rideSolicitationId}/accept`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+}
+
+export async function useRejectSolicitation(token, rideSolicitationId) {
+  const response = await api.post(
+    `/api/v1/ride-solicitations/${rideSolicitationId}/reject`,
     {},
     {
       headers: {

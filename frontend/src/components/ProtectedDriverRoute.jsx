@@ -13,7 +13,6 @@ const ProtectedDriverRoute = ({ children }) => {
   if (!userToken) {
     return <Navigate to="/login" replace />;
   }
-  console.log("Driver Token:", userToken);
   if (getUserRole(userToken) !== "DRIVER") {
     return <Navigate to="/login" replace />;
   }

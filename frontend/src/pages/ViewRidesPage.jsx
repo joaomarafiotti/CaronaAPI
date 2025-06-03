@@ -14,7 +14,6 @@ const ViewRidesPage = () => {
     const fetchRides = async () => {
       try {
         const response = await getDriverRides(userToken);
-        console.log(response)
         setRides(response.data);
       } catch (err) {
         setError('Erro ao buscar caronas');

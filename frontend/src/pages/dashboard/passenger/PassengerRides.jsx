@@ -13,7 +13,6 @@ export const PassengerRides = () => {
     try {
       setIsLoading(true);
       const rides = await useGetRides(userToken);
-      console.log("Updated Rides:", rides);
       setRides(rides);
     } catch (error) {
       console.error("Error attempting to update rides:", error);
@@ -28,7 +27,6 @@ export const PassengerRides = () => {
 
   const handleAbandonRide = async (rideId) => {
     try {
-      console.log("Abandoning ride:", rideId);
       setIsLoading(true);
       await useAbandonRide(userToken, rideId);
       await updateRides();

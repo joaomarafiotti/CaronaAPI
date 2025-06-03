@@ -7,14 +7,6 @@ import PassengerHeader from "../passenger/PassengerHeader";
 import Footer from "./Footer";
 
 const DriverDashBoardLayout = () => {
-  const { userToken } = useAuth();
-
-  //  if(!userToken) return <Navigate to="/login" replace={true} />;
-
-  //  const driverToken = getUserRole(userToken) === "DRIVER";
-
-  //  console.log("Driver Token:", driverToken);
-
   return (
     <>
       <DriverHeader />

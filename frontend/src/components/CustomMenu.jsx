@@ -17,7 +17,6 @@ const CustomMenu = ({ items, title }) => {
                   key={item.value}
                   value={item.value}
                   onClick={() => {
-                    console.log(`Selected: ${item.label}`);
                     item.handler && item.handler();
                   }}
                 >

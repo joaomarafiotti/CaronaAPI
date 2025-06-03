@@ -85,8 +85,6 @@ export const Ride = ({
             stats.passengers.map((passenger) => (
               <Avatar.Root
                 key={passenger}
-                onClick={() => console.log(passenger)}
-                cursor={"pointer"}
               >
                 <Avatar.Fallback name={passenger} />
               </Avatar.Root>

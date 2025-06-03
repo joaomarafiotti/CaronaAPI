@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RideSolicitation from "../../../components/RideSolicitation";
 import {
-  useGetPendingSolicitations,
+  useGetPassengerPendingSolicitations,
   useCancelSolicitation,
 } from "../../../services/rideSolicitationService";
 import { useAuth } from "../../../context/AuthContext";
@@ -15,8 +15,9 @@ export const PassengerRideRequests = () => {
   const updateSolicitations = async () => {
     try {
       setIsLoading(true);
-      const solicitations = await useGetPendingSolicitations(userToken);
-      console.log("Updated Rides:", solicitations);
+      const solicitations = await useGetPassengerPendingSolicitations(
+        userToken
+      );
       setSolicitations(solicitations);
     } catch (error) {
       console.error("Error attempting to update solicitations:", error);
@@ -32,7 +33,6 @@ export const PassengerRideRequests = () => {
   const handleCancelSolicitation = async (solicitationId) => {
     try {
       const response = await useCancelSolicitation(userToken, solicitationId);
-      console.log("Solicitation canceled successfully:", response);
       updateSolicitations();
     } catch (error) {
       console.error("Error attempting to cancel solicitation:", error);

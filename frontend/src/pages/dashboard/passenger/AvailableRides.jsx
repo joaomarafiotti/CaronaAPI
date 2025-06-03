@@ -13,7 +13,6 @@ export const AvailableRides = () => {
   const updateRides = async () => {
     try {
       const rides = await useGetAvailableRides(userToken);
-      console.log("Updated Rides:", rides);
       setRides(rides);
     } catch (error) {
       console.error("Error attempting to update rides:", error);
@@ -23,7 +22,6 @@ export const AvailableRides = () => {
   const handleSolicitation = async (rideId) => {
     try {
       setIsLoading(true);
-      console.log(rideId);
       await useCreateSolicitation(userToken, rideId);
     } catch (error) {
       console.error("Erro ao solicitar carona:", error);

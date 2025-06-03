@@ -11,7 +11,6 @@ const UserProfile = () => {
     const updatePassenger = async () => {
       try {
         const response = await getUserByToken(userToken);
-        console.log("Updated Passenger:", response);
         setPassenger(response.data);
       } catch (error) {
         console.error("Error attempting to update passenger:", error);

@@ -58,7 +58,7 @@ const RegisterCarPage = () => {
                 let response = await registerCar(fields, userToken);
                 navigate('/dashboard/driver/cars/view');
             } catch (error) {
-                console.log('Error registering car:', error);
+                console.error('Error registering car:', error);
                 setResponseError('Failed to register car.', error.message);
             }
             setFields(initialState);

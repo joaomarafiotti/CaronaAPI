@@ -16,7 +16,7 @@ import DriverDashBoardLayout from "./pages/dashboard/layout/DriverDashBoardLayou
 import PassengerDashBoardLayout from "./pages/dashboard/layout/PassengerDashBoardLayout";
 import ViewRidesPage from "./pages/ViewRidesPage";
 import UserProfile from "./pages/dashboard/passenger/UserProfile";
-// import DriverRideSolicitations from "./pages/dashboard/driver/DriverRideSolicitations";
+import ViewSolicitationNotifications from "./pages/dashboard/driver/ViewSolicitationNotifications";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
             path="solicitations/pending"
             element={
               <ProtectedDriverRoute>
-                <RegisterCarPage />
+                <ViewSolicitationNotifications />
               </ProtectedDriverRoute>
             }
           />

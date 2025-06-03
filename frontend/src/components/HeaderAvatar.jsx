@@ -18,7 +18,6 @@ export const HeaderAvatar = ({ itens }) => (
             <Menu.Item
               key={item.value}
               onClick={() => {
-                console.log(`Selected: ${item.label}`);
                 item.handler && item.handler();
               }}
             >

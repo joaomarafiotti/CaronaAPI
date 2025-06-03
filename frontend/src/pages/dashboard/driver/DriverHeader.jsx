@@ -33,15 +33,10 @@ const DriverHeader = () => {
   
   const [solicitationItems, setSolicitationItems] = useState([
     {
-      label: "Solicitações Pendentes",
+      label: "Solicitações Recebidas",
       value: "pending-solicitations",
       handler: () => navigate("/dashboard/driver/solicitations/pending"),
     },
-    // {
-    //   label: "Histórico de Solicitações",
-    //   value: "solicitation-history",
-    //   handler: () => navigate("/dashboard/driver/solicitations/history"),
-    // },
   ]);
 
   const [avatarMenuItens, setAvatarMenuItens] = useState([
@@ -54,7 +49,6 @@ const DriverHeader = () => {
       label: "Sair",
       value: "logout",
       handler: () => {
-        console.log("Logout clicked");
         navigate("/login");
       },
     },
