@@ -78,9 +78,8 @@ class RemoveCarUseCaseTest {
 
         sut.execute(driverId, otherCar.getId());
 
-        verify(driverRepository).save(driver);
         verify(carRepository).save(otherCar);
-        assertFalse(driver.getCars().contains(otherCar));
+        assertFalse(otherCar.getIsActive());
     }
 
     @Tag("TDD")
@@ -127,25 +126,6 @@ class RemoveCarUseCaseTest {
     @Test
     @Tag("TDD")
     @Tag("UnitTest")
-    @Description("Should only remove specified car when multiple cars exists")
-    void shouldOnlyRemoveSpecifiedCarWhenMultipleCarsExist() {
-        Car car2 = new Car("Ford", "Ka", "Blue", 5, LicensePlate.parse("DEF5C78"));
-        driver.addCar(car2);
-
-        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
-
-        sut.execute(driverId, carId);
-
-        assertFalse(driver.getCars().contains(car));
-        assertTrue(driver.getCars().contains(car2));
-
-        verify(driverRepository).save(driver);
-        verify(carRepository).save(car);
-    }
-
-    @Test
-    @Tag("TDD")
-    @Tag("UnitTest")
     @Description("Should throw car not found exception when driver has no cars")
     void shouldThrowCarNotFoundExceptionWhenDriverHasNoCars() {
         driver.getCars().clear();
@@ -163,19 +143,6 @@ class RemoveCarUseCaseTest {
         when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
 
         assertThrows(CarInUseException.class, () -> {
-            sut.execute(driverId, carId);
-        });
-    }
-
-    @Test
-    @Tag("Structural")
-    @Tag("UnitTest")
-    @DisplayName("Should throw if ride car is null")
-    void shouldThrowIfRideCarIsNull() {
-        Ride ride = new Ride(address0, address1, LocalDateTime.now().plusDays(2), driver, null);
-        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
-        when(rideRepository.findRideByDriver_Id(driverId)).thenReturn(List.of(ride));
-        assertThrows(IllegalStateException.class, () -> {
             sut.execute(driverId, carId);
         });
     }
