@@ -2,40 +2,44 @@ package br.ifsp.demo.ui;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class LoginPage extends BasePageObject {
 
     private static final String LOGIN_URL = "http://localhost:5173/login";
 
+    // Locators
+    private final By emailField = By.name("username");
+    private final By passwordField = By.name("password");
+    private final By submitButton = By.cssSelector("button[type='submit']");
+
     public LoginPage(WebDriver driver) {
         super(driver);
         driver.get(LOGIN_URL);
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+        // Espera ficar visivel
+        waitForVisibility(emailField);
     }
 
     public void fillEmail(String email) {
-        WebElement emailField = driver.findElement(By.id("email"));
-        emailField.clear();
-        emailField.sendKeys(email);
+        fillField(emailField, email);
     }
 
     public void fillPassword(String password) {
-        WebElement passwordField = driver.findElement(By.id("password"));
-        passwordField.clear();
-        passwordField.sendKeys(password);
+        fillField(passwordField, password);
     }
 
-    public void clickLogin() {
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+    public void submitLogin() {
+        clickWhenClickable(submitButton);
     }
 
-    public String getErrorMessage() {
-        return driver.findElement(By.cssSelector(".error-message")).getText();
+    public String getCurrentUrl() {
+        return driver.getCurrentUrl();
+    }
+
+    public String getPageTitle() {
+        return getPageTitle(); // Usa helper da BasePageObject
+    }
+
+    public boolean isEmailFieldVisible() {
+        return driver.findElement(emailField).isDisplayed();
     }
 }
