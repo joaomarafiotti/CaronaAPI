@@ -8,8 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.time.Duration;
-
 @Tag("UiTest")
 public class BaseSeleniumTest {
 
@@ -17,19 +15,25 @@ public class BaseSeleniumTest {
 
     @BeforeEach
     public void setUp() {
+        // Setup do driver usando WebDriverManager
         WebDriverManager.chromedriver().setup();
 
+        // Opções do Chrome
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
+        options.addArguments("--start-maximized"); // Começar maximizado
+
+        // Criação do driver
         driver = new ChromeDriver(options);
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        // Ao inves de usar implicitWait vou sempre usar explicitWait no PageObject
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5)); (removido)
 
+        // Navega para a página inicial, se necessário
         setInitialPage();
     }
 
-    protected void setInitialPage() {
-    }
+    // Hook para ser sobrescrito nos testes
+    protected void setInitialPage() {}
 
     @AfterEach
     public void tearDown() {
