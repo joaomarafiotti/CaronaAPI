@@ -1,7 +1,9 @@
-package br.ifsp.demo.ui;
+package br.ifsp.demo.ui.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import br.ifsp.demo.ui.BasePageObject;
 
 public class LoginPage extends BasePageObject {
 
