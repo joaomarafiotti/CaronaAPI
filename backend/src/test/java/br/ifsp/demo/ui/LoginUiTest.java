@@ -1,7 +1,5 @@
 package br.ifsp.demo.ui;
 
-import br.ifsp.demo.ui.BaseSeleniumTest;
-import br.ifsp.demo.ui.LoginPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
