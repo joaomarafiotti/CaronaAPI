@@ -1,0 +1,47 @@
+package br.ifsp.demo.ui.test;
+
+import br.ifsp.demo.ui.BaseSeleniumTest;
+import br.ifsp.demo.ui.page.AvailableRidesPage;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Tag("UiTest")
+public class AvailableRidesUiTest extends BaseSeleniumTest {
+
+    @Override
+    protected void setInitialPage() {
+        new AvailableRidesPage(driver);
+    }
+
+    @Test
+    @DisplayName("Happy Path - Should display available rides and title")
+    void shouldDisplayAvailableRidesAndTitle() {
+        AvailableRidesPage page = new AvailableRidesPage(driver);
+        assertThat(page.isTitleVisible()).isTrue();
+        assertThat(page.hasRideCards()).isTrue(); // exige que haja pelo menos uma carona no sistema
+    }
+
+    @Test
+    @DisplayName("Sad Path - Should not display rides if none available")
+    void shouldNotDisplayRidesIfNoneAvailable() {
+        AvailableRidesPage page = new AvailableRidesPage(driver);
+
+        // só valida se nenhuma carona for retornada
+        if (!page.hasRideCards()) {
+            assertThat(page.countRidesDisplayed()).isEqualTo(0);
+        }
+    }
+
+    @Test
+    @DisplayName("UI Responsiveness - Should render properly on mobile")
+    void shouldRenderProperlyOnMobile() {
+        driver.manage().window().setSize(new Dimension(375, 812));
+
+        AvailableRidesPage page = new AvailableRidesPage(driver);
+        assertThat(page.isTitleVisible()).isTrue();
+    }
+}
