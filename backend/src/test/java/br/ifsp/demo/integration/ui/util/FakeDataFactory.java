@@ -11,16 +11,9 @@ public class FakeDataFactory {
     private static final Faker faker = new Faker(Locale.forLanguageTag("pt-BR"));
 
     private static final List<String> cpfList = List.of(
-        "529.982.247-25",
-        "390.533.447-05",
-        "215.365.987-43",
-        "746.821.360-20",
-        "123.456.789-09",
-        "654.321.987-00",
-        "321.654.987-66",
-        "222.333.444-55",
-        "111.222.333-96",
-        "147.258.369-00"
+        "529.982.247-25", "390.533.447-05", "215.365.987-43",
+        "746.821.360-20", "123.456.789-09", "654.321.987-00",
+        "321.654.987-66", "222.333.444-55", "111.222.333-96", "147.258.369-00"
     );
 
     private static final AtomicInteger cpfIndex = new AtomicInteger(0);
@@ -38,7 +31,10 @@ public class FakeDataFactory {
     }
 
     public static String randomBirthDate() {
-        return "1990-01-01"; // tlvz gerar dinamicamente depois?
+        int year = faker.number().numberBetween(1970, 2005);
+        int month = faker.number().numberBetween(1, 12);
+        int day = faker.number().numberBetween(1, 28);
+        return String.format("%04d-%02d-%02d", year, month, day);
     }
 
     public static String strongPassword() {
@@ -48,5 +44,13 @@ public class FakeDataFactory {
     public static String generateValidCpfFromList() {
         int index = cpfIndex.getAndIncrement() % cpfList.size();
         return cpfList.get(index);
+    }
+
+    public static String randomPhoneNumber() {
+        return faker.phoneNumber().cellPhone();
+    }
+
+    public static String randomPlate() {
+        return faker.bothify("???-####").toUpperCase();
     }
 }
