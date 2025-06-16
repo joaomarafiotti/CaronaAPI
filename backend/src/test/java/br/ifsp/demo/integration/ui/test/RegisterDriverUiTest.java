@@ -7,9 +7,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.RegisterDriverPage;
+
+import java.time.Duration;
 
 @Tag("UiTest")
 public class RegisterDriverUiTest extends BaseSeleniumTest {
@@ -25,16 +29,18 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
         registerDriverPage.fillName("João");
         registerDriverPage.fillLastname("Pedro");
-        registerDriverPage.fillEmail("joao.pedro@example.com"); // email que não esta cadastrado
+        registerDriverPage.fillEmail("joao.pedro@example.com"); // email que não está cadastrado
         registerDriverPage.fillCpf("390.533.447-05"); // CPF válido
         registerDriverPage.fillBirthDate("1990-01-01");
         registerDriverPage.fillPassword("SenhaForte123!");
         registerDriverPage.fillConfirmPassword("SenhaForte123!");
 
         registerDriverPage.submitForm();
-        System.out.println(driver.getPageSource());
 
-        // Esperado: redireciona para login
+        // Aguarda o redirecionamento para a página de login
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/login"));
+
         assertThat(driver.getCurrentUrl()).contains("/login");
     }
 
@@ -45,7 +51,6 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
 
         registerDriverPage.submitForm();
 
-        // Deve continuar na página de cadastro
         assertThat(driver.getCurrentUrl()).endsWith("/register-driver");
         assertThat(driver.findElement(By.name("name")).isDisplayed()).isTrue(); // Garantia extra
     }
@@ -53,12 +58,10 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
     @Test
     @DisplayName("UI Responsiveness - Should display Register Driver page correctly on mobile size")
     void shouldDisplayRegisterDriverPageCorrectlyOnMobile() {
-        // Define um tamanho de tela de mobile (exemplo: iPhone X)
         driver.manage().window().setSize(new Dimension(375, 812));
 
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
 
-        // Verifica se o campo name está visível
         assertThat(registerDriverPage.isNameFieldVisible()).isTrue();
     }
 }
