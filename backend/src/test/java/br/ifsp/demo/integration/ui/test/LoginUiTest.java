@@ -46,9 +46,8 @@ public class LoginUiTest extends BaseSeleniumTest {
         loginPage.fillPassword("wrongpassword");
         loginPage.submitLogin();
 
-        // Deve continuar na página de login
         assertThat(driver.getCurrentUrl()).endsWith("/login");
-        assertThat(driver.getTitle()).isEqualTo("Vite + React"); // Garantia extra
+        assertThat(loginPage.getPageTitle()).isEqualTo("Vite + React");
     }
 
     @Test
