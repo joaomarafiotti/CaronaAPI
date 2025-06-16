@@ -2,14 +2,12 @@ package br.ifsp.demo.integration.ui.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class LoginPage extends BasePageObject {
 
     private static final String LOGIN_URL = "http://localhost:5173/login";
 
-    // Locators
     private final By emailField = By.name("username");
     private final By passwordField = By.name("password");
     private final By submitButton = By.cssSelector("button[type='submit']");
@@ -17,8 +15,7 @@ public class LoginPage extends BasePageObject {
     public LoginPage(WebDriver driver) {
         super(driver);
         driver.get(LOGIN_URL);
-        // Espera ficar visivel
-        waitForVisibility(emailField);
+        waitForVisibility(emailField); // Espera inicial
     }
 
     public void fillEmail(String email) {
@@ -37,11 +34,12 @@ public class LoginPage extends BasePageObject {
         return driver.getCurrentUrl();
     }
 
+    @Override
     public String getPageTitle() {
-        return getPageTitle(); // Usa helper da BasePageObject
+        return super.getPageTitle();
     }
 
     public boolean isEmailFieldVisible() {
-        return driver.findElement(emailField).isDisplayed();
+        return isVisible(emailField);
     }
 }
