@@ -4,9 +4,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.LoginPage;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,10 +26,14 @@ public class LoginUiTest extends BaseSeleniumTest {
     @DisplayName("Happy Path - Should login with valid driver credentials")
     void shouldLoginWithValidDriverCredentials() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("user@gmail.com"); // usuário válido do grupo
-        loginPage.fillPassword("password");  // senha válida
+        loginPage.fillEmail("testuser@hotmail.com"); // usuário válido dps de criar (ver se tem como fazer isso automaticamente dps)
+        loginPage.fillPassword("SenhaForte123!");  // senha válida (sempre a mesma)
         loginPage.submitLogin();
 
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+            .until(ExpectedConditions.urlContains("/dashboard/driver/profile"));
+            
         // Espera um redirecionamento para a dashboard de driver
         assertThat(driver.getCurrentUrl()).contains("/dashboard/driver/profile");
     }
