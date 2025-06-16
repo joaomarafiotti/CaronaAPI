@@ -1,12 +1,12 @@
-package br.ifsp.demo.ui.test;
+package br.ifsp.demo.integration.ui.test;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.ui.BaseSeleniumTest;
-import br.ifsp.demo.ui.page.LoginPage;
+import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.page.LoginPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

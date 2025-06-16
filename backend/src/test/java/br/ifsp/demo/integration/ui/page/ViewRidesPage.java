@@ -1,8 +1,9 @@
-package br.ifsp.demo.ui.page;
+package br.ifsp.demo.integration.ui.page;
 
-import br.ifsp.demo.ui.BasePageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class ViewRidesPage extends BasePageObject {
 

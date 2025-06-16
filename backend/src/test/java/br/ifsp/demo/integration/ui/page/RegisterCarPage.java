@@ -1,9 +1,9 @@
-package br.ifsp.demo.ui.page;
+package br.ifsp.demo.integration.ui.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import br.ifsp.demo.ui.BasePageObject;
+import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class RegisterCarPage extends BasePageObject {
 

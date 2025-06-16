@@ -1,12 +1,13 @@
-package br.ifsp.demo.ui.page;
+package br.ifsp.demo.integration.ui.page;
 
-import br.ifsp.demo.ui.BasePageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class RegisterDriverPage extends BasePageObject {
+import br.ifsp.demo.integration.ui.BasePageObject;
 
-    private static final String REGISTER_DRIVER_URL = "http://localhost:5173/register-driver";
+public class RegisterPassengerPage extends BasePageObject {
+
+    private static final String REGISTER_PASSENGER_URL = "http://localhost:5173/register-passenger";
 
     // Locators
     private final By nameField = By.name("name");
@@ -18,9 +19,10 @@ public class RegisterDriverPage extends BasePageObject {
     private final By confirmPasswordField = By.name("confirmPassword");
     private final By submitButton = By.cssSelector("button[type='submit']");
 
-    public RegisterDriverPage(WebDriver driver) {
+    public RegisterPassengerPage(WebDriver driver) {
         super(driver);
-        driver.get(REGISTER_DRIVER_URL);
+        driver.get(REGISTER_PASSENGER_URL);
+        // Espera que o campo de nome esteja visível
         waitForVisibility(nameField);
     }
 
@@ -53,11 +55,11 @@ public class RegisterDriverPage extends BasePageObject {
         fillField(confirmPasswordField, confirmPassword);
     }
 
+    // Submit form
     public void submitForm() {
         clickWhenClickable(submitButton);
     }
 
-    // util para verificar se o formulário foi enviado com sucesso
     public boolean isNameFieldVisible() {
         return driver.findElement(nameField).isDisplayed();
     }
