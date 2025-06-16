@@ -32,6 +32,6 @@ public class RideSolicitationPage extends BasePageObject {
     }
 
     public boolean isResponsiveLayoutVisible() {
-        return driver.findElement(driverName).isDisplayed();
+        return isVisible(driverName);
     }
 }

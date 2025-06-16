@@ -12,7 +12,6 @@ public class ViewRidesPage extends BasePageObject {
     private final By notStartedTitle = By.xpath("//*[contains(text(),'Caronas não iniciadas')]");
     private final By inProgressTitle = By.xpath("//*[contains(text(),'Em andamento')]");
     private final By finishedTitle = By.xpath("//*[contains(text(),'Caronas encerradas')]");
-
     private final By errorAlert = By.cssSelector(".chakra-alert");
 
     public ViewRidesPage(WebDriver driver) {
@@ -41,6 +40,6 @@ public class ViewRidesPage extends BasePageObject {
     }
 
     public boolean isResponsiveTitleVisible() {
-        return driver.findElement(notStartedTitle).isDisplayed();
+        return isVisible(notStartedTitle);
     }
 }

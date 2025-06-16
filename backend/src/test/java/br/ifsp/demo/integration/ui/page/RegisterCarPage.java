@@ -9,7 +9,6 @@ public class RegisterCarPage extends BasePageObject {
 
     private static final String REGISTER_CAR_URL = "http://localhost:5173/dashboard/driver/cars/register";
 
-    // Locators
     private final By brandField = By.id("brand");
     private final By modelField = By.id("model");
     private final By colorField = By.id("color");
@@ -17,17 +16,14 @@ public class RegisterCarPage extends BasePageObject {
     private final By licensePlateField = By.id("licensePlate");
     private final By submitButton = By.cssSelector("button.auth-button");
 
-    // Locators para mensagens de erro
     private final By formError = By.cssSelector("div.form-error");
 
     public RegisterCarPage(WebDriver driver) {
         super(driver);
         driver.get(REGISTER_CAR_URL);
-        // Espera que o campo de marca esteja visível
         waitForVisibility(brandField);
     }
 
-    // Preencher campos do formulário
     public void fillBrand(String brand) {
         fillField(brandField, brand);
     }
@@ -48,12 +44,10 @@ public class RegisterCarPage extends BasePageObject {
         fillField(licensePlateField, licensePlate);
     }
 
-    // Submit form
     public void submitForm() {
         clickWhenClickable(submitButton);
     }
 
-    // Checar se o formulário foi enviado com sucesso
     public boolean isGeneralFormErrorVisible() {
         return !driver.findElements(formError).isEmpty();
     }
@@ -65,9 +59,8 @@ public class RegisterCarPage extends BasePageObject {
         return "";
     }
 
-    // Utilitários para verificar visibilidade dos campos
     public boolean isBrandFieldVisible() {
-        return driver.findElement(brandField).isDisplayed();
+        return isVisible(brandField);
     }
 
     public String getCurrentUrl() {

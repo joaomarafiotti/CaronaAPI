@@ -21,7 +21,7 @@ public class UserProfilePage extends BasePageObject {
     }
 
     public boolean isNameVisible() {
-        return driver.findElement(nameHeading).isDisplayed();
+        return isVisible(nameHeading);
     }
 
     public boolean isEmailVisible() {

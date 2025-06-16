@@ -9,7 +9,6 @@ public class RegisterPassengerPage extends BasePageObject {
 
     private static final String REGISTER_PASSENGER_URL = "http://localhost:5173/register-passenger";
 
-    // Locators
     private final By nameField = By.name("name");
     private final By lastnameField = By.name("lastname");
     private final By emailField = By.name("email");
@@ -22,11 +21,9 @@ public class RegisterPassengerPage extends BasePageObject {
     public RegisterPassengerPage(WebDriver driver) {
         super(driver);
         driver.get(REGISTER_PASSENGER_URL);
-        // Espera que o campo de nome esteja visível
         waitForVisibility(nameField);
     }
 
-    // Fill methods
     public void fillName(String name) {
         fillField(nameField, name);
     }
@@ -55,13 +52,12 @@ public class RegisterPassengerPage extends BasePageObject {
         fillField(confirmPasswordField, confirmPassword);
     }
 
-    // Submit form
     public void submitForm() {
         clickWhenClickable(submitButton);
     }
 
     public boolean isNameFieldVisible() {
-        return driver.findElement(nameField).isDisplayed();
+        return isVisible(nameField);
     }
 
     public String getCurrentUrl() {

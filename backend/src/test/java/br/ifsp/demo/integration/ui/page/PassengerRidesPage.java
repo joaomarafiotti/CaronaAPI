@@ -19,7 +19,7 @@ public class PassengerRidesPage extends BasePageObject {
     }
 
     public boolean isTitleVisible() {
-        return driver.findElement(title).isDisplayed();
+        return isVisible(title);
     }
 
     public boolean hasRides() {
