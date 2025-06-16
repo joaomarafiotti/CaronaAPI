@@ -64,7 +64,7 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
         registerDriverPage.submitForm();
         assertThat(driver.getCurrentUrl()).endsWith("/register-driver");
-        assertThat(driver.findElement(By.name("name")).isDisplayed()).isTrue();
+        assertThat(registerDriverPage.isNameFieldVisible()).isTrue();
     }
 
     @Test

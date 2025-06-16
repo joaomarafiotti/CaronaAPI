@@ -66,7 +66,7 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
         registerPassengerPage.submitForm();
 
         assertThat(driver.getCurrentUrl()).endsWith("/register-passenger");
-        assertThat(driver.findElement(By.name("name")).isDisplayed()).isTrue();
+        assertThat(registerPassengerPage.isNameFieldVisible()).isTrue();
     }
 
     @Test
