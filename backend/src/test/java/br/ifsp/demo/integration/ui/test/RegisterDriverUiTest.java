@@ -26,7 +26,7 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         registerDriverPage.fillName("João");
         registerDriverPage.fillLastname("Pedro");
         registerDriverPage.fillEmail("joao.pedro@example.com"); // email que não esta cadastrado
-        registerDriverPage.fillCpf("123.456.789-00");
+        registerDriverPage.fillCpf("390.533.447-05"); // CPF válido
         registerDriverPage.fillBirthDate("1990-01-01");
         registerDriverPage.fillPassword("SenhaForte123!");
         registerDriverPage.fillConfirmPassword("SenhaForte123!");
