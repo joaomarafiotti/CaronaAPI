@@ -2,7 +2,6 @@ package br.ifsp.demo.integration.ui.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class AvailableRidesPage extends BasePageObject {
@@ -19,7 +18,7 @@ public class AvailableRidesPage extends BasePageObject {
     }
 
     public boolean isTitleVisible() {
-        return driver.findElement(pageTitle).isDisplayed();
+        return isVisible(pageTitle);
     }
 
     public boolean hasRideCards() {
