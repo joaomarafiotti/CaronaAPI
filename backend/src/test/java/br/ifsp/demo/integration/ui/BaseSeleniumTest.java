@@ -15,24 +15,17 @@ public class BaseSeleniumTest {
 
     @BeforeEach
     public void setUp() {
-        // Setup do driver usando WebDriverManager
         WebDriverManager.chromedriver().setup();
 
-        // Opções do Chrome
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // Começar maximizado
+        options.addArguments("--start-maximized");
 
-        // Criação do driver
         driver = new ChromeDriver(options);
+        driver.manage().deleteAllCookies(); // Limpa o estado do navegador
 
-        // Ao inves de usar implicitWait vou sempre usar explicitWait no PageObject
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5)); (removido)
-
-        // Navega para a página inicial, se necessário
-        setInitialPage();
+        setInitialPage(); // Hook para subclasses definirem a página inicial
     }
 
-    // Hook para ser sobrescrito nos testes
     protected void setInitialPage() {}
 
     @AfterEach
