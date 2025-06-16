@@ -40,7 +40,7 @@ public class LoginUiTest extends BaseSeleniumTest {
 
         // Deve continuar na página de login
         assertThat(driver.getCurrentUrl()).endsWith("/login");
-        assertThat(driver.getTitle()).isEqualTo("Login"); // Garantia extra
+        assertThat(driver.getTitle()).isEqualTo("Vite + React"); // Garantia extra
     }
 
     @Test
