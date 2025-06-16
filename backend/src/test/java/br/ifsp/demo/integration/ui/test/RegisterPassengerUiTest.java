@@ -7,6 +7,7 @@ import br.ifsp.demo.integration.ui.util.FakeDataFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -65,7 +66,7 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
         registerPassengerPage.submitForm();
 
         assertThat(driver.getCurrentUrl()).endsWith("/register-passenger");
-        assertThat(driver.getTitle()).isEqualTo("Cadastro de Passageiro");
+        assertThat(driver.findElement(By.name("name")).isDisplayed()).isTrue();
     }
 
     @Test
