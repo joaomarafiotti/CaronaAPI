@@ -1,14 +1,15 @@
 package br.ifsp.demo.integration.ui.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.RegisterDriverPage;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
 public class RegisterDriverUiTest extends BaseSeleniumTest {
@@ -31,6 +32,7 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         registerDriverPage.fillConfirmPassword("SenhaForte123!");
 
         registerDriverPage.submitForm();
+        System.out.println(driver.getPageSource());
 
         // Esperado: redireciona para login
         assertThat(driver.getCurrentUrl()).contains("/login");
@@ -45,7 +47,7 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
 
         // Deve continuar na página de cadastro
         assertThat(driver.getCurrentUrl()).endsWith("/register-driver");
-        assertThat(driver.getTitle()).isEqualTo("Cadastro de Motorista"); // Garantia extra
+        assertThat(driver.findElement(By.name("name")).isDisplayed()).isTrue(); // Garantia extra
     }
 
     @Test
