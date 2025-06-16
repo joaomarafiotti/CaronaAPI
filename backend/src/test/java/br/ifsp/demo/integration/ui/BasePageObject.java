@@ -22,25 +22,42 @@ public class BasePageObject {
         return driver.getTitle();
     }
 
-    // Wait até um elemento estar visível
     protected WebElement waitForVisibility(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
-    // Clicar quando estiver clicável
+    protected WebElement waitForPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    protected boolean isVisible(By locator) {
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     protected void clickWhenClickable(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    // Preencher campo (espera visibilidade)
     protected void fillField(By locator, String text) {
         WebElement field = waitForVisibility(locator);
         field.clear();
         field.sendKeys(text);
     }
 
-    // Obter texto de um elemento (espera visibilidade)
+    protected void fillWithoutClearing(By locator, String text) {
+        WebElement field = waitForVisibility(locator);
+        field.sendKeys(text);
+    }
+
     protected String getElementText(By locator) {
         return waitForVisibility(locator).getText();
+    }
+
+    protected void waitForInvisibility(By locator) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 }
