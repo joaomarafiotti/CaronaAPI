@@ -46,6 +46,12 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
 
         registerDriverPage.submitForm();
 
+        // Aguarda e aceita o alerta "Cadastro realizado com sucesso!"
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+            .until(ExpectedConditions.alertIsPresent());
+        driver.switchTo().alert().accept();
+
+        // Agora sim pode aguardar o redirecionamento
         new WebDriverWait(driver, Duration.ofSeconds(5))
             .until(ExpectedConditions.urlContains("/login"));
 
