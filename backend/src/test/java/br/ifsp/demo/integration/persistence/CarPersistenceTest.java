@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -73,6 +74,17 @@ class CarPersistenceTest {
             assertThat(savedCar.getId()).isNotNull();
             assertThat(savedCar.getIsActive()).isTrue();
             assertThat(savedCar.getDriver()).isEqualTo(driver);
+        }
+
+        @Test
+        @DisplayName("Should fail when trying to save car without driver")
+        void shouldFailWhenSavingCarWithoutDriver() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+
+            assertThatThrownBy(() -> {
+                carRepository.save(car);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
         }
     }
 }
