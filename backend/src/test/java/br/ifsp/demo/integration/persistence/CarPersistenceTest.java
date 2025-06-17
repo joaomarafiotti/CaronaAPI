@@ -86,5 +86,22 @@ class CarPersistenceTest {
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
         }
+
+        @Test
+        @DisplayName("Should fail when trying to save car with duplicate license plate")
+        void shouldFailWhenSavingCarWithDuplicateLicensePlate() {
+            Car firstCar = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            firstCar.setDriver(driver);
+            carRepository.save(firstCar);
+            entityManager.flush();
+
+            Car secondCar = createValidCar("Chevrolet", "Malibu", "ABC-1234");
+            secondCar.setDriver(anotherDriver);
+
+            assertThatThrownBy(() -> {
+                carRepository.save(secondCar);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 }
