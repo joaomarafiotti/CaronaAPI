@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BaseDriverTest;
 import br.ifsp.demo.integration.ui.page.ViewRidesPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class ViewRidesUiTest extends BaseSeleniumTest {
+public class ViewRidesUiTest extends BaseDriverTest {
 
     @Override
     protected void setInitialPage() {
-        new ViewRidesPage(driver); // inicia na página de visualização de caronas
+        new ViewRidesPage(driver);
     }
 
     @Test
@@ -23,7 +23,6 @@ public class ViewRidesUiTest extends BaseSeleniumTest {
     void shouldDisplayAllRideSectionsIfDataExists() {
         ViewRidesPage viewRidesPage = new ViewRidesPage(driver);
 
-        // Verifica se pelo menos um dos grupos aparece (podem não ter todas as seções)
         assertThat(
             viewRidesPage.hasNotStartedRides()
             || viewRidesPage.hasInProgressRides()
@@ -46,8 +45,7 @@ public class ViewRidesUiTest extends BaseSeleniumTest {
     @Test
     @DisplayName("UI Responsiveness - Should display title correctly on mobile")
     void shouldDisplayTitleCorrectlyOnMobile() {
-        driver.manage().window().setSize(new Dimension(375, 812)); // iPhone X
-
+        driver.manage().window().setSize(new Dimension(375, 812));
         ViewRidesPage viewRidesPage = new ViewRidesPage(driver);
         assertThat(viewRidesPage.isResponsiveTitleVisible()).isTrue();
     }

@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BaseDriverTest;
 import br.ifsp.demo.integration.ui.page.RegisterRidePage;
 import br.ifsp.demo.integration.ui.util.FakeDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class RegisterRideUiTest extends BaseSeleniumTest {
+public class RegisterRideUiTest extends BaseDriverTest {
 
     @Override
     protected void setInitialPage() {
@@ -24,11 +24,9 @@ public class RegisterRideUiTest extends BaseSeleniumTest {
     void shouldRegisterRideWithValidData() {
         RegisterRidePage registerRidePage = new RegisterRidePage(driver);
 
-        // Dados aleatórios
         String startAddress = FakeDataFactory.randomAddress();
         String endAddress = FakeDataFactory.randomAddress();
 
-        // Horário futuro
         String futureDateTime = java.time.LocalDateTime.now()
             .plusDays(1).withHour(10).withMinute(0)
             .toString().replace("T", " ");

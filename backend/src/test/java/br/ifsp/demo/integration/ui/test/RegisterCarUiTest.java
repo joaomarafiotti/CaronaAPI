@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BaseDriverTest;
 import br.ifsp.demo.integration.ui.page.RegisterCarPage;
 import br.ifsp.demo.integration.ui.util.FakeDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class RegisterCarUiTest extends BaseSeleniumTest {
+public class RegisterCarUiTest extends BaseDriverTest {
 
     @Override
     protected void setInitialPage() {
@@ -39,7 +39,6 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
     @DisplayName("Sad Path - Should show error when submitting empty form")
     void shouldShowErrorWhenSubmittingEmptyForm() {
         RegisterCarPage registerCarPage = new RegisterCarPage(driver);
-
         registerCarPage.submitForm();
 
         assertThat(registerCarPage.isGeneralFormErrorVisible()).isTrue();
@@ -51,7 +50,6 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
         driver.manage().window().setSize(new Dimension(375, 812));
 
         RegisterCarPage registerCarPage = new RegisterCarPage(driver);
-
         assertThat(registerCarPage.isBrandFieldVisible()).isTrue();
     }
 }
