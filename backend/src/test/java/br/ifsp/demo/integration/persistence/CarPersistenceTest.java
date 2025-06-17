@@ -267,4 +267,12 @@ class CarPersistenceTest {
             assertThatThrownBy(() -> LicensePlate.parse("ABCD-123"))
                     .isInstanceOf(IllegalArgumentException.class);
         }
+
+        @Test
+        @DisplayName("Should accept valid license plate formats")
+        void shouldAcceptValidLicensePlateFormats() {
+            assertThatCode(() -> LicensePlate.parse("ABC-1234")).doesNotThrowAnyException();
+            assertThatCode(() -> LicensePlate.parse("XYZ-9876")).doesNotThrowAnyException();
+        }
+    }
 }
