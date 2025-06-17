@@ -293,4 +293,8 @@ class CarPersistenceTest {
         );
         return driverRepository.save(driver);
     }
+
+    private Car createValidCar(String brand, String model, String licensePlate) {
+        return new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
+    }
 }
