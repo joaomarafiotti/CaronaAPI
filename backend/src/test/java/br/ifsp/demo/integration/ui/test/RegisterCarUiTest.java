@@ -16,7 +16,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
 
     @Override
     protected void setInitialPage() {
-        new RegisterCarPage(driver); // Começa sempre na página de cadastro de carro
+        new RegisterCarPage(driver);
     }
 
     @Test
@@ -24,11 +24,11 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
     void shouldRegisterCarWithValidData() {
         RegisterCarPage registerCarPage = new RegisterCarPage(driver);
 
-        registerCarPage.fillBrand("Toyota");
-        registerCarPage.fillModel("Corolla");
-        registerCarPage.fillColor("Preto");
-        registerCarPage.fillSeats("5");
-        registerCarPage.fillLicensePlate(FakeDataFactory.randomPlate()); // placa aleatória
+        registerCarPage.fillBrand(FakeDataFactory.randomCarBrand());
+        registerCarPage.fillModel(FakeDataFactory.randomCarModel());
+        registerCarPage.fillColor(FakeDataFactory.randomColor());
+        registerCarPage.fillSeats(String.valueOf(FakeDataFactory.randomSeats()));
+        registerCarPage.fillLicensePlate(FakeDataFactory.randomPlate());
 
         registerCarPage.submitForm();
 
@@ -42,19 +42,16 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
 
         registerCarPage.submitForm();
 
-        // Deve exibir pelo menos a form-error geral
         assertThat(registerCarPage.isGeneralFormErrorVisible()).isTrue();
     }
 
     @Test
     @DisplayName("UI Responsiveness - Should display Register Car page correctly on mobile size")
     void shouldDisplayRegisterCarPageCorrectlyOnMobile() {
-        // Define um tamanho de tela de mobile (exemplo: iPhone X)
         driver.manage().window().setSize(new Dimension(375, 812));
 
         RegisterCarPage registerCarPage = new RegisterCarPage(driver);
 
-        // Verifica se o campo brand está visível
         assertThat(registerCarPage.isBrandFieldVisible()).isTrue();
     }
 }

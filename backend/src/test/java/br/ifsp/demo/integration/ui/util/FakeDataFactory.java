@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FakeDataFactory {
 
-    private static final Faker faker = new Faker(new Locale("pt", "BR"));
+    private static final Faker faker = new Faker(Locale.forLanguageTag("pt-BR"));
 
     private static final List<String> cpfList = List.of(
         "529.982.247-25", "390.533.447-05", "215.365.987-43",
