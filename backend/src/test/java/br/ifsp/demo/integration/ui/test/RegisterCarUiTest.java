@@ -7,6 +7,7 @@ import org.openqa.selenium.Dimension;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.RegisterCarPage;
+import br.ifsp.demo.integration.ui.util.FakeDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,15 +23,15 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
     @DisplayName("Happy Path - Should register car with valid data")
     void shouldRegisterCarWithValidData() {
         RegisterCarPage registerCarPage = new RegisterCarPage(driver);
+
         registerCarPage.fillBrand("Toyota");
         registerCarPage.fillModel("Corolla");
         registerCarPage.fillColor("Preto");
         registerCarPage.fillSeats("5");
-        registerCarPage.fillLicensePlate("ABC-1234");
+        registerCarPage.fillLicensePlate(FakeDataFactory.randomPlate()); // placa aleatória
 
         registerCarPage.submitForm();
 
-        // Esperado: redireciona para view de carros
         assertThat(driver.getCurrentUrl()).contains("/dashboard/driver/cars/view");
     }
 
