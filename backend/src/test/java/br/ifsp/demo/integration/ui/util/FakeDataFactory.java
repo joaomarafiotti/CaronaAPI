@@ -74,7 +74,8 @@ public class FakeDataFactory {
     // Endereço
     public static String randomAddress() {
         return faker.address().streetName() + ", " +
-               faker.number().numberBetween(10, 999) + " - " +
-               faker.address().city();
+            faker.number().numberBetween(10, 999) + ", " +
+            faker.address().streetSuffix() + ", " +
+            faker.address().city();
     }
 }
