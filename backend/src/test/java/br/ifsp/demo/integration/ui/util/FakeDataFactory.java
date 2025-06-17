@@ -8,16 +8,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class FakeDataFactory {
 
-    private static final Faker faker = new Faker(Locale.forLanguageTag("pt-BR"));
+    private static final Faker faker = new Faker(new Locale("pt", "BR"));
 
     private static final List<String> cpfList = List.of(
         "529.982.247-25", "390.533.447-05", "215.365.987-43",
         "746.821.360-20", "123.456.789-09", "654.321.987-00",
         "321.654.987-66", "222.333.444-55", "111.222.333-96", "147.258.369-00"
     );
-
     private static final AtomicInteger cpfIndex = new AtomicInteger(0);
 
+    // Pessoa
     public static String randomName() {
         return faker.name().firstName();
     }
@@ -33,7 +33,7 @@ public class FakeDataFactory {
     public static String randomBirthDate() {
         int year = faker.number().numberBetween(1970, 2005);
         int month = faker.number().numberBetween(1, 12);
-        int day = faker.number().numberBetween(1, 28);
+        int day = faker.number().numberBetween(1, 28); // para evitar data inválida
         return String.format("%04d-%02d-%02d", year, month, day);
     }
 
@@ -50,7 +50,31 @@ public class FakeDataFactory {
         return faker.phoneNumber().cellPhone();
     }
 
+    // Carro
+    public static String randomCarBrand() {
+        return faker.company().name();
+    }
+
+    public static String randomCarModel() {
+        return faker.bothify("Model-###");
+    }
+
+    public static String randomColor() {
+        return faker.color().name();
+    }
+
+    public static int randomSeats() {
+        return faker.number().numberBetween(2, 7);
+    }
+
     public static String randomPlate() {
         return faker.bothify("???-####").toUpperCase();
+    }
+
+    // Endereço
+    public static String randomAddress() {
+        return faker.address().streetName() + ", " +
+               faker.number().numberBetween(10, 999) + " - " +
+               faker.address().city();
     }
 }
