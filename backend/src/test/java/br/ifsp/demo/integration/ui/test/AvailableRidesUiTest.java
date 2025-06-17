@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BasePassengerTest;
 import br.ifsp.demo.integration.ui.page.AvailableRidesPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class AvailableRidesUiTest extends BaseSeleniumTest {
+public class AvailableRidesUiTest extends BasePassengerTest {
 
     @Override
     protected void setInitialPage() {
@@ -23,7 +23,7 @@ public class AvailableRidesUiTest extends BaseSeleniumTest {
     void shouldDisplayAvailableRidesAndTitle() {
         AvailableRidesPage page = new AvailableRidesPage(driver);
         assertThat(page.isTitleVisible()).isTrue();
-        assertThat(page.hasRideCards()).isTrue(); // exige que haja pelo menos uma carona no sistema
+        assertThat(page.hasRideCards()).isTrue();
     }
 
     @Test
@@ -31,7 +31,6 @@ public class AvailableRidesUiTest extends BaseSeleniumTest {
     void shouldNotDisplayRidesIfNoneAvailable() {
         AvailableRidesPage page = new AvailableRidesPage(driver);
 
-        // só valida se nenhuma carona for retornada
         if (!page.hasRideCards()) {
             assertThat(page.countRidesDisplayed()).isEqualTo(0);
         }

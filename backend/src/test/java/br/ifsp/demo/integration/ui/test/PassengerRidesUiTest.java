@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BasePassengerTest;
 import br.ifsp.demo.integration.ui.page.PassengerRidesPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class PassengerRidesUiTest extends BaseSeleniumTest {
+public class PassengerRidesUiTest extends BasePassengerTest {
 
     @Override
     protected void setInitialPage() {

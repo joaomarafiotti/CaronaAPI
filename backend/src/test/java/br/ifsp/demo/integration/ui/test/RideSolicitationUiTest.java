@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BasePassengerTest;
 import br.ifsp.demo.integration.ui.page.RideSolicitationPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class RideSolicitationUiTest extends BaseSeleniumTest {
+public class RideSolicitationUiTest extends BasePassengerTest {
 
     @Override
     protected void setInitialPage() {
@@ -32,8 +32,6 @@ public class RideSolicitationUiTest extends BaseSeleniumTest {
     void shouldShowSpinnerIfLoading() {
         RideSolicitationPage page = new RideSolicitationPage(driver);
 
-        // Esse teste depende do back-end estar carregando dados simuladamente
-        // Por isso pode n aparecer se nada estiver sendo carregado no momento
         if (page.isSpinnerVisible()) {
             assertThat(page.isCancelButtonVisible()).isFalse();
         }

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
 
-import br.ifsp.demo.integration.ui.BaseSeleniumTest;
+import br.ifsp.demo.integration.ui.BasePassengerTest;
 import br.ifsp.demo.integration.ui.page.PassengerRideRequestsPage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("UiTest")
-public class PassengerRideRequestsUiTest extends BaseSeleniumTest {
+public class PassengerRideRequestsUiTest extends BasePassengerTest {
 
     @Override
     protected void setInitialPage() {
@@ -23,7 +23,7 @@ public class PassengerRideRequestsUiTest extends BaseSeleniumTest {
     void shouldDisplayRideRequestsAndTitle() {
         PassengerRideRequestsPage page = new PassengerRideRequestsPage(driver);
         assertThat(page.isTitleVisible()).isTrue();
-        assertThat(page.hasSolicitations()).isTrue(); // exige ao menos uma solicitação no banco
+        assertThat(page.hasSolicitations()).isTrue();
     }
 
     @Test
