@@ -311,6 +311,21 @@ class CarPersistenceTest {
             Car finalCar = carRepository.findById(savedCar.getId()).orElseThrow();
             assertThat(finalCar.getSeats()).isEqualTo(3);
         }
+
+        @Test
+        @DisplayName("Should delete car successfully")
+        void shouldDeleteCarSuccessfully() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            Car savedCar = carRepository.save(car);
+            entityManager.flush();
+
+            carRepository.delete(savedCar);
+            entityManager.flush();
+
+            Optional<Car> foundCar = carRepository.findById(savedCar.getId());
+            assertThat(foundCar).isEmpty();
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
