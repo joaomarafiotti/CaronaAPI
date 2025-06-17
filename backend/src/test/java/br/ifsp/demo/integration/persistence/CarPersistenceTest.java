@@ -184,4 +184,29 @@ class CarPersistenceTest {
             assertThat(activeCars.get(0).getLicensePlate()).isEqualTo(LicensePlate.parse("ABC-1234"));
         }
     }
+
+    @Nested
+    @DisplayName("Car State Management Tests")
+    class CarStateManagementTests {
+
+        @Test
+        @DisplayName("Should deactivate car successfully")
+        void shouldDeactivateCarSuccessfully() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            Car savedCar = carRepository.save(car);
+            entityManager.flush();
+
+            assertThat(savedCar.getIsActive()).isTrue();
+
+            savedCar.deactivate();
+            carRepository.save(savedCar);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Car> foundCar = carRepository.findById(savedCar.getId());
+            assertThat(foundCar).isPresent();
+            assertThat(foundCar.get().getIsActive()).isFalse();
+        }
+    }
 }
