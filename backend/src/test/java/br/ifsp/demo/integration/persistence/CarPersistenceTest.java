@@ -278,7 +278,7 @@ class CarPersistenceTest {
         @DisplayName("Should accept valid license plate formats")
         void shouldAcceptValidLicensePlateFormats() {
             assertThatCode(() -> LicensePlate.parse("ABC-1234")).doesNotThrowAnyException();
-            assertThatCode(() -> LicensePlate.parse("XYZ-9876")).doesNotThrowAnyException();
+            assertThatCode(() -> LicensePlate.parse("XYZ9B76")).doesNotThrowAnyException();
         }
     }
 
