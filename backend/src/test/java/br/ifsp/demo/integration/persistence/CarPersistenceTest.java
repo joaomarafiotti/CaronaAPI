@@ -208,46 +208,63 @@ class CarPersistenceTest {
             assertThat(foundCar).isPresent();
             assertThat(foundCar.get().getIsActive()).isFalse();
         }
+
+        @Test
+        @DisplayName("Should activate car successfully")
+        void shouldActivateCarSuccessfully() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            car.deactivate();
+            Car savedCar = carRepository.save(car);
+            entityManager.flush();
+
+            assertThat(savedCar.getIsActive()).isFalse();
+
+            savedCar.setIsActive(true);
+            carRepository.save(savedCar);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Car> foundCar = carRepository.findById(savedCar.getId());
+            assertThat(foundCar).isPresent();
+            assertThat(foundCar.get().getIsActive()).isTrue();
+        }
+
+        @Test
+        @DisplayName("Should update car properties")
+        void shouldUpdateCarProperties() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            Car savedCar = carRepository.save(car);
+            entityManager.flush();
+
+            savedCar.setColor("Red");
+            savedCar.setSeats(4);
+            carRepository.save(savedCar);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Car> foundCar = carRepository.findById(savedCar.getId());
+            assertThat(foundCar).isPresent();
+            assertThat(foundCar.get().getColor()).isEqualTo("Red");
+            assertThat(foundCar.get().getSeats()).isEqualTo(4);
+        }
     }
 
-    @Test
-    @DisplayName("Should activate car successfully")
-    void shouldActivateCarSuccessfully() {
-        Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
-        car.setDriver(driver);
-        car.deactivate();
-        Car savedCar = carRepository.save(car);
-        entityManager.flush();
+    @Nested
+    @DisplayName("Car Validation Tests")
+    class CarValidationTests {
 
-        assertThat(savedCar.getIsActive()).isFalse();
+        @Test
+        @DisplayName("Should validate license plate format")
+        void shouldValidateLicensePlateFormat() {
+            assertThatThrownBy(() -> LicensePlate.parse("INVALID"))
+                    .isInstanceOf(IllegalArgumentException.class);
 
-        savedCar.setIsActive(true);
-        carRepository.save(savedCar);
-        entityManager.flush();
-        entityManager.clear();
+            assertThatThrownBy(() -> LicensePlate.parse("ABC-12345"))
+                    .isInstanceOf(IllegalArgumentException.class);
 
-        Optional<Car> foundCar = carRepository.findById(savedCar.getId());
-        assertThat(foundCar).isPresent();
-        assertThat(foundCar.get().getIsActive()).isTrue();
-    }
-
-    @Test
-    @DisplayName("Should update car properties")
-    void shouldUpdateCarProperties() {
-        Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
-        car.setDriver(driver);
-        Car savedCar = carRepository.save(car);
-        entityManager.flush();
-
-        savedCar.setColor("Red");
-        savedCar.setSeats(4);
-        carRepository.save(savedCar);
-        entityManager.flush();
-        entityManager.clear();
-
-        Optional<Car> foundCar = carRepository.findById(savedCar.getId());
-        assertThat(foundCar).isPresent();
-        assertThat(foundCar.get().getColor()).isEqualTo("Red");
-        assertThat(foundCar.get().getSeats()).isEqualTo(4);
-    }
+            assertThatThrownBy(() -> LicensePlate.parse("ABCD-123"))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
 }
