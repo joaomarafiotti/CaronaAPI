@@ -14,7 +14,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
+import java.util.stream.Collectors;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -132,6 +134,32 @@ class CarPersistenceTest {
             Optional<Car> foundCar = carRepository.findByLicensePlate(LicensePlate.parse("XXX-0000"));
 
             assertThat(foundCar).isEmpty();
+        }
+
+        @Test
+        @DisplayName("Should find cars by driver")
+        void shouldFindCarsByDriver() {
+            Car car1 = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car1.setDriver(driver);
+            Car car2 = createValidCar("Chevrolet", "Malibu", "XYZ-5678");
+            car2.setDriver(driver);
+            Car car3 = createValidCar("Ford", "Focus", "DEF-9012");
+            car3.setDriver(anotherDriver);
+
+            carRepository.saveAll(List.of(car1, car2, car3));
+            entityManager.flush();
+
+            List<Car> allCars = carRepository.findAll();
+            List<Car> driverCars = allCars.stream()
+                    .filter(car -> car.getDriver().equals(driver))
+                    .collect(Collectors.toList());
+
+            assertThat(driverCars).hasSize(2);
+            assertThat(driverCars).extracting(Car::getLicensePlate)
+                    .containsExactlyInAnyOrder(
+                            LicensePlate.parse("ABC-1234"),
+                            LicensePlate.parse("XYZ-5678")
+                    );
         }
     }
 }
