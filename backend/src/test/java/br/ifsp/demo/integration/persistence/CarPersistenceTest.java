@@ -230,4 +230,24 @@ class CarPersistenceTest {
         assertThat(foundCar).isPresent();
         assertThat(foundCar.get().getIsActive()).isTrue();
     }
+
+    @Test
+    @DisplayName("Should update car properties")
+    void shouldUpdateCarProperties() {
+        Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+        car.setDriver(driver);
+        Car savedCar = carRepository.save(car);
+        entityManager.flush();
+
+        savedCar.setColor("Red");
+        savedCar.setSeats(4);
+        carRepository.save(savedCar);
+        entityManager.flush();
+        entityManager.clear();
+
+        Optional<Car> foundCar = carRepository.findById(savedCar.getId());
+        assertThat(foundCar).isPresent();
+        assertThat(foundCar.get().getColor()).isEqualTo("Red");
+        assertThat(foundCar.get().getSeats()).isEqualTo(4);
+    }
 }
