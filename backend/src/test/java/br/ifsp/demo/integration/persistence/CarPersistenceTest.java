@@ -1,9 +1,11 @@
 package br.ifsp.demo.integration.persistence;
 
 import br.ifsp.demo.domain.Car;
+import br.ifsp.demo.domain.Cpf;
 import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.repositories.CarRepository;
+import br.ifsp.demo.repositories.DriverRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import java.util.stream.Collectors;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,9 @@ import static org.assertj.core.api.Assertions.*;
 class CarPersistenceTest {
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private DriverRepository driverRepository;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -274,5 +280,17 @@ class CarPersistenceTest {
             assertThatCode(() -> LicensePlate.parse("ABC-1234")).doesNotThrowAnyException();
             assertThatCode(() -> LicensePlate.parse("XYZ-9876")).doesNotThrowAnyException();
         }
+    }
+
+    private Driver createDriver(String firstName, String lastName, String email, String cpf) {
+        Driver driver = new Driver(
+                firstName,
+                lastName,
+                email,
+                "password123",
+                Cpf.of(cpf),
+                LocalDate.of(1990, 1, 1)
+        );
+        return driverRepository.save(driver);
     }
 }
