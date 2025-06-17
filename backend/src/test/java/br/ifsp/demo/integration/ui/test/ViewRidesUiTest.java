@@ -39,7 +39,7 @@ public class ViewRidesUiTest extends BaseSeleniumTest {
         if (viewRidesPage.hasErrorMessage()) {
             assertThat(viewRidesPage.getErrorMessageText()).contains("Erro ao buscar caronas");
         } else {
-            System.out.println("⚠️ Nenhum erro foi simulado. Ignorando teste sad path.");
+            System.out.println("Nenhum erro foi simulado. Ignorando teste sad path: API respondeu normalmente.");
         }
     }
 
