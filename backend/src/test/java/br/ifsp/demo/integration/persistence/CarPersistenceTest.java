@@ -62,5 +62,17 @@ class CarPersistenceTest {
             assertThat(foundCar).isPresent();
             assertCarProperties(foundCar.get(), "Volkswagen", "Passat", "Black", 5, "ABC-1234");
         }
+
+        @Test
+        @DisplayName("Should persist car with minimum required data")
+        void shouldPersistCarWithMinimumData() {
+            Car car = new Car("Chevrolet", "Malibu", "White", 4, LicensePlate.parse("XYZ-9876"));
+            car.setDriver(driver);
+            Car savedCar = carRepository.save(car);
+
+            assertThat(savedCar.getId()).isNotNull();
+            assertThat(savedCar.getIsActive()).isTrue();
+            assertThat(savedCar.getDriver()).isEqualTo(driver);
+        }
     }
 }
