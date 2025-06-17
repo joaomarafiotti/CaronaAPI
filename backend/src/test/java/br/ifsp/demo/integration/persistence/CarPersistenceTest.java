@@ -161,5 +161,27 @@ class CarPersistenceTest {
                             LicensePlate.parse("XYZ-5678")
                     );
         }
+
+        @Test
+        @DisplayName("Should find only active cars")
+        void shouldFindOnlyActiveCars() {
+            Car activeCar = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            activeCar.setDriver(driver);
+
+            Car inactiveCar = createValidCar("Chevrolet", "Malibu", "XYZ-5678");
+            inactiveCar.setDriver(driver);
+            inactiveCar.deactivate();
+
+            carRepository.saveAll(List.of(activeCar, inactiveCar));
+            entityManager.flush();
+
+            List<Car> allCars = carRepository.findAll();
+            List<Car> activeCars = allCars.stream()
+                    .filter(Car::getIsActive)
+                    .collect(Collectors.toList());
+
+            assertThat(activeCars).hasSize(1);
+            assertThat(activeCars.get(0).getLicensePlate()).isEqualTo(LicensePlate.parse("ABC-1234"));
+        }
     }
 }
