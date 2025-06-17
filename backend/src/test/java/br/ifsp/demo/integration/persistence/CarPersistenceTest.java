@@ -297,4 +297,12 @@ class CarPersistenceTest {
     private Car createValidCar(String brand, String model, String licensePlate) {
         return new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
     }
+
+    private void assertCarProperties(Car car, String brand, String model, String color, int seats, String licensePlate) {
+        assertThat(car.getBrand()).isEqualTo(brand);
+        assertThat(car.getModel()).isEqualTo(model);
+        assertThat(car.getColor()).isEqualTo(color);
+        assertThat(car.getSeats()).isEqualTo(seats);
+        assertThat(car.getLicensePlate().toString()).isEqualTo(licensePlate);
+    }
 }
