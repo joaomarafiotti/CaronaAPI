@@ -125,5 +125,13 @@ class CarPersistenceTest {
             assertCarProperties(foundCar.get(), "Volkswagen", "Passat", "Black", 5, "ABC-1234");
             assertThat(foundCar.get().getDriver()).isEqualTo(driver);
         }
+
+        @Test
+        @DisplayName("Should return empty when searching for non-existent license plate")
+        void shouldReturnEmptyForNonExistentLicensePlate() {
+            Optional<Car> foundCar = carRepository.findByLicensePlate(LicensePlate.parse("XXX-0000"));
+
+            assertThat(foundCar).isEmpty();
+        }
     }
 }
