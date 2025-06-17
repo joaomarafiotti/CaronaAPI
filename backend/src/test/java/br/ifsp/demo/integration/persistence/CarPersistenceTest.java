@@ -282,6 +282,37 @@ class CarPersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Car Repository Edge Cases")
+    class CarRepositoryEdgeCasesTests {
+
+        @Test
+        @DisplayName("Should handle concurrent updates correctly")
+        void shouldHandleConcurrentUpdatesCorrectly() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            Car savedCar = carRepository.save(car);
+            entityManager.flush();
+            entityManager.clear();
+
+            Car car1 = carRepository.findById(savedCar.getId()).orElseThrow();
+            Car car2 = carRepository.findById(savedCar.getId()).orElseThrow();
+
+            car1.setColor("Red");
+            car2.setSeats(3);
+
+            carRepository.save(car1);
+            entityManager.flush();
+
+            carRepository.save(car2);
+            entityManager.flush();
+            entityManager.clear();
+
+            Car finalCar = carRepository.findById(savedCar.getId()).orElseThrow();
+            assertThat(finalCar.getSeats()).isEqualTo(3);
+        }
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(
                 firstName,
