@@ -2,6 +2,7 @@ package br.ifsp.demo.integration.persistence;
 
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.domain.Driver;
+import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.repositories.CarRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -102,6 +103,27 @@ class CarPersistenceTest {
                 carRepository.save(secondCar);
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("Car Query Tests")
+    class CarQueryTests {
+
+        @Test
+        @DisplayName("Should find car by license plate")
+        void shouldFindCarByLicensePlate() {
+            Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
+            car.setDriver(driver);
+            carRepository.save(car);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Car> foundCar = carRepository.findByLicensePlate(LicensePlate.parse("ABC-1234"));
+
+            assertThat(foundCar).isPresent();
+            assertCarProperties(foundCar.get(), "Volkswagen", "Passat", "Black", 5, "ABC-1234");
+            assertThat(foundCar.get().getDriver()).isEqualTo(driver);
         }
     }
 }
