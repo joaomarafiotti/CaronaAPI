@@ -416,6 +416,18 @@ class RidePersistenceTest {
             assertThat(notExists).isFalse();
         }
 
+        @Test
+        @DisplayName("Should handle ride with same start and end address")
+        void shouldHandleRideWithSameStartAndEndAddress() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, startAddress, departureTime, driver, car);
+
+            assertThatCode(() -> {
+                rideRepository.save(ride);
+                entityManager.flush();
+            }).doesNotThrowAnyException();
+        }
+
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
