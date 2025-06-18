@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -214,6 +215,14 @@ class RideSolicitationPersistenceTest {
             assertThat(passengerSolicitations).allMatch(s -> s.getPassenger().equals(passenger));
             assertThat(passengerSolicitations).extracting(RideSolicitation::getRide)
                     .containsExactlyInAnyOrder(ride, anotherRide);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when ride has no solicitations")
+        void shouldReturnEmptyListWhenRideHasNoSolicitations() {
+            List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
+
+            assertThat(rideSolicitations).isEmpty();
         }
     }
 
