@@ -5,6 +5,8 @@ import br.ifsp.demo.repositories.*;
 import br.ifsp.demo.utils.RideSolicitationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -21,6 +23,9 @@ import static org.assertj.core.api.Assertions.*;
 @ActiveProfiles("test")
 @DisplayName("RideSolicitation Persistence Tests")
 class RideSolicitationPersistenceTest {
+
+    @Autowired
+    private RideSolicitationRepository solicitationRepository;
 
     @Autowired
     private RideRepository rideRepository;
@@ -68,6 +73,36 @@ class RideSolicitationPersistenceTest {
         anotherRide = createRide(endAddress, startAddress, anotherDriver, anotherCar);
     }
 
+    @Nested
+    @DisplayName("RideSolicitation Creation Tests")
+    class RideSolicitationCreationTests {
+
+        @Test
+        @DisplayName("Should persist ride solicitation with valid data")
+        void shouldPersistRideSolicitationWithValidData() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+
+            RideSolicitation savedSolicitation = solicitationRepository.save(solicitation);
+            entityManager.flush();
+            entityManager.clear();
+
+            assertThat(savedSolicitation.getId()).isNotNull();
+            assertThat(savedSolicitation.getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
+
+            Optional<RideSolicitation> foundSolicitation = solicitationRepository.findById(savedSolicitation.getId());
+            assertThat(foundSolicitation).isPresent();
+
+            Optional<Ride> reloadedRide = rideRepository.findById(ride.getId());
+            Optional<Passenger> reloadedPassenger = passengerRepository.findById(passenger.getId());
+
+            assertThat(reloadedRide).isPresent();
+            assertThat(reloadedPassenger).isPresent();
+
+            assertThat(foundSolicitation.get().getRide()).isEqualTo(reloadedRide.get());
+            assertThat(foundSolicitation.get().getPassenger()).isEqualTo(reloadedPassenger.get());
+            assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
+        }
+    }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
