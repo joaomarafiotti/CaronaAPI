@@ -207,6 +207,34 @@ class RidePersistenceTest {
             assertThat(waitingRides.get(0).getRideStatus()).isEqualTo(RideStatus.WAITING);
         }
 
+        @Test
+        @DisplayName("Should find rides by departure time range")
+        void shouldFindRidesByDepartureTimeRange() {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime departureTime1 = now.plusHours(1);
+            LocalDateTime departureTime2 = now.plusHours(2);
+            LocalDateTime departureTime3 = now.plusDays(1);
+
+            Ride ride1 = new Ride(startAddress, endAddress, departureTime1, driver, car);
+            Ride ride2 = new Ride(endAddress, alternativeAddress, departureTime2, driver, car);
+            Ride ride3 = new Ride(startAddress, alternativeAddress, departureTime3, anotherDriver, anotherCar);
+
+            rideRepository.saveAll(List.of(ride1, ride2, ride3));
+            entityManager.flush();
+
+            LocalDateTime startRange = now;
+            LocalDateTime endRange = now.plusHours(3);
+
+            List<Ride> allRides = rideRepository.findAll();
+            List<Ride> ridesInRange = allRides.stream()
+                    .filter(ride -> ride.getDepartureTime().isAfter(startRange) &&
+                            ride.getDepartureTime().isBefore(endRange))
+                    .collect(Collectors.toList());
+
+            assertThat(ridesInRange).hasSize(2);
+            assertThat(ridesInRange).extracting(Ride::getDepartureTime)
+                    .containsExactlyInAnyOrder(departureTime1, departureTime2);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
