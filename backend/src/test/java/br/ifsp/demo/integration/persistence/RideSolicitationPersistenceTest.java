@@ -175,7 +175,30 @@ class RideSolicitationPersistenceTest {
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
         return driverRepository.save(driver);
     }
-    
+
+    @Nested
+    @DisplayName("RideSolicitation Query Tests")
+    class RideSolicitationQueryTests {
+
+        @Test
+        @DisplayName("Should find solicitations by ride")
+        void shouldFindSolicitationsByRide() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(ride, anotherPassenger);
+            RideSolicitation solicitation3 = new RideSolicitation(anotherRide, passenger);
+
+            solicitationRepository.saveAll(List.of(solicitation1, solicitation2, solicitation3));
+            entityManager.flush();
+
+            List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
+
+            assertThat(rideSolicitations).hasSize(2);
+            assertThat(rideSolicitations).allMatch(s -> s.getRide().equals(ride));
+            assertThat(rideSolicitations).extracting(RideSolicitation::getPassenger)
+                    .containsExactlyInAnyOrder(passenger, anotherPassenger);
+        }
+    }
+
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
         Car car = new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
         car.setDriver(driver);
