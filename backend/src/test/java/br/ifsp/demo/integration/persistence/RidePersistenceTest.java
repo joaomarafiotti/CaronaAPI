@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.*;
+
 @DataJpaTest
 @Import(br.ifsp.demo.config.TestConfig.class)
 @ActiveProfiles("test")
@@ -44,7 +46,7 @@ class RidePersistenceTest {
                 Cpf.of(cpf), LocalDate.of(1992, 2, 2));
         return passengerRepository.save(passenger);
     }
-    
+
     private Address createAddress(String street, String neighborhood, String number, String city) {
         return Address.builder()
                 .street(street)
@@ -52,5 +54,12 @@ class RidePersistenceTest {
                 .number(number)
                 .city(city)
                 .build();
+    }
+
+    private void assertRideProperties(Ride ride, Address startAddr, Address endAddr, Driver driver, Car car) {
+        assertThat(ride.getStartAddress()).isEqualTo(startAddr);
+        assertThat(ride.getEndAddress()).isEqualTo(endAddr);
+        assertThat(ride.getDriver()).isEqualTo(driver);
+        assertThat(ride.getCar()).isEqualTo(car);
     }
 }
