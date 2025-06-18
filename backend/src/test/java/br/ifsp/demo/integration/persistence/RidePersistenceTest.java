@@ -237,6 +237,37 @@ class RidePersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Ride Passenger Management Tests")
+    class RidePassengerManagementTests {
+
+        @Test
+        @DisplayName("Should add passenger to ride successfully")
+        void shouldAddPassengerToRideSuccessfully() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+
+            ride.addPassenger(passenger);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+            entityManager.clear();
+
+            List<Ride> passengerRides = rideRepository.findRideByPassengers_Id(passenger.getId());
+            assertThat(passengerRides).hasSize(1);
+            assertThat(passengerRides.get(0).getId()).isEqualTo(ride.getId());
+
+            Optional<Ride> foundRide = rideRepository.findById(ride.getId());
+            assertThat(foundRide).isPresent();
+
+            Optional<Passenger> reloadedPassenger = passengerRepository.findById(passenger.getId());
+            assertThat(reloadedPassenger).isPresent();
+            assertThat(foundRide.get().getPassengers()).contains(reloadedPassenger.get());
+        }
+
+    }
+    
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
