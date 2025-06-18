@@ -311,6 +311,32 @@ class RidePersistenceTest {
             assertThat(foundRide.get().getPassengers()).contains(reloadedAnotherPassenger.get());
             assertThat(foundRide.get().getPassengers()).doesNotContain(reloadedPassenger.get());
         }
+
+        @Test
+        @DisplayName("Should not exceed car capacity")
+        void shouldNotExceedCarCapacity() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride = rideRepository.save(ride);
+
+            String[] validCpfs = {
+                    "324.557.110-05",
+                    "507.795.490-90",
+                    "443.583.480-41",
+                    "077.564.530-34"
+            };
+
+            for (int i = 0; i < 4; i++) {
+                Passenger tempPassenger = createPassenger("Passenger" + i, "Test",
+                        "passenger" + i + "@test.com", validCpfs[i]);
+                ride.addPassenger(tempPassenger);
+            }
+
+            assertThat(ride.getPassengers()).hasSize(4);
+
+            Passenger fifthPassenger = createPassenger("Fifth", "Passenger",
+                    "fifth@test.com", "754.630.960-31");
+        }
     }
     
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
