@@ -1,6 +1,7 @@
 package br.ifsp.demo.integration.persistence;
 
 import br.ifsp.demo.domain.*;
+import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,18 @@ class RidePersistenceTest {
     @Autowired
     private DriverRepository driverRepository;
 
+    @Autowired
+    private CarRepository carRepository;
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
         return driverRepository.save(driver);
+    }
+
+    private Car createCar(String brand, String model, String licensePlate, Driver driver) {
+        Car car = new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
+        car.setDriver(driver);
+        return carRepository.save(car);
     }
 }
