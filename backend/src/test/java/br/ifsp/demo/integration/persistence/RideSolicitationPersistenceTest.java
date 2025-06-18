@@ -270,6 +270,19 @@ class RideSolicitationPersistenceTest {
             Optional<RideSolicitation> foundSolicitation = solicitationRepository.findById(savedSolicitation.getId());
             assertThat(foundSolicitation).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should maintain referential integrity when deleting ride")
+        void shouldMaintainReferentialIntegrityWhenDeletingRide() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+            solicitationRepository.save(solicitation);
+            entityManager.flush();
+
+            assertThatThrownBy(() -> {
+                rideRepository.delete(ride);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
     
     @Nested
