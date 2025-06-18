@@ -197,6 +197,24 @@ class RideSolicitationPersistenceTest {
             assertThat(rideSolicitations).extracting(RideSolicitation::getPassenger)
                     .containsExactlyInAnyOrder(passenger, anotherPassenger);
         }
+
+        @Test
+        @DisplayName("Should find solicitations by passenger")
+        void shouldFindSolicitationsByPassenger() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(anotherRide, passenger);
+            RideSolicitation solicitation3 = new RideSolicitation(ride, anotherPassenger);
+
+            solicitationRepository.saveAll(List.of(solicitation1, solicitation2, solicitation3));
+            entityManager.flush();
+
+            List<RideSolicitation> passengerSolicitations = solicitationRepository.findRideSolicitationsByPassenger_Id(passenger.getId());
+
+            assertThat(passengerSolicitations).hasSize(2);
+            assertThat(passengerSolicitations).allMatch(s -> s.getPassenger().equals(passenger));
+            assertThat(passengerSolicitations).extracting(RideSolicitation::getRide)
+                    .containsExactlyInAnyOrder(ride, anotherRide);
+        }
     }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
