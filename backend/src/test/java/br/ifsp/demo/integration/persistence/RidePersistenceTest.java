@@ -4,13 +4,21 @@ import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.PassengerRepository;
+import br.ifsp.demo.repositories.RideRepository;
+import br.ifsp.demo.utils.RideStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -25,6 +33,9 @@ class RidePersistenceTest {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private RideRepository rideRepository;
 
     @Autowired
     private PassengerRepository passengerRepository;
@@ -58,6 +69,31 @@ class RidePersistenceTest {
         startAddress = createAddress("Alameda das Hortências", "Centro", "123", "São Carlos");
         endAddress = createAddress("Rua das Orquídeas", "Jardins", "456", "São Carlos");
         alternativeAddress = createAddress("Alameda dos crisântemos", "Jardins", "789", "São Carlos");
+    }
+
+    @Nested
+    @DisplayName("Ride Creation Tests")
+    class RideCreationTests {
+
+        @Test
+        @DisplayName("Should persist ride with all valid data")
+        void shouldPersistRideWithValidData() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+
+            Ride savedRide = rideRepository.save(ride);
+            entityManager.flush();
+            entityManager.clear();
+
+            assertThat(savedRide.getId()).isNotNull();
+            assertRideProperties(savedRide, startAddress, endAddress, driver, car);
+            assertThat(savedRide.getRideStatus()).isEqualTo(RideStatus.WAITING);
+            assertThat(savedRide.getDepartureTime()).isEqualTo(departureTime);
+
+            Optional<Ride> foundRide = rideRepository.findById(savedRide.getId());
+            assertThat(foundRide).isPresent();
+            assertRideProperties(foundRide.get(), startAddress, endAddress, driver, car);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
