@@ -379,6 +379,22 @@ class RidePersistenceTest {
             assertThat(foundRide).isPresent();
             assertThat(foundRide.get().getRideStatus()).isEqualTo(RideStatus.FINISHED);
         }
+
+        @Test
+        @DisplayName("Should cancel ride successfully")
+        void shouldCancelRideSuccessfully() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride = rideRepository.save(ride);
+
+            ride.setRideStatus(RideStatus.CANCELLED);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+
+            Optional<Ride> foundRide = rideRepository.findById(ride.getId());
+            assertThat(foundRide).isPresent();
+            assertThat(foundRide.get().getRideStatus()).isEqualTo(RideStatus.CANCELLED);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
