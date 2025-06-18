@@ -428,6 +428,20 @@ class RidePersistenceTest {
             }).doesNotThrowAnyException();
         }
 
+        @Test
+        @DisplayName("Should delete ride successfully")
+        void shouldDeleteRideSuccessfully() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            Ride savedRide = rideRepository.save(ride);
+            entityManager.flush();
+
+            rideRepository.delete(savedRide);
+            entityManager.flush();
+
+            Optional<Ride> foundRide = rideRepository.findById(savedRide.getId());
+            assertThat(foundRide).isEmpty();
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
