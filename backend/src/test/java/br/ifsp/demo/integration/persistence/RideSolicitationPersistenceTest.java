@@ -135,6 +135,12 @@ class RideSolicitationPersistenceTest {
                     .containsExactlyInAnyOrder(ride, anotherRide);
         }
 
+        @Test
+        @DisplayName("Should fail when trying to save solicitation without ride")
+        void shouldFailWhenSavingSolicitationWithoutRide() {
+            assertThatThrownBy(() -> new RideSolicitation(null, passenger))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
