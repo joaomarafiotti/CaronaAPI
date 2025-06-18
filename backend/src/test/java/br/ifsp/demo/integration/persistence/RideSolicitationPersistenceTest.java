@@ -3,9 +3,11 @@ package br.ifsp.demo.integration.persistence;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.*;
 import br.ifsp.demo.utils.RideSolicitationStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -31,6 +33,42 @@ class RideSolicitationPersistenceTest {
 
     @Autowired
     private PassengerRepository passengerRepository;
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    private Driver driver;
+    private Driver anotherDriver;
+    private Car car;
+    private Car anotherCar;
+    private Passenger passenger;
+    private Passenger anotherPassenger;
+    private Ride ride;
+    private Ride anotherRide;
+    private Address startAddress;
+    private Address endAddress;
+
+    @BeforeEach
+    void setUp() {
+        entityManager.clear();
+
+        driver = createDriver("Fulano", "Silva", "fulano.silva@gmail.com", "005.046.860-03");
+        anotherDriver = createDriver("Ciclano", "Souza", "ciclano.souza@outlook.com", "355.553.060-75");
+
+        car = createCar("Volkswagen", "Passat", "ABC-1234", driver);
+        anotherCar = createCar("Chevrolet", "Malibu", "XYZ-5678", anotherDriver);
+
+        passenger = createPassenger("Maria", "Oliveira", "maria.oliveira@hotmail.com", "561.506.860-43");
+        anotherPassenger = createPassenger("Ana", "Souza", "ana.souza@yahoo.com", "936.138.620-42");
+
+        startAddress = createAddress("Alameda das Hortências", "Centro", "123", "São Carlos");
+        endAddress = createAddress("Rua das Orquídeas", "Jardins", "456", "São Carlos");
+
+        ride = createRide(startAddress, endAddress, driver, car);
+        anotherRide = createRide(endAddress, startAddress, anotherDriver, anotherCar);
+    }
+
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
