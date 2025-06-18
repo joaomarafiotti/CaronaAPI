@@ -309,6 +309,19 @@ class RideSolicitationPersistenceTest {
             List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
             assertThat(rideSolicitations).hasSize(2);
         }
+
+        @Test
+        @DisplayName("Should count solicitations by passenger")
+        void shouldCountSolicitationsByPassenger() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(anotherRide, passenger);
+
+            solicitationRepository.saveAll(List.of(solicitation1, solicitation2));
+            entityManager.flush();
+
+            List<RideSolicitation> passengerSolicitations = solicitationRepository.findRideSolicitationsByPassenger_Id(passenger.getId());
+            assertThat(passengerSolicitations).hasSize(2);
+        }
     }
     
     @Nested
