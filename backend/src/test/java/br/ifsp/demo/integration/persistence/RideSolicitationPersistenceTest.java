@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -149,6 +152,21 @@ class RideSolicitationPersistenceTest {
                 new RideSolicitation(ride, null);
             }).isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("Ride and passenger must not be null");
+        }
+
+        @Test
+        @DisplayName("Should prevent duplicate solicitation for same ride and passenger")
+        void shouldPreventDuplicateSolicitationForSameRideAndPassenger() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(ride, passenger);
+
+            solicitationRepository.save(solicitation1);
+            entityManager.flush();
+
+            assertThatThrownBy(() -> {
+                solicitationRepository.save(solicitation2);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
         }
     }
 
