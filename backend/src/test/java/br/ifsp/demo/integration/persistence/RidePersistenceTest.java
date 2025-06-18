@@ -19,7 +19,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -175,6 +177,14 @@ class RidePersistenceTest {
             assertThat(driverRides).allMatch(ride -> ride.getDriver().equals(driver));
             assertThat(driverRides).extracting(Ride::getDepartureTime)
                     .containsExactlyInAnyOrder(departureTime1, departureTime2);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when driver has no rides")
+        void shouldReturnEmptyListWhenDriverHasNoRides() {
+            List<Ride> driverRides = rideRepository.findRideByDriver_Id(driver.getId());
+
+            assertThat(driverRides).isEmpty();
         }
     }
 
