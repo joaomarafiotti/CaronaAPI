@@ -252,6 +252,30 @@ class RideSolicitationPersistenceTest {
             assertThat(waitingSolicitations.get(0).getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
         }
     }
+    
+    @Nested
+    @DisplayName("RideSolicitation Status Management Tests")
+    class RideSolicitationStatusManagementTests {
+
+        @Test
+        @DisplayName("Should update solicitation status successfully")
+        void shouldUpdateSolicitationStatusSuccessfully() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+            solicitation = solicitationRepository.save(solicitation);
+            entityManager.flush();
+
+            assertThat(solicitation.getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
+
+            solicitation.setStatus(RideSolicitationStatus.ACCEPTED);
+            solicitation = solicitationRepository.save(solicitation);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<RideSolicitation> foundSolicitation = solicitationRepository.findById(solicitation.getId());
+            assertThat(foundSolicitation).isPresent();
+            assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.ACCEPTED);
+        }
+    }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
         Car car = new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
