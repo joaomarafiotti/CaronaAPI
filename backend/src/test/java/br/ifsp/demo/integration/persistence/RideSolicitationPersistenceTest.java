@@ -102,6 +102,23 @@ class RideSolicitationPersistenceTest {
             assertThat(foundSolicitation.get().getPassenger()).isEqualTo(reloadedPassenger.get());
             assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
         }
+
+        @Test
+        @DisplayName("Should create multiple solicitations for same ride")
+        void shouldCreateMultipleSolicitationsForSameRide() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(ride, anotherPassenger);
+
+            solicitationRepository.save(solicitation1);
+            solicitationRepository.save(solicitation2);
+            entityManager.flush();
+
+            List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
+            assertThat(rideSolicitations).hasSize(2);
+            assertThat(rideSolicitations).extracting(RideSolicitation::getPassenger)
+                    .containsExactlyInAnyOrder(passenger, anotherPassenger);
+        }
+
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
