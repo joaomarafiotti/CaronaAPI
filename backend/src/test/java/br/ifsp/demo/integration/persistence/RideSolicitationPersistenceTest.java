@@ -290,6 +290,21 @@ class RideSolicitationPersistenceTest {
             assertThat(foundSolicitation).isPresent();
             assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.REJECTED);
         }
+
+        @Test
+        @DisplayName("Should cancel solicitation successfully")
+        void shouldCancelSolicitationSuccessfully() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+            solicitation = solicitationRepository.save(solicitation);
+
+            solicitation.setStatus(RideSolicitationStatus.CANCELLED);
+            solicitation = solicitationRepository.save(solicitation);
+            entityManager.flush();
+
+            Optional<RideSolicitation> foundSolicitation = solicitationRepository.findById(solicitation.getId());
+            assertThat(foundSolicitation).isPresent();
+            assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.CANCELLED);
+        }
     }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
