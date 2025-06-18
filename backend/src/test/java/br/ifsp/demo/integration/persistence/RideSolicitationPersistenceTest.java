@@ -21,6 +21,9 @@ class RideSolicitationPersistenceTest {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private PassengerRepository passengerRepository;
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
@@ -31,5 +34,11 @@ class RideSolicitationPersistenceTest {
         Car car = new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
         car.setDriver(driver);
         return carRepository.save(car);
+    }
+    
+    private Passenger createPassenger(String firstName, String lastName, String email, String cpf) {
+        Passenger passenger = new Passenger(firstName, lastName, email, "password123",
+                Cpf.of(cpf), LocalDate.of(1992, 2, 2));
+        return passengerRepository.save(passenger);
     }
 }
