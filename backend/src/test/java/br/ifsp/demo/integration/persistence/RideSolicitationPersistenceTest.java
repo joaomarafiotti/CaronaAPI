@@ -395,6 +395,25 @@ class RideSolicitationPersistenceTest {
             assertThat(foundSolicitation.get().getStatus()).isEqualTo(RideSolicitationStatus.CANCELLED);
         }
     }
+    
+    @Nested
+    @DisplayName("RideSolicitation Edge Cases Tests")
+    class RideSolicitationEdgeCasesTests {
+
+        @Test
+        @DisplayName("Should handle concurrent solicitation creation")
+        void shouldHandleConcurrentSolicitationCreation() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(ride, anotherPassenger);
+
+            solicitationRepository.save(solicitation1);
+            solicitationRepository.save(solicitation2);
+            entityManager.flush();
+
+            List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
+            assertThat(rideSolicitations).hasSize(2);
+        }
+    }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
         Car car = new Car(brand, model, "Black", 5, LicensePlate.parse(licensePlate));
