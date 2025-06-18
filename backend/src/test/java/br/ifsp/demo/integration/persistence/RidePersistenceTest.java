@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
@@ -106,6 +107,18 @@ class RidePersistenceTest {
             assertThat(savedRide.getId()).isNotNull();
             assertThat(savedRide.getDepartureTime()).isEqualTo(futureDepartureTime);
             assertThat(savedRide.getRideStatus()).isEqualTo(RideStatus.WAITING);
+        }
+
+        @Test
+        @DisplayName("Should fail when trying to save ride without driver")
+        void shouldFailWhenSavingRideWithoutDriver() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, null, car);
+
+            assertThatThrownBy(() -> {
+                rideRepository.save(ride);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
         }
     }
 
