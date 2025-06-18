@@ -141,6 +141,15 @@ class RideSolicitationPersistenceTest {
             assertThatThrownBy(() -> new RideSolicitation(null, passenger))
                     .isInstanceOf(IllegalArgumentException.class);
         }
+
+        @Test
+        @DisplayName("Should fail when trying to create solicitation without passenger")
+        void shouldFailWhenCreatingSolicitationWithoutPassenger() {
+            assertThatThrownBy(() -> {
+                new RideSolicitation(ride, null);
+            }).isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Ride and passenger must not be null");
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
