@@ -413,6 +413,17 @@ class RideSolicitationPersistenceTest {
             List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
             assertThat(rideSolicitations).hasSize(2);
         }
+
+        @Test
+        @DisplayName("Should handle solicitation for ride with no available seats")
+        void shouldHandleSolicitationForRideWithNoAvailableSeats() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+
+            assertThatCode(() -> {
+                solicitationRepository.save(solicitation);
+                entityManager.flush();
+            }).doesNotThrowAnyException();
+        }
     }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
