@@ -31,10 +31,7 @@ public class FakeDataFactory {
     }
 
     public static String randomBirthDate() {
-        int year = faker.number().numberBetween(1970, 2005);
-        int month = faker.number().numberBetween(1, 12);
-        int day = faker.number().numberBetween(1, 28); // para evitar data inválida
-        return String.format("%04d-%02d-%02d", year, month, day);
+        return "1990-01-01";
     }
 
     public static String strongPassword() {

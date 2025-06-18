@@ -9,6 +9,7 @@ public class RegisterDriverPage extends BasePageObject {
 
     private static final String REGISTER_DRIVER_URL = "http://localhost:5173/register-driver";
 
+    // Locators
     private final By nameField = By.name("name");
     private final By lastnameField = By.name("lastname");
     private final By emailField = By.name("email");
@@ -24,6 +25,7 @@ public class RegisterDriverPage extends BasePageObject {
         waitForVisibility(nameField);
     }
 
+    // Fill methods
     public void fillName(String name) {
         fillField(nameField, name);
     }
@@ -56,8 +58,9 @@ public class RegisterDriverPage extends BasePageObject {
         clickWhenClickable(submitButton);
     }
 
+    // util para verificar se o formulário foi enviado com sucesso
     public boolean isNameFieldVisible() {
-        return isVisible(nameField);
+        return driver.findElement(nameField).isDisplayed();
     }
 
     public String getCurrentUrl() {

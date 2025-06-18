@@ -1,4 +1,4 @@
-package br.ifsp.demo.integration;
+package br.ifsp.demo.integration.suits;
 
 import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectPackages;
