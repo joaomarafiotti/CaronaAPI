@@ -296,6 +296,19 @@ class RideSolicitationPersistenceTest {
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
         }
+
+        @Test
+        @DisplayName("Should count solicitations by ride")
+        void shouldCountSolicitationsByRide() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(ride, anotherPassenger);
+
+            solicitationRepository.saveAll(List.of(solicitation1, solicitation2));
+            entityManager.flush();
+
+            List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
+            assertThat(rideSolicitations).hasSize(2);
+        }
     }
     
     @Nested
