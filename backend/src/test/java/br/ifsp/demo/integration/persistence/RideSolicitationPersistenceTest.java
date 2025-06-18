@@ -9,12 +9,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @DataJpaTest
 @Import(br.ifsp.demo.config.TestConfig.class)
 @ActiveProfiles("test")
 @DisplayName("RideSolicitation Persistence Tests")
 class RideSolicitationPersistenceTest {
+
+    @Autowired
+    private RideRepository rideRepository;
 
     @Autowired
     private DriverRepository driverRepository;
@@ -50,5 +54,10 @@ class RideSolicitationPersistenceTest {
                 .city(city)
                 .build();
     }
-
+    
+    private Ride createRide(Address startAddress, Address endAddress, Driver driver, Car car) {
+        LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+        Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+        return rideRepository.save(ride);
+    }
 }
