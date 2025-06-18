@@ -94,6 +94,19 @@ class RidePersistenceTest {
             assertThat(foundRide).isPresent();
             assertRideProperties(foundRide.get(), startAddress, endAddress, driver, car);
         }
+
+        @Test
+        @DisplayName("Should persist ride with future departure time")
+        void shouldPersistRideWithFutureDepartureTime() {
+            LocalDateTime futureDepartureTime = LocalDateTime.now().plusDays(1);
+            Ride ride = new Ride(startAddress, endAddress, futureDepartureTime, driver, car);
+
+            Ride savedRide = rideRepository.save(ride);
+
+            assertThat(savedRide.getId()).isNotNull();
+            assertThat(savedRide.getDepartureTime()).isEqualTo(futureDepartureTime);
+            assertThat(savedRide.getRideStatus()).isEqualTo(RideStatus.WAITING);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
