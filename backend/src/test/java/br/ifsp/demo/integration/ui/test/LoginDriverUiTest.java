@@ -1,45 +1,32 @@
-/**
 package br.ifsp.demo.integration.ui.test;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.LoginPage;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
 
-import java.time.Duration;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("UiTest")
-public class LoginUiTest extends BaseSeleniumTest {
+import org.junit.jupiter.api.DisplayName;
 
-    @Override
-    protected void setInitialPage() {
-        new LoginPage(driver); // Garante que sempre começa na página de login
-    }
+@Tag("UiTest")
+public class LoginDriverUiTest extends BaseSeleniumTest {
 
     @Test
-    @DisplayName("Happy Path - Should login with valid driver credentials")
+    @DisplayName("Happy Path - Should login with valid Driver credentials")
     void shouldLoginWithValidDriverCredentials() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@hotmail.com"); // usuário válido dps de criar (ver se tem como fazer isso automaticamente dps)
-        loginPage.fillPassword("SenhaForte123!");  // senha válida (sempre a mesma)
+        loginPage.fillEmail("testuser@gmail.com"); // substituir por um login válido
+        loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
-
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-            .until(ExpectedConditions.urlContains("/dashboard/driver/profile"));
-            
-        // Espera um redirecionamento para a dashboard de driver
-        assertThat(driver.getCurrentUrl()).contains("/dashboard/driver/profile");
+        waitForUrlContains("/dashboard/driver/profile");
+        assertTrue(driver.getCurrentUrl().contains("/dashboard/driver/profile"));
     }
 
-    @Test
+        @Test
     @DisplayName("Sad Path - Should stay on login page with invalid credentials")
     void shouldStayOnLoginPageWithInvalidCredentials() {
         LoginPage loginPage = new LoginPage(driver);
@@ -63,4 +50,3 @@ public class LoginUiTest extends BaseSeleniumTest {
         assertThat(loginPage.isEmailFieldVisible()).isTrue();
     }
 }
-*/

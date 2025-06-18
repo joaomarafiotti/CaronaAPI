@@ -17,9 +17,13 @@ public class RegisterCarPage extends BasePageObject {
     private final By submitButton = By.cssSelector("button.auth-button");
 
     private final By formError = By.cssSelector("div.form-error");
+    private final By fieldError = By.cssSelector("span.form-error");
 
     public RegisterCarPage(WebDriver driver) {
         super(driver);
+    }
+
+    public void visit() {
         driver.get(REGISTER_CAR_URL);
         waitForVisibility(brandField);
     }
@@ -52,6 +56,10 @@ public class RegisterCarPage extends BasePageObject {
         return !driver.findElements(formError).isEmpty();
     }
 
+    public boolean isAnyFieldErrorVisible() {
+        return !driver.findElements(fieldError).isEmpty();
+    }
+
     public String getGeneralFormErrorText() {
         if (isGeneralFormErrorVisible()) {
             return getElementText(formError);
@@ -59,11 +67,11 @@ public class RegisterCarPage extends BasePageObject {
         return "";
     }
 
-    public boolean isBrandFieldVisible() {
-        return isVisible(brandField);
-    }
-
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
+    }
+
+    public boolean isBrandFieldVisible() {
+        return isVisible(brandField);
     }
 }

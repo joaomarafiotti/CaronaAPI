@@ -1,22 +1,19 @@
-/**
 package br.ifsp.demo.integration.ui.test;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import br.ifsp.demo.integration.ui.BaseSeleniumTest;
 import br.ifsp.demo.integration.ui.page.LoginPage;
 
-import java.time.Duration;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Dimension;
+import org.junit.jupiter.api.DisplayName;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @Tag("UiTest")
-public class LoginUiTest extends BaseSeleniumTest {
+public class LoginPassengerUiTest extends BaseSeleniumTest {
 
     @Override
     protected void setInitialPage() {
@@ -24,19 +21,15 @@ public class LoginUiTest extends BaseSeleniumTest {
     }
 
     @Test
-    @DisplayName("Happy Path - Should login with valid driver credentials")
-    void shouldLoginWithValidDriverCredentials() {
+    @DisplayName("Happy Path - Should login with valid Passenger credentials")
+    void shouldLoginWithValidPassengerCredentials() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@hotmail.com"); // usuário válido dps de criar (ver se tem como fazer isso automaticamente dps)
-        loginPage.fillPassword("SenhaForte123!");  // senha válida (sempre a mesma)
+        loginPage.fillEmail("testuser@hotmail.com"); // substituir por um login válido
+        loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
-
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-            .until(ExpectedConditions.urlContains("/dashboard/driver/profile"));
-            
-        // Espera um redirecionamento para a dashboard de driver
-        assertThat(driver.getCurrentUrl()).contains("/dashboard/driver/profile");
+        waitForUrlContains("/dashboard/passenger/profile");
+        assertTrue(driver.getCurrentUrl().contains("/dashboard/passenger/profile"));
     }
 
     @Test
@@ -63,4 +56,3 @@ public class LoginUiTest extends BaseSeleniumTest {
         assertThat(loginPage.isEmailFieldVisible()).isTrue();
     }
 }
-*/

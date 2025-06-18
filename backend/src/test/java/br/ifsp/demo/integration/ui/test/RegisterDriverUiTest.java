@@ -10,9 +10,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.io.FileHandler;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 @Tag("UiTest")
@@ -45,16 +50,27 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
 
         registerDriverPage.submitForm();
 
-        // Aguarda e aceita o alerta "Cadastro realizado com sucesso!"
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-            .until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().accept();
+        try {
+            // Aguarda e aceita o alerta "Cadastro realizado com sucesso!"
+            new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
 
-        // Agora sim pode aguardar o redirecionamento
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-            .until(ExpectedConditions.urlContains("/login"));
+            // Logging
+            System.out.println("[DEBUG] URL após aceitar alerta: " + driver.getCurrentUrl());
+            System.out.println("[DEBUG] Título da página: " + driver.getTitle());
+            System.out.println("[DEBUG] Data de nascimento gerada: " + birthDate);
+            
+            // Espera redirecionamento
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.urlContains("/login"));
 
-        assertThat(driver.getCurrentUrl()).contains("/login");
+            assertThat(driver.getCurrentUrl()).contains("/login");
+
+        } catch (Exception e) {
+            takeScreenshot("register-driver-failure");
+            throw e;
+        }
     }
 
     @Test
@@ -72,5 +88,18 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         driver.manage().window().setSize(new Dimension(375, 812));
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
         assertThat(registerDriverPage.isNameFieldVisible()).isTrue();
+    }
+
+    private void takeScreenshot(String fileName) {
+        String path = "src/test/java/br/ifsp/demo/integration/ui/screenshots/";
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File destFile = new File(path + fileName + ".png");
+        try {
+            FileHandler.createDir(new File(path));
+            FileHandler.copy(screenshot, destFile);
+            System.out.println("[DEBUG] Screenshot salva em: " + destFile.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("[ERROR] Falha ao salvar screenshot: " + e.getMessage());
+        }
     }
 }

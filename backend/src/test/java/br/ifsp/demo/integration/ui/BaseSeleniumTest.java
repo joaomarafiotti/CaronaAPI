@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 @Tag("UiTest")
 public class BaseSeleniumTest {
@@ -34,4 +37,9 @@ public class BaseSeleniumTest {
             driver.quit();
         }
     }
+
+    protected void waitForUrlContains(String partialUrl) {
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+            .until(ExpectedConditions.urlContains(partialUrl));
+        }
 }
