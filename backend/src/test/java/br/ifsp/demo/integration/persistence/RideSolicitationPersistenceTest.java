@@ -283,6 +283,19 @@ class RideSolicitationPersistenceTest {
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
         }
+
+        @Test
+        @DisplayName("Should maintain referential integrity when deleting passenger")
+        void shouldMaintainReferentialIntegrityWhenDeletingPassenger() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+            solicitationRepository.save(solicitation);
+            entityManager.flush();
+
+            assertThatThrownBy(() -> {
+                passengerRepository.delete(passenger);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
     
     @Nested
