@@ -2,6 +2,7 @@ package br.ifsp.demo.integration.persistence;
 
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.*;
+import br.ifsp.demo.utils.RideSolicitationStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,6 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 @Import(br.ifsp.demo.config.TestConfig.class)
@@ -59,5 +62,12 @@ class RideSolicitationPersistenceTest {
         LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
         Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
         return rideRepository.save(ride);
+    }
+    
+    private void assertSolicitationProperties(RideSolicitation solicitation, Ride expectedRide,
+                                              Passenger expectedPassenger, RideSolicitationStatus expectedStatus) {
+        assertThat(solicitation.getRide()).isEqualTo(expectedRide);
+        assertThat(solicitation.getPassenger()).isEqualTo(expectedPassenger);
+        assertThat(solicitation.getStatus()).isEqualTo(expectedStatus);
     }
 }
