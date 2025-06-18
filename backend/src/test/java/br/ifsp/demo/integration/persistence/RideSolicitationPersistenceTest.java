@@ -119,6 +119,22 @@ class RideSolicitationPersistenceTest {
                     .containsExactlyInAnyOrder(passenger, anotherPassenger);
         }
 
+        @Test
+        @DisplayName("Should create multiple solicitations for same passenger")
+        void shouldCreateMultipleSolicitationsForSamePassenger() {
+            RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
+            RideSolicitation solicitation2 = new RideSolicitation(anotherRide, passenger);
+
+            solicitationRepository.save(solicitation1);
+            solicitationRepository.save(solicitation2);
+            entityManager.flush();
+
+            List<RideSolicitation> passengerSolicitations = solicitationRepository.findRideSolicitationsByPassenger_Id(passenger.getId());
+            assertThat(passengerSolicitations).hasSize(2);
+            assertThat(passengerSolicitations).extracting(RideSolicitation::getRide)
+                    .containsExactlyInAnyOrder(ride, anotherRide);
+        }
+
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
