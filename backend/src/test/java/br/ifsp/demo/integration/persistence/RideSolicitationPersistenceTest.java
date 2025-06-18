@@ -252,6 +252,25 @@ class RideSolicitationPersistenceTest {
             assertThat(waitingSolicitations.get(0).getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
         }
     }
+
+    @Nested
+    @DisplayName("RideSolicitation Business Logic Tests")
+    class RideSolicitationBusinessLogicTests {
+
+        @Test
+        @DisplayName("Should delete solicitation successfully")
+        void shouldDeleteSolicitationSuccessfully() {
+            RideSolicitation solicitation = new RideSolicitation(ride, passenger);
+            RideSolicitation savedSolicitation = solicitationRepository.save(solicitation);
+            entityManager.flush();
+
+            solicitationRepository.delete(savedSolicitation);
+            entityManager.flush();
+
+            Optional<RideSolicitation> foundSolicitation = solicitationRepository.findById(savedSolicitation.getId());
+            assertThat(foundSolicitation).isEmpty();
+        }
+    }
     
     @Nested
     @DisplayName("RideSolicitation Status Management Tests")
