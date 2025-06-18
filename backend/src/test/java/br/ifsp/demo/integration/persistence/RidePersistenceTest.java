@@ -132,6 +132,24 @@ class RidePersistenceTest {
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
         }
+
+        @Test
+        @DisplayName("Should fail when trying to save ride without addresses")
+        void shouldFailWhenSavingRideWithoutAddresses() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+
+            assertThatThrownBy(() -> {
+                Ride ride = new Ride(null, endAddress, departureTime, driver, car);
+                rideRepository.save(ride);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+
+            assertThatThrownBy(() -> {
+                Ride ride = new Ride(startAddress, null, departureTime, driver, car);
+                rideRepository.save(ride);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
