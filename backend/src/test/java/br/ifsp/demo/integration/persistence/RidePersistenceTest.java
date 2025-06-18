@@ -338,7 +338,32 @@ class RidePersistenceTest {
                     "fifth@test.com", "754.630.960-31");
         }
     }
-    
+
+    @Nested
+    @DisplayName("Ride Status Management Tests")
+    class RideStatusManagementTests {
+
+        @Test
+        @DisplayName("Should update ride status successfully")
+        void shouldUpdateRideStatusSuccessfully() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+
+            assertThat(ride.getRideStatus()).isEqualTo(RideStatus.WAITING);
+
+            ride.setRideStatus(RideStatus.STARTED);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Ride> foundRide = rideRepository.findById(ride.getId());
+            assertThat(foundRide).isPresent();
+            assertThat(foundRide.get().getRideStatus()).isEqualTo(RideStatus.STARTED);
+        }
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
