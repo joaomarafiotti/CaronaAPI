@@ -152,6 +152,32 @@ class RidePersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Ride Query Tests")
+    class RideQueryTests {
+
+        @Test
+        @DisplayName("Should find rides by driver")
+        void shouldFindRidesByDriver() {
+            LocalDateTime departureTime1 = LocalDateTime.now().plusHours(1);
+            LocalDateTime departureTime2 = LocalDateTime.now().plusHours(2);
+
+            Ride ride1 = new Ride(startAddress, endAddress, departureTime1, driver, car);
+            Ride ride2 = new Ride(endAddress, alternativeAddress, departureTime2, driver, car);
+            Ride ride3 = new Ride(startAddress, endAddress, departureTime1, anotherDriver, anotherCar);
+
+            rideRepository.saveAll(List.of(ride1, ride2, ride3));
+            entityManager.flush();
+
+            List<Ride> driverRides = rideRepository.findRideByDriver_Id(driver.getId());
+
+            assertThat(driverRides).hasSize(2);
+            assertThat(driverRides).allMatch(ride -> ride.getDriver().equals(driver));
+            assertThat(driverRides).extracting(Ride::getDepartureTime)
+                    .containsExactlyInAnyOrder(departureTime1, departureTime2);
+        }
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
