@@ -266,6 +266,23 @@ class RidePersistenceTest {
             assertThat(foundRide.get().getPassengers()).contains(reloadedPassenger.get());
         }
 
+        @Test
+        @DisplayName("Should add multiple passengers to ride")
+        void shouldAddMultiplePassengersToRide() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride = rideRepository.save(ride);
+
+            ride.addPassenger(passenger);
+            ride.addPassenger(anotherPassenger);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+
+            Optional<Ride> foundRide = rideRepository.findById(ride.getId());
+            assertThat(foundRide).isPresent();
+            assertThat(foundRide.get().getPassengers()).hasSize(2);
+            assertThat(foundRide.get().getPassengers()).containsExactlyInAnyOrder(passenger, anotherPassenger);
+        }
     }
     
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
