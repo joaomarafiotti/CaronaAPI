@@ -224,6 +224,14 @@ class RideSolicitationPersistenceTest {
 
             assertThat(rideSolicitations).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should return empty list when passenger has no solicitations")
+        void shouldReturnEmptyListWhenPassengerHasNoSolicitations() {
+            List<RideSolicitation> passengerSolicitations = solicitationRepository.findRideSolicitationsByPassenger_Id(passenger.getId());
+
+            assertThat(passengerSolicitations).isEmpty();
+        }
     }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
