@@ -41,4 +41,14 @@ class RideSolicitationPersistenceTest {
                 Cpf.of(cpf), LocalDate.of(1992, 2, 2));
         return passengerRepository.save(passenger);
     }
+    
+    private Address createAddress(String street, String neighborhood, String number, String city) {
+        return Address.builder()
+                .street(street)
+                .neighborhood(neighborhood)
+                .number(number)
+                .city(city)
+                .build();
+    }
+
 }
