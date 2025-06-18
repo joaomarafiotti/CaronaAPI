@@ -186,6 +186,27 @@ class RidePersistenceTest {
 
             assertThat(driverRides).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should find rides by status")
+        void shouldFindRidesByStatus() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride waitingRide = new Ride(startAddress, endAddress, departureTime, driver, car);
+            Ride completedRide = new Ride(endAddress, alternativeAddress, departureTime, anotherDriver, anotherCar);
+            completedRide.setRideStatus(RideStatus.FINISHED);
+
+            rideRepository.saveAll(List.of(waitingRide, completedRide));
+            entityManager.flush();
+
+            List<Ride> allRides = rideRepository.findAll();
+            List<Ride> waitingRides = allRides.stream()
+                    .filter(ride -> ride.getRideStatus() == RideStatus.WAITING)
+                    .collect(Collectors.toList());
+
+            assertThat(waitingRides).hasSize(1);
+            assertThat(waitingRides.get(0).getRideStatus()).isEqualTo(RideStatus.WAITING);
+        }
+
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
