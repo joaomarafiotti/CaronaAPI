@@ -397,6 +397,27 @@ class RidePersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Ride Business Logic Tests")
+    class RideBusinessLogicTests {
+
+        @Test
+        @DisplayName("Should check if ride exists for driver and car")
+        void shouldCheckIfRideExistsForDriverAndCar() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            rideRepository.save(ride);
+            entityManager.flush();
+
+            boolean exists = rideRepository.existsByDriverIdAndCarId(driver.getId(), car.getId());
+            boolean notExists = rideRepository.existsByDriverIdAndCarId(anotherDriver.getId(), anotherCar.getId());
+
+            assertThat(exists).isTrue();
+            assertThat(notExists).isFalse();
+        }
+
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         Driver driver = new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
