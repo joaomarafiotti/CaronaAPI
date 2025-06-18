@@ -232,6 +232,25 @@ class RideSolicitationPersistenceTest {
 
             assertThat(passengerSolicitations).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should find solicitations by status")
+        void shouldFindSolicitationsByStatus() {
+            RideSolicitation waitingSolicitation = new RideSolicitation(ride, passenger);
+            RideSolicitation acceptedSolicitation = new RideSolicitation(anotherRide, anotherPassenger);
+            acceptedSolicitation.setStatus(RideSolicitationStatus.ACCEPTED);
+
+            solicitationRepository.saveAll(List.of(waitingSolicitation, acceptedSolicitation));
+            entityManager.flush();
+
+            List<RideSolicitation> allSolicitations = solicitationRepository.findAll();
+            List<RideSolicitation> waitingSolicitations = allSolicitations.stream()
+                    .filter(s -> s.getStatus() == RideSolicitationStatus.WAITING)
+                    .collect(Collectors.toList());
+
+            assertThat(waitingSolicitations).hasSize(1);
+            assertThat(waitingSolicitations.get(0).getStatus()).isEqualTo(RideSolicitationStatus.WAITING);
+        }
     }
 
     private Car createCar(String brand, String model, String licensePlate, Driver driver) {
