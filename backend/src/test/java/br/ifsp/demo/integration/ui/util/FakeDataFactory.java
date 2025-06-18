@@ -65,7 +65,10 @@ public class FakeDataFactory {
     }
 
     public static String randomPlate() {
-        return faker.bothify("???-####").toUpperCase();
+        // Gera placa no formato ABC-1234
+        String letters = faker.letterify("???").toUpperCase();
+        String numbers = faker.numerify("####");
+        return letters + "-" + numbers;
     }
 
     // Endereço
