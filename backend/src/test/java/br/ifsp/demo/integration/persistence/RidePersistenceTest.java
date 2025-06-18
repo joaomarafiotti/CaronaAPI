@@ -283,6 +283,34 @@ class RidePersistenceTest {
             assertThat(foundRide.get().getPassengers()).hasSize(2);
             assertThat(foundRide.get().getPassengers()).containsExactlyInAnyOrder(passenger, anotherPassenger);
         }
+
+        @Test
+        @DisplayName("Should remove passenger from ride")
+        void shouldRemovePassengerFromRide() {
+            LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
+            Ride ride = new Ride(startAddress, endAddress, departureTime, driver, car);
+            ride.addPassenger(passenger);
+            ride.addPassenger(anotherPassenger);
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+
+            ride.removePassenger(passenger.getId());
+            ride = rideRepository.save(ride);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Ride> foundRide = rideRepository.findById(ride.getId());
+            Optional<Passenger> reloadedPassenger = passengerRepository.findById(passenger.getId());
+            Optional<Passenger> reloadedAnotherPassenger = passengerRepository.findById(anotherPassenger.getId());
+
+            assertThat(foundRide).isPresent();
+            assertThat(reloadedPassenger).isPresent();
+            assertThat(reloadedAnotherPassenger).isPresent();
+
+            assertThat(foundRide.get().getPassengers()).hasSize(1);
+            assertThat(foundRide.get().getPassengers()).contains(reloadedAnotherPassenger.get());
+            assertThat(foundRide.get().getPassengers()).doesNotContain(reloadedPassenger.get());
+        }
     }
     
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
