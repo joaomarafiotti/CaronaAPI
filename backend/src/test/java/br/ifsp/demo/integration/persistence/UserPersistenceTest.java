@@ -314,6 +314,26 @@ class UserPersistenceTest {
             assertThat(allUsers).extracting(User::getRole)
                     .containsExactlyInAnyOrder(Role.DRIVER, Role.PASSENGER, Role.DRIVER, Role.PASSENGER);
         }
+
+        @Test
+        @DisplayName("Should find users by role")
+        void shouldFindUsersByRole() {
+            userRepository.saveAll(List.of(driver, passenger, anotherDriver, anotherPassenger));
+            entityManager.flush();
+
+            List<User> allUsers = userRepository.findAll();
+            List<User> drivers = allUsers.stream()
+                    .filter(user -> user.getRole() == Role.DRIVER)
+                    .collect(Collectors.toList());
+            List<User> passengers = allUsers.stream()
+                    .filter(user -> user.getRole() == Role.PASSENGER)
+                    .collect(Collectors.toList());
+
+            assertThat(drivers).hasSize(2);
+            assertThat(passengers).hasSize(2);
+            assertThat(drivers).allMatch(user -> user instanceof Driver);
+            assertThat(passengers).allMatch(user -> user instanceof Passenger);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
