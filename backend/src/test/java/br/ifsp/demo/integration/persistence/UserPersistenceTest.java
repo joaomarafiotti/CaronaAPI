@@ -388,6 +388,32 @@ class UserPersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("User Update Tests")
+    class UserUpdateTests {
+
+        @Test
+        @DisplayName("Should update driver information")
+        void shouldUpdateDriverInformation() {
+            Driver savedDriver = userRepository.save(driver);
+            entityManager.flush();
+
+            savedDriver.setName("Updated John");
+            savedDriver.setLastname("Updated Doe");
+            Driver updatedDriver = userRepository.save(savedDriver);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Driver> foundDriver = userRepository.findById(updatedDriver.getId())
+                    .map(user -> (Driver) user);
+            assertThat(foundDriver).isPresent();
+            assertThat(foundDriver.get().getName()).isEqualTo("Updated John");
+            assertThat(foundDriver.get().getLastname()).isEqualTo("Updated Doe");
+        }
+
+    }
+
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
