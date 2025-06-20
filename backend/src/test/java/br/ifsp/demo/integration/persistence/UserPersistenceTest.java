@@ -186,6 +186,27 @@ class UserPersistenceTest {
             assertThat(savedPassenger.getId()).isNotNull();
             assertThat(savedPassenger.getBirthDate()).isEqualTo(LocalDate.now().minusYears(16));
         }
+
+        @Test
+        @DisplayName("Should fail when saving passenger with duplicate email")
+        void shouldFailWhenSavingPassengerWithDuplicateEmail() {
+            userRepository.save(passenger);
+            entityManager.flush();
+
+            Passenger duplicateEmailPassenger = new Passenger(
+                    "Another",
+                    "Passenger",
+                    "maria.oliveira@hotmail.com",
+                    "password123",
+                    Cpf.of("118.468.960-10"),
+                    LocalDate.of(1990, 3, 3)
+            );
+
+            assertThatThrownBy(() -> {
+                userRepository.save(duplicateEmailPassenger);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
