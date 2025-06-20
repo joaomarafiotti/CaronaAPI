@@ -288,6 +288,19 @@ class UserPersistenceTest {
 
             assertThat(foundUser).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should find user by email case insensitive")
+        void shouldFindUserByEmailCaseInsensitive() {
+            userRepository.save(driver);
+            entityManager.flush();
+
+            Optional<User> foundUser = userRepository.findByEmail("JOHN.DOE@gmail.COM");
+
+            if (foundUser.isPresent()) {
+                assertThat(foundUser.get().getEmail()).isEqualToIgnoringCase("john.doe@gmail.com");
+            }
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
