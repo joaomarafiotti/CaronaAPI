@@ -356,6 +356,17 @@ class UserPersistenceTest {
                 Cpf.of("invalid-cpf");
             }).isInstanceOf(IllegalArgumentException.class);
         }
+
+        @Test
+        @DisplayName("Should validate birth date not in future")
+        void shouldValidateBirthDateNotInFuture() {
+            LocalDate futureDate = LocalDate.now().plusDays(1);
+
+            assertThatThrownBy(() -> {
+                new Driver("Laura", "Oliveira", "laura.oliveira@gmail.com", "password123",
+                        Cpf.of("097.110.570-77"), futureDate);
+            }).isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
