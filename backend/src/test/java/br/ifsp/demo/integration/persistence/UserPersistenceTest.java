@@ -532,6 +532,35 @@ class UserPersistenceTest {
             assertThat(savedDriver.getName()).isEqualTo(longName);
             assertThat(savedDriver.getLastname()).isEqualTo(longLastname);
         }
+
+        @Test
+        @DisplayName("Should handle users with same name but different emails")
+        void shouldHandleUsersWithSameNameButDifferentEmails() {
+            Driver driver1 = new Driver(
+                    "João",
+                    "Maria",
+                    "joao.maria@gmail.com",
+                    "password123",
+                    Cpf.of("058.518.900-53"),
+                    LocalDate.of(1990, 1, 1)
+            );
+
+            Driver driver2 = new Driver(
+                    "Maria",
+                    "João",
+                    "maria.joao@gmail.com",
+                    "password123",
+                    Cpf.of("541.618.900-28"),
+                    LocalDate.of(1990, 1, 1)
+            );
+
+            userRepository.save(driver1);
+            Driver savedDriver2 = userRepository.save(driver2);
+
+            assertThat(savedDriver2.getId()).isNotNull();
+            assertThat(savedDriver2.getName()).isEqualTo("Maria");
+            assertThat(savedDriver2.getEmail()).isEqualTo("maria.joao@gmail.com");
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
