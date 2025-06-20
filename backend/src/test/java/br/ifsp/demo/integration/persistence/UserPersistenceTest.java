@@ -512,6 +512,26 @@ class UserPersistenceTest {
             assertThat(savedDriver.getLastname()).isEqualTo("da Silva");
         }
 
+        @Test
+        @DisplayName("Should handle long names")
+        void shouldHandleLongNames() {
+            String longName = "A".repeat(100);
+            String longLastname = "B".repeat(100);
+
+            Driver longNameDriver = new Driver(
+                    longName,
+                    longLastname,
+                    "long.name@gmail.com",
+                    "password123",
+                    Cpf.of("775.333.080-26"),
+                    LocalDate.of(1990, 1, 1)
+            );
+
+            Driver savedDriver = userRepository.save(longNameDriver);
+
+            assertThat(savedDriver.getName()).isEqualTo(longName);
+            assertThat(savedDriver.getLastname()).isEqualTo(longLastname);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
