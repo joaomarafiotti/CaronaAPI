@@ -147,6 +147,29 @@ class UserPersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Passenger Persistence Tests")
+    class PassengerPersistenceTests {
+
+        @Test
+        @DisplayName("Should persist passenger with all valid data")
+        void shouldPersistPassengerWithValidData() {
+            Passenger savedPassenger = userRepository.save(passenger);
+            entityManager.flush();
+            entityManager.clear();
+
+            assertThat(savedPassenger.getId()).isNotNull();
+            assertPassengerProperties(savedPassenger, "Maria", "Oliveira", "maria.oliveira@hotmail.com", "561.506.860-43");
+            assertThat(savedPassenger.getRole()).isEqualTo(Role.PASSENGER);
+            assertThat(savedPassenger.getBirthDate()).isEqualTo(LocalDate.of(1992, 2, 2));
+
+            Optional<Passenger> foundPassenger = userRepository.findById(savedPassenger.getId())
+                    .map(user -> (Passenger) user);
+            assertThat(foundPassenger).isPresent();
+            assertPassengerProperties(foundPassenger.get(), "Maria", "Oliveira", "maria.oliveira@hotmail.com", "561.506.860-43");
+        }
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
