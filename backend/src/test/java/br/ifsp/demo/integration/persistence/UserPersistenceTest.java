@@ -5,6 +5,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.security.user.JpaUserRepository;
 import br.ifsp.demo.security.user.Role;
+import br.ifsp.demo.security.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,8 +16,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
+
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -275,6 +279,14 @@ class UserPersistenceTest {
             assertThat(foundUser.get()).isInstanceOf(Passenger.class);
             Passenger foundPassenger = (Passenger) foundUser.get();
             assertThat(foundPassenger.getRole()).isEqualTo(Role.PASSENGER);
+        }
+
+        @Test
+        @DisplayName("Should not find user by non-existent email")
+        void shouldNotFindUserByNonExistentEmail() {
+            Optional<User> foundUser = userRepository.findByEmail("nonexistent@gmail.com");
+
+            assertThat(foundUser).isEmpty();
         }
     }
 
