@@ -34,4 +34,12 @@ class UserPersistenceTest {
         assertThat(driver.getCpf().toString()).isEqualTo(cpf);
         assertThat(driver.getRole()).isEqualTo(Role.DRIVER);
     }
+
+    private void assertPassengerProperties(Passenger passenger, String name, String lastname, String email, String cpf) {
+        assertThat(passenger.getName()).isEqualTo(name);
+        assertThat(passenger.getLastname()).isEqualTo(lastname);
+        assertThat(passenger.getEmail()).isEqualTo(email);
+        assertThat(passenger.getCpf().toString()).isEqualTo(cpf);
+        assertThat(passenger.getRole()).isEqualTo(Role.PASSENGER);
+    }
 }
