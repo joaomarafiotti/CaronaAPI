@@ -489,7 +489,31 @@ class UserPersistenceTest {
             assertThat(foundUser).isEmpty();
         }
     }
-    
+
+    @Nested
+    @DisplayName("User Edge Cases Tests")
+    class UserEdgeCasesTests {
+
+        @Test
+        @DisplayName("Should handle special characters in names")
+        void shouldHandleSpecialCharactersInNames() {
+            Driver specialDriver = new Driver(
+                    "José",
+                    "da Silva",
+                    "jose.silva@gmail.com",
+                    "password123",
+                    Cpf.of("147.349.700-09"),
+                    LocalDate.of(1990, 1, 1)
+            );
+
+            Driver savedDriver = userRepository.save(specialDriver);
+
+            assertThat(savedDriver.getName()).isEqualTo("José");
+            assertThat(savedDriver.getLastname()).isEqualTo("da Silva");
+        }
+
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
