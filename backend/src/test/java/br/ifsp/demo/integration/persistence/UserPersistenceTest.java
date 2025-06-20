@@ -367,6 +367,25 @@ class UserPersistenceTest {
                         Cpf.of("097.110.570-77"), futureDate);
             }).isInstanceOf(IllegalArgumentException.class);
         }
+
+        @Test
+        @DisplayName("Should validate required fields")
+        void shouldValidateRequiredFields() {
+            assertThatThrownBy(() -> {
+                new Driver(null, "Arraché", "arrache.claudio@gmail.com", "password123",
+                        Cpf.of("502.979.848-02"), LocalDate.of(1990, 1, 1));
+            }).isInstanceOf(IllegalArgumentException.class);
+
+            assertThatThrownBy(() -> {
+                new Driver("Claudio", null, "arrache.claudio@gmail.com", "password123",
+                        Cpf.of("502.979.848-02"), LocalDate.of(1990, 1, 1));
+            }).isInstanceOf(IllegalArgumentException.class);
+
+            assertThatThrownBy(() -> {
+                new Driver("Claudio", "Arraché", null, "password123",
+                        Cpf.of("502.979.848-02"), LocalDate.of(1990, 1, 1));
+            }).isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
