@@ -230,6 +230,26 @@ class UserPersistenceTest {
         }
     }
 
+
+    @Nested
+    @DisplayName("User Query Tests")
+    class UserQueryTests {
+
+        @Test
+        @DisplayName("Should find user by email")
+        void shouldFindUserByEmail() {
+            userRepository.save(driver);
+            entityManager.flush();
+
+            Optional<User> foundUser = userRepository.findByEmail("fulano.silva@gmail.com");
+
+            assertThat(foundUser).isPresent();
+            assertThat(foundUser.get().getEmail()).isEqualTo("fulano.silva@gmail.com");
+            assertThat(foundUser.get().getRole()).isEqualTo(Role.DRIVER);
+            assertThat(foundUser.get().getName()).isEqualTo("Fulano");
+        }
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
