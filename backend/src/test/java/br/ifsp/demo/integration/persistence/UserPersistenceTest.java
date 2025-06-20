@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -101,6 +102,27 @@ class UserPersistenceTest {
 
             assertThat(savedDriver.getId()).isNotNull();
             assertThat(savedDriver.getBirthDate()).isEqualTo(LocalDate.of(1950, 1, 1));
+        }
+
+        @Test
+        @DisplayName("Should fail when saving driver with duplicate email")
+        void shouldFailWhenSavingDriverWithDuplicateEmail() {
+            userRepository.save(driver);
+            entityManager.flush();
+
+            Driver duplicateEmailDriver = new Driver(
+                    "Another",
+                    "Driver",
+                    "fulano.silva@gmail.com",
+                    "password123",
+                    Cpf.of("674.750.280-97"),
+                    LocalDate.of(1985, 5, 5)
+            );
+
+            assertThatThrownBy(() -> {
+                userRepository.save(duplicateEmailDriver);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
         }
     }
 
