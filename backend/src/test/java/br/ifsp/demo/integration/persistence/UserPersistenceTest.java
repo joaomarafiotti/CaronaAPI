@@ -168,6 +168,24 @@ class UserPersistenceTest {
             assertThat(foundPassenger).isPresent();
             assertPassengerProperties(foundPassenger.get(), "Maria", "Oliveira", "maria.oliveira@hotmail.com", "561.506.860-43");
         }
+
+        @Test
+        @DisplayName("Should persist passenger with minimum age")
+        void shouldPersistPassengerWithMinimumAge() {
+            Passenger youngPassenger = new Passenger(
+                    "Young",
+                    "Passenger",
+                    "young.passenger@gmail.com",
+                    "password123",
+                    Cpf.of("764.011.570-11"),
+                    LocalDate.now().minusYears(16)
+            );
+
+            Passenger savedPassenger = userRepository.save(youngPassenger);
+
+            assertThat(savedPassenger.getId()).isNotNull();
+            assertThat(savedPassenger.getBirthDate()).isEqualTo(LocalDate.now().minusYears(16));
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
