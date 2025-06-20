@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -64,6 +65,24 @@ class UserPersistenceTest {
                     .map(user -> (Driver) user);
             assertThat(foundDriver).isPresent();
             assertDriverProperties(foundDriver.get(), "Fulano", "Silva", "fulano.silva@gmail.com", "005.046.860-03");
+        }
+
+        @Test
+        @DisplayName("Should persist driver with minimum age")
+        void shouldPersistDriverWithMinimumAge() {
+            Driver youngDriver = new Driver(
+                    "Menor",
+                    "Idade",
+                    "menor.idade@gmail.com",
+                    "password123",
+                    Cpf.of("864.216.480-88"),
+                    LocalDate.now().minusYears(18)
+            );
+
+            Driver savedDriver = userRepository.save(youngDriver);
+
+            assertThat(savedDriver.getId()).isNotNull();
+            assertThat(savedDriver.getBirthDate()).isEqualTo(LocalDate.now().minusYears(18));
         }
     }
 
