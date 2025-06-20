@@ -124,6 +124,27 @@ class UserPersistenceTest {
                 entityManager.flush();
             }).isInstanceOf(DataIntegrityViolationException.class);
         }
+
+        @Test
+        @DisplayName("Should fail when saving driver with duplicate CPF")
+        void shouldFailWhenSavingDriverWithDuplicateCpf() {
+            userRepository.save(driver);
+            entityManager.flush();
+
+            Driver duplicateCpfDriver = new Driver(
+                    "Another",
+                    "Driver",
+                    "another.driver@gmail.com",
+                    "password123",
+                    Cpf.of("005.046.860-03"),
+                    LocalDate.of(1985, 5, 5)
+            );
+
+            assertThatThrownBy(() -> {
+                userRepository.save(duplicateCpfDriver);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
