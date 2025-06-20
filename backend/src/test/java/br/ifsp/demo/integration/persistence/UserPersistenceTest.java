@@ -84,6 +84,24 @@ class UserPersistenceTest {
             assertThat(savedDriver.getId()).isNotNull();
             assertThat(savedDriver.getBirthDate()).isEqualTo(LocalDate.now().minusYears(18));
         }
+
+        @Test
+        @DisplayName("Should persist driver with maximum age")
+        void shouldPersistDriverWithMaximumAge() {
+            Driver oldDriver = new Driver(
+                    "Old",
+                    "Driver",
+                    "old.driver@gmail.com",
+                    "password123",
+                    Cpf.of("046.052.980-37"),
+                    LocalDate.of(1950, 1, 1)
+            );
+
+            Driver savedDriver = userRepository.save(oldDriver);
+
+            assertThat(savedDriver.getId()).isNotNull();
+            assertThat(savedDriver.getBirthDate()).isEqualTo(LocalDate.of(1950, 1, 1));
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
