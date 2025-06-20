@@ -349,6 +349,13 @@ class UserPersistenceTest {
             }).isInstanceOf(IllegalArgumentException.class);
         }
 
+        @Test
+        @DisplayName("Should validate CPF format")
+        void shouldValidateCpfFormat() {
+            assertThatThrownBy(() -> {
+                Cpf.of("invalid-cpf");
+            }).isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
