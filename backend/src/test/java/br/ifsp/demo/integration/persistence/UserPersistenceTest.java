@@ -262,6 +262,20 @@ class UserPersistenceTest {
             Driver foundDriver = (Driver) foundUser.get();
             assertThat(foundDriver.getRole()).isEqualTo(Role.DRIVER);
         }
+
+        @Test
+        @DisplayName("Should find passenger by email")
+        void shouldFindPassengerByEmail() {
+            userRepository.save(passenger);
+            entityManager.flush();
+
+            Optional<User> foundUser = userRepository.findByEmail("maria.oliveira@hotmail.com");
+
+            assertThat(foundUser).isPresent();
+            assertThat(foundUser.get()).isInstanceOf(Passenger.class);
+            Passenger foundPassenger = (Passenger) foundUser.get();
+            assertThat(foundPassenger.getRole()).isEqualTo(Role.PASSENGER);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
