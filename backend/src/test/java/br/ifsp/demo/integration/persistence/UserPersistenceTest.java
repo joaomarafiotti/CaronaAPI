@@ -336,6 +336,21 @@ class UserPersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("User Validation Tests")
+    class UserValidationTests {
+
+        @Test
+        @DisplayName("Should validate email format")
+        void shouldValidateEmailFormat() {
+            assertThatThrownBy(() -> {
+                new Driver("João", "José", "invalid-email", "password123",
+                        Cpf.of("502.979.848-02"), LocalDate.of(1990, 1, 1));
+            }).isInstanceOf(IllegalArgumentException.class);
+        }
+
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
