@@ -301,6 +301,19 @@ class UserPersistenceTest {
                 assertThat(foundUser.get().getEmail()).isEqualToIgnoringCase("john.doe@gmail.com");
             }
         }
+
+        @Test
+        @DisplayName("Should find all users")
+        void shouldFindAllUsers() {
+            userRepository.saveAll(List.of(driver, passenger, anotherDriver, anotherPassenger));
+            entityManager.flush();
+
+            List<User> allUsers = userRepository.findAll();
+
+            assertThat(allUsers).hasSize(4);
+            assertThat(allUsers).extracting(User::getRole)
+                    .containsExactlyInAnyOrder(Role.DRIVER, Role.PASSENGER, Role.DRIVER, Role.PASSENGER);
+        }
     }
 
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
