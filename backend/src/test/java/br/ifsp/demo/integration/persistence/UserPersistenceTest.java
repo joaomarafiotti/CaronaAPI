@@ -446,7 +446,24 @@ class UserPersistenceTest {
         }
     }
 
+    @Nested
+    @DisplayName("User Deletion Tests")
+    class UserDeletionTests {
 
+        @Test
+        @DisplayName("Should delete driver successfully")
+        void shouldDeleteDriverSuccessfully() {
+            Driver savedDriver = userRepository.save(driver);
+            entityManager.flush();
+
+            userRepository.delete(savedDriver);
+            entityManager.flush();
+
+            Optional<User> foundUser = userRepository.findById(savedDriver.getId());
+            assertThat(foundUser).isEmpty();
+        }
+    }
+    
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
