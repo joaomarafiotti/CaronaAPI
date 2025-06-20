@@ -5,7 +5,9 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.security.user.Role;
 import org.junit.jupiter.api.DisplayName;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDate;
@@ -17,6 +19,24 @@ import static org.assertj.core.api.Assertions.*;
 @ActiveProfiles("test")
 @DisplayName("User Persistence Tests")
 class UserPersistenceTest {
+    @Autowired
+    private TestEntityManager entityManager;
+
+    private Driver driver;
+    private Passenger passenger;
+    private Driver anotherDriver;
+    private Passenger anotherPassenger;
+
+    @BeforeEach
+    void setUp() {
+        entityManager.clear();
+
+        driver = createDriver("Fulano", "Silva", "fulano.silva@gmail.com", "005.046.860-03");
+        anotherDriver = createDriver("Ciclano", "Souza", "ciclano.souza@outlook.com", "355.553.060-75");
+        passenger = createPassenger("Maria", "Oliveira", "maria.oliveira@hotmail.com", "561.506.860-43");
+        anotherPassenger = createPassenger("Ana", "Souza", "ana.souza@yahoo.com", "936.138.620-42");
+    }
+
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
         return new Driver(firstName, lastName, email, "password123",
                 Cpf.of(cpf), LocalDate.of(1990, 1, 1));
