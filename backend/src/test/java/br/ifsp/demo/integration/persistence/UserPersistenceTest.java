@@ -462,6 +462,19 @@ class UserPersistenceTest {
             Optional<User> foundUser = userRepository.findById(savedDriver.getId());
             assertThat(foundUser).isEmpty();
         }
+
+        @Test
+        @DisplayName("Should delete passenger successfully")
+        void shouldDeletePassengerSuccessfully() {
+            Passenger savedPassenger = userRepository.save(passenger);
+            entityManager.flush();
+
+            userRepository.delete(savedPassenger);
+            entityManager.flush();
+
+            Optional<User> foundUser = userRepository.findById(savedPassenger.getId());
+            assertThat(foundUser).isEmpty();
+        }
     }
     
     private Driver createDriver(String firstName, String lastName, String email, String cpf) {
