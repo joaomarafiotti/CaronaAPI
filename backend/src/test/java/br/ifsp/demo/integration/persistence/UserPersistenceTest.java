@@ -411,6 +411,24 @@ class UserPersistenceTest {
             assertThat(foundDriver.get().getLastname()).isEqualTo("Updated Doe");
         }
 
+        @Test
+        @DisplayName("Should update passenger information")
+        void shouldUpdatePassengerInformation() {
+            Passenger savedPassenger = userRepository.save(passenger);
+            entityManager.flush();
+
+            savedPassenger.setName("Updated Jane");
+            savedPassenger.setLastname("Updated Smith");
+            Passenger updatedPassenger = userRepository.save(savedPassenger);
+            entityManager.flush();
+            entityManager.clear();
+
+            Optional<Passenger> foundPassenger = userRepository.findById(updatedPassenger.getId())
+                    .map(user -> (Passenger) user);
+            assertThat(foundPassenger).isPresent();
+            assertThat(foundPassenger.get().getName()).isEqualTo("Updated Jane");
+            assertThat(foundPassenger.get().getLastname()).isEqualTo("Updated Smith");
+        }
     }
 
 
