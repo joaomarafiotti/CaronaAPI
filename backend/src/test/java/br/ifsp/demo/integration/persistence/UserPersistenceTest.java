@@ -429,6 +429,21 @@ class UserPersistenceTest {
             assertThat(foundPassenger.get().getName()).isEqualTo("Updated Jane");
             assertThat(foundPassenger.get().getLastname()).isEqualTo("Updated Smith");
         }
+
+        @Test
+        @DisplayName("Should not allow updating email to existing email")
+        void shouldNotAllowUpdatingEmailToExistingEmail() {
+            userRepository.save(driver);
+            userRepository.save(passenger);
+            entityManager.flush();
+
+            driver.setEmail("maria.oliveira@hotmail.com");
+
+            assertThatThrownBy(() -> {
+                userRepository.save(driver);
+                entityManager.flush();
+            }).isInstanceOf(DataIntegrityViolationException.class);
+        }
     }
 
 
