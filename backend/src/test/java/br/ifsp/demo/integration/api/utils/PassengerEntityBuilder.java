@@ -27,7 +27,7 @@ public class PassengerEntityBuilder {
                 .email(faker.internet().emailAddress())
                 .password(password)
                 .role(Role.PASSENGER)
-                .cpf(Cpf.of("679.538.950-21"))
+                .cpf(Cpf.of(getRandomCPF()))
                 .birthDate(LocalDate.parse(faker.date().birthday(20, 80).toString()))
                 .build();
     }
