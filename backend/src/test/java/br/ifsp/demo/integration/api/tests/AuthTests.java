@@ -5,6 +5,7 @@ import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
 import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
@@ -14,6 +15,7 @@ import static org.hamcrest.Matchers.*;
 public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
+    @Tag("ApiTest")
     @DisplayName("Should register passenger and return 201 with id as payload")
     void shouldRegisterUserAndReturn201WithIdAsPayload(){
         final User user = PassengerEntityBuilder.createRandomPassengerUser("password");
@@ -23,6 +25,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     }
 
     @Test
+    @Tag("ApiTest")
     @DisplayName("Should register driver and return 201 with id as payload")
     void shouldRegisterDriverAndReturn201WithIdAsPayload(){
         final User user = DriverEntityBuilder.createRandomDriverUser("password");
@@ -30,5 +33,5 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
-    
+
 }
