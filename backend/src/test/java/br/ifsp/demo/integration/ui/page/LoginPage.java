@@ -15,7 +15,7 @@ public class LoginPage extends BasePageObject {
     public LoginPage(WebDriver driver) {
         super(driver);
         driver.get(LOGIN_URL);
-        waitForVisibility(emailField); // Espera inicial
+        waitForVisibility(emailField);
     }
 
     public void fillEmail(String email) {
@@ -28,6 +28,13 @@ public class LoginPage extends BasePageObject {
 
     public void submitLogin() {
         clickWhenClickable(submitButton);
+    }
+
+    public void doLogin(String email, String password, String redirectPathAfterLogin) {
+        fillEmail(email);
+        fillPassword(password);
+        submitLogin();
+        waitForUrlContains(redirectPathAfterLogin);
     }
 
     public String getCurrentUrl() {
