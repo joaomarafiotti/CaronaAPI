@@ -63,5 +63,16 @@ public class BasePageObject {
 
     protected void waitForUrlContains(String partialUrl) {
         wait.until(ExpectedConditions.urlContains(partialUrl));
-    }    
+    }
+
+    protected void waitUntilAnyVisible(By... locators) {
+        wait.until(driver -> {
+            for (By locator : locators) {
+                if (!driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed()) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
 }
