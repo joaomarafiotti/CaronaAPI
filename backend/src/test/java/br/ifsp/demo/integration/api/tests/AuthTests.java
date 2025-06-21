@@ -17,7 +17,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     void shouldRegisterUserAndReturn201WithIdAsPayload(){
         final User user = PassengerEntityBuilder.createRandomPassengerUser("password");
         given().contentType("application/json").port(port).body(user)
-                .when().post(("/api/v1/register"))
+                .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
 }

@@ -14,12 +14,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseApiIntegrationTest {
 
-    @LocalServerPort protected int port = 8080;
+    @LocalServerPort protected int port;
     @Autowired private JpaUserRepository repository;
 
     @BeforeEach
     public void generalSetup() {
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
     }
 
     @AfterEach void tearDown() {

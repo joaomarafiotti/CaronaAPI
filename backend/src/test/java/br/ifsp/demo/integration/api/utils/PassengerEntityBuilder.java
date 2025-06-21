@@ -6,6 +6,7 @@ import br.ifsp.demo.security.user.User;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class PassengerEntityBuilder {
@@ -28,7 +29,7 @@ public class PassengerEntityBuilder {
                 .password(password)
                 .role(Role.PASSENGER)
                 .cpf(Cpf.of(getRandomCPF()))
-                .birthDate(LocalDate.parse(faker.date().birthday(20, 80).toString()))
+                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
                 .build();
     }
 
