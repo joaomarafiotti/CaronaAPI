@@ -24,7 +24,7 @@ public class DriverEntityBuilder {
             "781.669.170-09"
     );
 
-    public static User createRandomPassengerUser(String password){
+    public static User createRandomDriverUser(String password){
         return User.builder().id(UUID.randomUUID())
                 .name(faker.name().firstName())
                 .lastname(faker.name().lastName())

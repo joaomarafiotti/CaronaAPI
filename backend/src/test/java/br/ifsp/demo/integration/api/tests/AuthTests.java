@@ -1,5 +1,6 @@
 package br.ifsp.demo.integration.api.tests;
 
+import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
 import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
 import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
@@ -20,4 +21,14 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
+
+    @Test
+    @DisplayName("Should register driver and return 201 with id as payload")
+    void shouldRegisterDriverAndReturn201WithIdAsPayload(){
+        final User user = DriverEntityBuilder.createRandomDriverUser("password");
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
+    }
+    
 }
