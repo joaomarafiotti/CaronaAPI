@@ -6,15 +6,25 @@ import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class AvailableRidesPage extends BasePageObject {
 
-    private static final String AVAILABLE_RIDES_URL = "http://localhost:5173/dashboard/passenger/rides/available";
+    private static final String AVAILABLE_RIDES_URL = "http://localhost:5173/dashboard/passenger/avalable-rides";
 
     private final By pageTitle = By.xpath("//*[contains(text(), 'Caronas Disponíveis')]");
-    private final By rideCards = By.cssSelector("div[class*='ride']"); // depende da estrutura do componente Ride
+    private final By rideCards = By.xpath("//button[contains(text(), 'Solicitar')]/ancestor::div[contains(@class, 'chakra-card__root')]");
+    private final By solicitarButton = By.xpath("//button[contains(text(), 'Solicitar')]");
 
     public AvailableRidesPage(WebDriver driver) {
         super(driver);
+    }
+
+    // Método explícito para visitar a página — evita conflito com login
+    public void visit() {
         driver.get(AVAILABLE_RIDES_URL);
         waitForVisibility(pageTitle);
+    }
+
+    public void solicitarPrimeiraCarona() {
+        waitForVisibility(solicitarButton);
+        clickWhenClickable(solicitarButton);
     }
 
     public boolean isTitleVisible() {
