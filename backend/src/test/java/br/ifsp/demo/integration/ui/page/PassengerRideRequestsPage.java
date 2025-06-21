@@ -7,14 +7,11 @@ import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class PassengerRideRequestsPage extends BasePageObject {
 
-    private static final String PAGE_URL = "http://localhost:5173/dashboard/passenger/ride-requests";
-
     private final By title = By.xpath("//*[contains(text(), 'Solicitações de Carona')]");
     private final By rideSolicitations = By.cssSelector(".ride-grid");
 
     public PassengerRideRequestsPage(WebDriver driver) {
         super(driver);
-        driver.get(PAGE_URL);
         waitForVisibility(title);
     }
 

@@ -7,15 +7,13 @@ import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class ViewSolicitationNotificationsPage extends BasePageObject {
 
-    private static final String PAGE_URL = "http://localhost:5173/dashboard/driver/notifications";
-
     private final By title = By.xpath("//*[contains(text(), 'Notificações de Solicitações')]");
-    private final By solicitationGrid = By.cssSelector(".ride-grid");
+    //private final By solicitationText = By.xpath("//*[contains(text(), 'solicitou para se juntar à sua carona')]");
+    private final By approveButton = By.xpath("//button[contains(text(), 'Aprovar')]");
 
     public ViewSolicitationNotificationsPage(WebDriver driver) {
         super(driver);
-        driver.get(PAGE_URL);
-        waitForVisibility(title);
+        waitForVisibility(title); // aguarda título da página
     }
 
     public boolean isTitleVisible() {
@@ -23,6 +21,6 @@ public class ViewSolicitationNotificationsPage extends BasePageObject {
     }
 
     public boolean hasSolicitations() {
-        return !driver.findElements(solicitationGrid).isEmpty();
+        return isVisible(approveButton);
     }
 }
