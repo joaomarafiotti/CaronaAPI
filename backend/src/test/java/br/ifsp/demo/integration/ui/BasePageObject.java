@@ -60,4 +60,8 @@ public class BasePageObject {
     protected void waitForInvisibility(By locator) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+    protected void waitForUrlContains(String partialUrl) {
+        wait.until(ExpectedConditions.urlContains(partialUrl));
+    }    
 }
