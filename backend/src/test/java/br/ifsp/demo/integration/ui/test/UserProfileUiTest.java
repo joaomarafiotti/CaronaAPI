@@ -13,14 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("UiTest")
 public class UserProfileUiTest extends BasePassengerTest {
 
-    @Override
-    protected void setInitialPage() {
-        new UserProfilePage(driver);
-    }
-
     @Test
     @DisplayName("Happy Path - Should show name, email, CPF and birth date")
     void shouldShowUserProfileInfo() {
+        // Já está na página após login
         UserProfilePage page = new UserProfilePage(driver);
 
         assertThat(page.isNameVisible()).isTrue();
@@ -33,8 +29,8 @@ public class UserProfileUiTest extends BasePassengerTest {
     @DisplayName("UI Responsiveness - Should show name on mobile layout")
     void shouldRenderNameOnMobileLayout() {
         driver.manage().window().setSize(new Dimension(375, 812));
-
         UserProfilePage page = new UserProfilePage(driver);
+
         assertThat(page.isNameVisible()).isTrue();
     }
 }
