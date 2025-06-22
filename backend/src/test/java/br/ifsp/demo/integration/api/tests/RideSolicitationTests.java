@@ -4,6 +4,7 @@ import br.ifsp.demo.integration.api.utils.*;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.security.auth.AuthRequest;
+import br.ifsp.demo.utils.RideSolicitationStatus;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,6 +82,22 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().post("/api/v1/ride-solicitations?rideId="+rideId)
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("rideSolicitationId", notNullValue());
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when get pending ride solicitations")
+    void shouldReturn200WhenGetPendingRideSolicitations(){
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().get("/api/v1/ride-solicitations/passenger/pending")
+                .then().log().ifValidationFails(LogDetail.BODY)
+                    .statusCode(200)
+                    .body("rideSolicitaionId", notNullValue());
+
     }
 
 }
