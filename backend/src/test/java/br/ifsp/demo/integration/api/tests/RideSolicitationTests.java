@@ -11,6 +11,9 @@ import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.matcher.RestAssuredMatchers.*;
@@ -73,6 +76,15 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
         setAuthenticationTokenPassenger();
         setCarId();
         setRideId();
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 201 when creating a ride solicitation")
+    void shouldReturn201WhenCreatingARideSolicitation(){
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
 
 }
