@@ -3,6 +3,7 @@ package br.ifsp.demo.integration.api.tests;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
 import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
+import br.ifsp.demo.integration.api.utils.RegisterUserRequest;
 import br.ifsp.demo.security.auth.AuthRequest;
 import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
@@ -20,7 +21,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     @Tag("ApiTest")
     @DisplayName("Should register passenger and return 201 with id as payload")
     void shouldRegisterUserAndReturn201WithIdAsPayload(){
-        final User user = PassengerEntityBuilder.createRandomPassengerUser("password");
+        final RegisterUserRequest user = PassengerEntityBuilder.createRandomPassengerUser("password");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
@@ -30,7 +31,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     @Tag("ApiTest")
     @DisplayName("Should register driver and return 201 with id as payload")
     void shouldRegisterDriverAndReturn201WithIdAsPayload(){
-        final User user = DriverEntityBuilder.createRandomDriverUser("password");
+        final RegisterUserRequest user = DriverEntityBuilder.createRandomDriverUser("password");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
@@ -40,8 +41,8 @@ public class AuthTests extends BaseApiIntegrationTest {
     @Tag("ApiTest")
     @DisplayName("Should return code 409 if email is already used")
     void shouldReturnCode409IfEmailIsAlreadyUsed(){
-        final User user1 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
-        final User user2 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
+        final RegisterUserRequest user1 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
+        final RegisterUserRequest user2 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
         given().contentType("application/json").port(port).body(user1)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
@@ -54,7 +55,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     @Tag("ApiTest")
     @DisplayName("Should login a user and returns 200 and token payload")
     void shouldLoginAUserAndReturns200AndTokenPayload(){
-        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register");
 
@@ -68,7 +69,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     @Tag("ApiTest")
     @DisplayName("Should not login user and returns 401")
     void shouldNotLoginUserAndReturns401(){
-        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register");
 

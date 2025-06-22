@@ -1,13 +1,9 @@
 package br.ifsp.demo.integration.api.tests;
 
-import br.ifsp.demo.integration.api.utils.CarEntityBuilder;
-import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
-import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
-import br.ifsp.demo.integration.api.utils.RideEntityBuilder;
+import br.ifsp.demo.integration.api.utils.*;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.security.auth.AuthRequest;
-import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +23,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
 
     private void setAuthenticationTokenDriver(){
-        final User user = DriverEntityBuilder.createDriverByEmail("password", "driver@email.com");
+        final RegisterUserRequest user = DriverEntityBuilder.createDriverByEmail("password", "driver@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY);
@@ -40,7 +36,7 @@ public class RideTests extends BaseApiIntegrationTest {
     }
 
     private void setAuthenticationTokenPassenger(){
-        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
+        final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY);

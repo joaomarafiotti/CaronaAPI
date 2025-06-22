@@ -21,31 +21,32 @@ public class DriverEntityBuilder {
             "804.530.890-70",
             "241.811.950-58",
             "877.321.140-00",
-            "781.669.170-09"
+            "781.669.170-09",
+            "502.979.848-02"
     );
 
-    public static User createRandomDriverUser(String password){
-        return User.builder().id(UUID.randomUUID())
-                .name(faker.name().firstName())
-                .lastname(faker.name().lastName())
-                .email(faker.internet().emailAddress())
-                .password(password)
-                .role(Role.DRIVER)
-                .cpf(Cpf.of(getRandomCPF()))
-                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
-                .build();
+    public static RegisterUserRequest createRandomDriverUser(String password){
+        return new RegisterUserRequest(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.internet().emailAddress(),
+                password,
+                Role.DRIVER,
+                getRandomCPF(),
+                LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault())
+        );
     }
 
-    public static User createDriverByEmail(String password, String email){
-        return User.builder().id(UUID.randomUUID())
-                .name(faker.name().firstName())
-                .lastname(faker.name().lastName())
-                .email(email)
-                .password(password)
-                .role(Role.DRIVER)
-                .cpf(Cpf.of(getRandomCPF()))
-                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
-                .build();
+    public static RegisterUserRequest createDriverByEmail(String password, String email){
+        return new RegisterUserRequest(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                email,
+                password,
+                Role.DRIVER,
+                getRandomCPF(),
+                LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault())
+        );
     }
 
     private static String getRandomCPF(){

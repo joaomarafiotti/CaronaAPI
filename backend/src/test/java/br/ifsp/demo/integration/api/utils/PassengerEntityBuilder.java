@@ -21,28 +21,28 @@ public class PassengerEntityBuilder {
             "781.669.170-09"
     );
 
-    public static User createRandomPassengerUser(String password){
-        return User.builder().id(UUID.randomUUID())
-                .name(faker.name().firstName())
-                .lastname(faker.name().lastName())
-                .email(faker.internet().emailAddress())
-                .password(password)
-                .role(Role.PASSENGER)
-                .cpf(Cpf.of(getRandomCPF()))
-                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
-                .build();
+    public static RegisterUserRequest createRandomPassengerUser(String password){
+        return new RegisterUserRequest(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.internet().emailAddress(),
+                password,
+                Role.PASSENGER,
+                getRandomCPF(),
+                LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault())
+        );
     }
 
-    public static User createPassengerByEmail(String password, String email){
-        return User.builder().id(UUID.randomUUID())
-                .name(faker.name().firstName())
-                .lastname(faker.name().lastName())
-                .email(email)
-                .password(password)
-                .role(Role.PASSENGER)
-                .cpf(Cpf.of(getRandomCPF()))
-                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
-                .build();
+    public static RegisterUserRequest createPassengerByEmail(String password, String email){
+        return new RegisterUserRequest(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                email,
+                password,
+                Role.PASSENGER,
+                getRandomCPF(),
+                LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault())
+        );
     }
 
     private static String getRandomCPF(){
