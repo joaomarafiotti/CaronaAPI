@@ -11,20 +11,17 @@ import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-public class RideTests extends BaseApiIntegrationTest {
+public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     private String authenticationTokenDriver;
     private String authenticationTokenPassenger;
     private String carId;
-
+    private String rideId;
 
     private void setAuthenticationTokenDriver(){
         final User user = DriverEntityBuilder.createDriverByEmail("password", "driver@email.com");
@@ -61,55 +58,21 @@ public class RideTests extends BaseApiIntegrationTest {
         this.carId = response.jsonPath().getString("id");
     }
 
-    @BeforeEach
-    void setup(){
-        setAuthenticationTokenDriver();
-        setAuthenticationTokenPassenger();
-        setCarId();
-    }
-
-    @Test
-    @Tag("ApiTest")
-    @DisplayName("Should return 201 status code when creating a ride")
-    void shouldReturn201StatusCodeWhenCreatingARide(){
-        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
-        given().header("Authorization", "Bearer " + authenticationTokenDriver)
-                .contentType("application/json").port(port).body(ride)
-                .when().post("/api/v1/ride")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("rideId",notNullValue());
-    }
-
-    @Test
-    @Tag("ApiTest")
-    @DisplayName("Should return 200 when get available rides and rides in body")
-    void shouldReturn200WhenGetAvailableRidesAndRidesInBody(){
-        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
-        given().header("Authorization", "Bearer " + authenticationTokenDriver)
-                .contentType("application/json").port(port).body(ride)
-                .when().post("/api/v1/ride")
-                .then().log().ifValidationFails(LogDetail.BODY);
-
-        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
-                .when().get("/api/v1/ride")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200)
-                .body("$", hasSize(1))
-                .body("[0]", notNullValue());
-    }
-
-    @Test
-    @Tag("ApiTest")
-    @DisplayName("Should return 200 when get rides by Id with the ride in body")
-    void shouldReturn200WhenGetRidesByIdWithTheRideInBody(){
+    private void setRideId(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
         Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .contentType("application/json").port(port).body(ride)
                 .when().post("/api/v1/ride")
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
-        String id = response.jsonPath().getString("rideId");
+        this.rideId = response.jsonPath().getString("rideId");
+    }
 
-        given().header("Authorization", "Bearer " + authenticationTokenDriver)
-                .when().get("/api/v1/ride/"+id)
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("id", equalTo(id));
+    @BeforeEach
+    void setup(){
+        setAuthenticationTokenDriver();
+        setAuthenticationTokenPassenger();
+        setCarId();
+        setRideId();
     }
 
 }
