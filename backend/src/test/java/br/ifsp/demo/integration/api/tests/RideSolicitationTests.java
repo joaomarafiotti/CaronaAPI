@@ -166,6 +166,6 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().post("/api/v1/ride-solicitations/"+id+"/cancel")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200);
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("status", equalTo("CANCELLED"));
     }
 }

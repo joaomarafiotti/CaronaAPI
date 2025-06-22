@@ -108,4 +108,20 @@ public class RideTests extends BaseApiIntegrationTest {
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("uuid", equalTo(id));
     }
 
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 204 status code when deleting ride")
+    void shouldReturn204StatusCodeWhenDeletingRide(){
+        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .contentType("application/json").port(port).body(ride)
+                .when().post("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("rideId");
+
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().delete("/api/v1/ride/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(204);
+    }
+
 }
