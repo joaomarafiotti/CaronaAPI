@@ -109,4 +109,30 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .when().delete("/api/v1/drivers/cars/"+id)
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(204);
     }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should not let passenger get car information")
+    void shouldNotLetPassengerGetCarInformation(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+
+        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        final AuthRequest authRequest = new AuthRequest("email@email.com","password");
+        Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
+                .when().post("/api/v1/authenticate")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String token = loginResponse.jsonPath().getString("token");
+
+        given().header("Authorization", "Bearer " + token)
+                .when().get("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
+    }
 }
