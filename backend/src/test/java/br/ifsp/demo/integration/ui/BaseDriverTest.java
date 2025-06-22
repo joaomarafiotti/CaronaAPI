@@ -9,7 +9,7 @@ public abstract class BaseDriverTest extends BaseSeleniumTest {
     @Override
     protected void setInitialPage() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
         waitForUrlContains("/dashboard/driver/profile");
