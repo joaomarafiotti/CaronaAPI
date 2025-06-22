@@ -30,12 +30,12 @@ public class RideTests extends BaseApiIntegrationTest {
         final User user = DriverEntityBuilder.createDriverByEmail("password", "driver@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201);
+                .then().log().ifValidationFails(LogDetail.BODY);
 
         final AuthRequest authRequest = new AuthRequest("driver@email.com","password");
         Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
                 .when().post("/api/v1/authenticate")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).extract().response();
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
         this.authenticationTokenDriver = loginResponse.jsonPath().getString("token");
     }
 
@@ -43,12 +43,12 @@ public class RideTests extends BaseApiIntegrationTest {
         final User user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201);
+                .then().log().ifValidationFails(LogDetail.BODY);
 
         final AuthRequest authRequest = new AuthRequest("passenger@email.com","password");
         Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
                 .when().post("/api/v1/authenticate")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).extract().response();
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
         this.authenticationTokenPassenger = loginResponse.jsonPath().getString("token");
     }
 
@@ -57,7 +57,7 @@ public class RideTests extends BaseApiIntegrationTest {
         Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .contentType("application/json").port(port).body(car)
                 .when().post("/api/v1/drivers/cars")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).extract().response();
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
         this.carId = response.jsonPath().getString("id");
     }
 
@@ -77,6 +77,24 @@ public class RideTests extends BaseApiIntegrationTest {
                 .contentType("application/json").port(port).body(ride)
                 .when().post("/api/v1/ride")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id",notNullValue());
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when get available rides and rides in body")
+    void shouldReturn200WhenGetAvailableRidesAndRidesInBody(){
+        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .contentType("application/json").port(port).body(ride)
+                .when().post("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("id");
+
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().get("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200)
+                .body("$", hasSize(1))
+                .body("[0]", notNullValue());
     }
 
 

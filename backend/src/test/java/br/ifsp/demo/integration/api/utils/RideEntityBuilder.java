@@ -4,7 +4,10 @@ import br.ifsp.demo.models.request.RideRequestModel;
 import net.datafaker.Faker;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class RideEntityBuilder {
 
@@ -12,10 +15,20 @@ public class RideEntityBuilder {
 
     public static RideRequestModel createRandomRide(String carId){
         return new RideRequestModel(
-                faker.address().fullAddress(),
-                faker.address().fullAddress(),
-                LocalDateTime.from(faker.timeAndDate().future()),
+                getAddress(),
+                getAddress(),
+                faker.timeAndDate().future(1, TimeUnit.DAYS).atZone(ZoneId.systemDefault()).toLocalDateTime(),
                 UUID.fromString(carId)
+        );
+    }
+
+    private static String getAddress(){
+        return String.format(
+                "%s, %s, %s, %s",
+                faker.address().streetName(),
+                faker.address().buildingNumber(),
+                faker.address().city(),
+                faker.address().state()
         );
     }
 }
