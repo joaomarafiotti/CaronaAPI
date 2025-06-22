@@ -76,7 +76,7 @@ public class RideTests extends BaseApiIntegrationTest {
         given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .contentType("application/json").port(port).body(ride)
                 .when().post("/api/v1/ride")
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id",notNullValue());
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("rideId",notNullValue());
     }
 
     @Test
@@ -84,11 +84,10 @@ public class RideTests extends BaseApiIntegrationTest {
     @DisplayName("Should return 200 when get available rides and rides in body")
     void shouldReturn200WhenGetAvailableRidesAndRidesInBody(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
-        Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .contentType("application/json").port(port).body(ride)
                 .when().post("/api/v1/ride")
-                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
-        String id = response.jsonPath().getString("id");
+                .then().log().ifValidationFails(LogDetail.BODY);
 
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().get("/api/v1/ride")
@@ -96,6 +95,23 @@ public class RideTests extends BaseApiIntegrationTest {
                 .body("$", hasSize(1))
                 .body("[0]", notNullValue());
     }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when get rides by Id with the ride in body")
+    void shouldReturn200WhenGetRidesByIdWithTheRideInBody(){
+        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .contentType("application/json").port(port).body(ride)
+                .when().post("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("rideId");
+
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().get("/api/v1/ride/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("id", equalTo(id));
+    }
+
 
 
 }
