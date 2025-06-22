@@ -3,6 +3,7 @@ package br.ifsp.demo.integration.api.tests;
 import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
 import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
+import br.ifsp.demo.security.auth.AuthRequest;
 import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     }
 
     @Test
+    @Tag("ApiTest")
     @DisplayName("Should return code 409 if email is already used")
     void shouldReturnCode409IfEmailIsAlreadyUsed(){
         final User user1 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
@@ -47,4 +49,18 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(409);
     }
+
+    @Test
+    @DisplayName("Should login a user and returns 200 and token payload")
+    void shouldLoginAUserAndReturns200AndTokenPayload(){
+        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register");
+
+        final AuthRequest authRequest = new AuthRequest("email@email.com","password");
+        given().contentType("application/json").port(port).body(authRequest)
+                .when().post("/api/v1/authenticate")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("token", notNullValue());
+    }
+
 }
