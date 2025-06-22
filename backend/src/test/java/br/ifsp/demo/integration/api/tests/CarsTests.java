@@ -78,4 +78,19 @@ public class CarsTests extends BaseApiIntegrationTest{
                     .body("[0]", notNullValue());
 
     }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when get one car by id")
+    void shouldReturn200WhenGetOneCarById(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        Response response = given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("id");
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().get("/api/v1/drivers/cars/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("id", equalTo(id));
+    }
 }
