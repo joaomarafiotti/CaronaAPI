@@ -38,6 +38,7 @@ public class CarsTests extends BaseApiIntegrationTest{
     
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 201 and id of created car")
     void shouldReturn201AndIdOfCreatedCar(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -49,6 +50,7 @@ public class CarsTests extends BaseApiIntegrationTest{
     
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 409 if creating two equal cars")
     void shouldReturn409IfCreatingTwoEqualCars(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -64,6 +66,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 with all cars in body")
     void shouldReturn200WithAllCarsInBody(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -82,6 +85,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get one car by id")
     void shouldReturn200WhenGetOneCarById(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -97,6 +101,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should remove a car and give 204 status code")
     void shouldRemoveACarAndGive204StatusCode(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -112,6 +117,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should not let passenger get car information")
     void shouldNotLetPassengerGetCarInformation(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -138,6 +144,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should not let passenger delete car information")
     void shouldNotLetPassengerDeleteCarInformation(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
@@ -165,6 +172,7 @@ public class CarsTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 410 when trying to get or deleting already deleted car")
     void shouldReturn410WhenTryingToGetOrDeletingAlreadyDeletedCar(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();

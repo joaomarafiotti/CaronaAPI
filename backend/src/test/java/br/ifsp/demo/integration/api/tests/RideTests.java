@@ -66,6 +66,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 201 status code when creating a ride")
     void shouldReturn201StatusCodeWhenCreatingARide(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
@@ -77,6 +78,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get available rides and rides in body")
     void shouldReturn200WhenGetAvailableRidesAndRidesInBody(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
@@ -94,6 +96,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get rides by Id with the ride in body")
     void shouldReturn200WhenGetRidesByIdWithTheRideInBody(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
@@ -110,6 +113,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 204 status code when deleting ride")
     void shouldReturn204StatusCodeWhenDeletingRide(){
         final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
@@ -126,6 +130,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when passenger abandon ride")
     void shouldReturn200WhenPassengerAbandonRide(){
         //making ride

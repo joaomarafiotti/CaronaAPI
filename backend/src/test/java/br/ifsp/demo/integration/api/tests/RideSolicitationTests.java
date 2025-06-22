@@ -77,6 +77,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 201 when creating a ride solicitation")
     void shouldReturn201WhenCreatingARideSolicitation(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
@@ -86,6 +87,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get pending ride solicitations")
     void shouldReturn200WhenGetPendingRideSolicitations(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
@@ -102,6 +104,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get ride solicitation as driver")
     void shouldReturn200WhenGetRideSolicitationAsDriver(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
@@ -118,6 +121,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when driver accept solicitation")
     void shouldReturn200WhenDriverAcceptSolicitation(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
@@ -137,6 +141,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when rejecting ride solicitation")
     void shouldReturn200WhenRejectingRideSolicitation(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
@@ -156,13 +161,18 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when passenger cancel a solicitation")
     void shouldReturn200WhenPassengerCancelASolicitation(){
-        Response response = given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().get("/api/v1/ride-solicitations/passenger/pending")
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
 
-        String id = response.jsonPath().getString("rideSolicitationId");
+        String id = response.jsonPath().getString("[0].rideSolicitationId");
 
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().post("/api/v1/ride-solicitations/"+id+"/cancel")

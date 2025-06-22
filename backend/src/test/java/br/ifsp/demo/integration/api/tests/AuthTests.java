@@ -19,6 +19,7 @@ public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should register passenger and return 201 with id as payload")
     void shouldRegisterUserAndReturn201WithIdAsPayload(){
         final RegisterUserRequest user = PassengerEntityBuilder.createRandomPassengerUser("password");
@@ -29,6 +30,7 @@ public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should register driver and return 201 with id as payload")
     void shouldRegisterDriverAndReturn201WithIdAsPayload(){
         final RegisterUserRequest user = DriverEntityBuilder.createRandomDriverUser("password");
@@ -39,6 +41,7 @@ public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return code 409 if email is already used")
     void shouldReturnCode409IfEmailIsAlreadyUsed(){
         final RegisterUserRequest user1 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
@@ -53,6 +56,7 @@ public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should login a user and returns 200 and token payload")
     void shouldLoginAUserAndReturns200AndTokenPayload(){
         final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
@@ -67,6 +71,7 @@ public class AuthTests extends BaseApiIntegrationTest {
 
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should not login user and returns 401")
     void shouldNotLoginUserAndReturns401(){
         final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
@@ -81,6 +86,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     
     @Test
     @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 400 if bad request")
     void shouldReturn400IfBadRequest(){
         given().contentType("application/json").port(port).body("")
@@ -89,7 +95,8 @@ public class AuthTests extends BaseApiIntegrationTest {
     }
 
     @Test
-    @Tag("Api")
+    @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 400 if cpf is null")
     void shouldReturn400IfCpfIsNull(){
         final RegisterUserRequest user = DriverEntityBuilder.createWithNullCPF();
