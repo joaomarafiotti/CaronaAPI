@@ -95,7 +95,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().get("/api/v1/ride-solicitations/passenger/pending")
                 .then().log().ifValidationFails(LogDetail.BODY)
-                    .statusCode(200)
+                .statusCode(200)
                 .body("rideSolicitaionId", notNullValue())
                 .body("[0].status",equalTo("WAITING"));
     }
@@ -151,6 +151,21 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
 
         given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .when().post("/api/v1/ride-solicitations/"+id+"/reject")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200);
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when passenger cancel a solicitation")
+    void shouldReturn200WhenPassengerCancelASolicitation(){
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+
+        String id = response.jsonPath().getString("rideSolicitationId");
+
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations/"+id+"/cancel")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(200);
     }
 }
