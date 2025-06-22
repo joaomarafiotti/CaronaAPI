@@ -124,4 +124,39 @@ public class RideTests extends BaseApiIntegrationTest {
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(204);
     }
 
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when passenger abandon ride")
+    void shouldReturn200WhenPassengerAbandonRide(){
+        //making ride
+        final RideRequestModel ride = RideEntityBuilder.createRandomRide(carId);
+        Response response = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .contentType("application/json").port(port).body(ride)
+                .when().post("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String rideId = response.jsonPath().getString("rideId");
+
+        //making ride solicitation
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        //get driver ride solicitation
+        Response solicitationResponse = given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().get("/api/v1/ride-solicitations/driver/pending")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+
+        String solicitationId = solicitationResponse.jsonPath().getString("[0].rideSolicitationId");
+
+        //accepting
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().post("/api/v1/ride-solicitations/"+solicitationId+"/accept")
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        //abandon ride
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().put("/api/v1/ride/"+rideId+"/passenger/abandon")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200);
+    }
+
 }
