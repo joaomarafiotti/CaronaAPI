@@ -120,12 +120,12 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .when().post("/api/v1/drivers/cars")
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
 
-        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY);
 
-        final AuthRequest authRequest = new AuthRequest("email@email.com","password");
+        final AuthRequest authRequest = new AuthRequest("passenger@email.com","password");
         Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
                 .when().post("/api/v1/authenticate")
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
@@ -147,12 +147,12 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
         String id = response.jsonPath().getString("id");
 
-        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
         given().contentType("application/json").port(port).body(user)
                 .when().post("/api/v1/register")
                 .then().log().ifValidationFails(LogDetail.BODY);
 
-        final AuthRequest authRequest = new AuthRequest("email@email.com","password");
+        final AuthRequest authRequest = new AuthRequest("passenger@email.com","password");
         Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
                 .when().post("/api/v1/authenticate")
                 .then().log().ifValidationFails(LogDetail.BODY).extract().response();
