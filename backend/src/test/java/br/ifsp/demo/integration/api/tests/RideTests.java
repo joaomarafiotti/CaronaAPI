@@ -105,7 +105,7 @@ public class RideTests extends BaseApiIntegrationTest {
 
         given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .when().get("/api/v1/ride/"+id)
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("id", equalTo(id));
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("uuid", equalTo(id));
     }
 
 }

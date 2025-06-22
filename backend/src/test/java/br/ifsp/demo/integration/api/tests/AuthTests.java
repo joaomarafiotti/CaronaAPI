@@ -88,4 +88,14 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(400);
     }
 
+    @Test
+    @Tag("Api")
+    @DisplayName("Should return 400 if cpf is null")
+    void shouldReturn400IfCpfIsNull(){
+        final RegisterUserRequest user = DriverEntityBuilder.createWithNullCPF();
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(400);
+    }
+
 }

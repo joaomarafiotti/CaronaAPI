@@ -49,6 +49,18 @@ public class DriverEntityBuilder {
         );
     }
 
+    public static RegisterUserRequest createWithNullCPF(){
+        return new RegisterUserRequest(
+                faker.name().firstName(),
+                faker.name().lastName(),
+                faker.internet().emailAddress(),
+                faker.internet().password(),
+                Role.DRIVER,
+                null,
+                LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault())
+        );
+    }
+
     private static String getRandomCPF(){
         Random rand = new Random();
         return cpfs.get(rand.nextInt(cpfs.size()));

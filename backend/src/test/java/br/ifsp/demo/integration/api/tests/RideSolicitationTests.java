@@ -80,7 +80,7 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
     void shouldReturn201WhenCreatingARideSolicitation(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
                 .when().post("/api/v1/ride-solicitations?rideId="+rideId)
-                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("rideSolicitationId", notNullValue());
     }
 
 }
