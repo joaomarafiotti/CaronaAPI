@@ -162,4 +162,28 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .when().delete("/api/v1/drivers/cars/"+id)
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
     }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 410 when trying to get or deleting already deleted car")
+    void shouldReturn410WhenTryingToGetOrDeletingAlreadyDeletedCar(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        Response response = given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("id");
+
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().delete("/api/v1/drivers/cars/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().delete("/api/v1/drivers/cars/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(410);
+
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().get("/api/v1/drivers/cars/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(410);
+    }
 }
