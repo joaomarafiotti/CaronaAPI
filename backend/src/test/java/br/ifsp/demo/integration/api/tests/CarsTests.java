@@ -3,6 +3,7 @@ package br.ifsp.demo.integration.api.tests;
 import br.ifsp.demo.domain.Car;
 import br.ifsp.demo.integration.api.utils.CarEntityBuilder;
 import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
+import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.security.auth.AuthRequest;
 import br.ifsp.demo.security.user.User;
@@ -92,5 +93,20 @@ public class CarsTests extends BaseApiIntegrationTest{
         given().header("Authorization", "Bearer " + authenticatedToken)
                 .when().get("/api/v1/drivers/cars/"+id)
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("id", equalTo(id));
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should remove a car and give 204 status code")
+    void shouldRemoveACarAndGive204StatusCode(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        Response response = given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String id = response.jsonPath().getString("id");
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().delete("/api/v1/drivers/cars/"+id)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(204);
     }
 }
