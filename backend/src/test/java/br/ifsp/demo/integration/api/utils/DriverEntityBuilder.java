@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class DriverEntityBuilder {
 
-    private static Faker faker = new Faker(new Locale("pt-BR"));
+    private static Faker faker = new Faker();
     private static List<String> cpfs = List.of(
             "679.538.950-21",
             "733.677.500-42",
