@@ -97,7 +97,21 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
                 .then().log().ifValidationFails(LogDetail.BODY)
                     .statusCode(200)
                     .body("rideSolicitaionId", notNullValue());
+    }
 
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 when get ride solicitation as driver")
+    void shouldReturn200WhenGetRideSolicitationAsDriver(){
+        given().header("Authorization", "Bearer " + authenticationTokenPassenger)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().get("/api/v1/ride-solicitations/driver/pending")
+                .then().log().ifValidationFails(LogDetail.BODY)
+                .statusCode(200)
+                .body("rideSolicitaionId", notNullValue());
     }
 
 }
