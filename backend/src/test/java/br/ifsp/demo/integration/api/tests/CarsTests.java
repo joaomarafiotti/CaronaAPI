@@ -60,4 +60,22 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .when().post("/api/v1/drivers/cars")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(409);
     }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 200 with all cars in body")
+    void shouldReturn200WithAllCarsInBody(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).body("id", notNullValue());
+
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .when().get("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(200)
+                    .body("$", hasSize(1))
+                    .body("[0]", notNullValue());
+
+    }
 }
