@@ -29,6 +29,38 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
     }
 
     @Test
+    @DisplayName("Setup - Should ensure driver account with fixed email exists")
+    void shouldEnsureDriverAccountExists() {
+        RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
+
+        String name = "Sophie";
+        String lastname = "Driver";
+        String email = "motorista@ifsp.edu.br";
+        String cpf = "52998224725"; // você pode usar um fixo que já saiba que é válido
+        String birthDate = "2000-12-09";
+        String password = "SenhaForte123!";
+
+        registerDriverPage.fillName(name);
+        registerDriverPage.fillLastname(lastname);
+        registerDriverPage.fillEmail(email);
+        registerDriverPage.fillCpf(cpf);
+        registerDriverPage.fillBirthDate(birthDate);
+        registerDriverPage.fillPassword(password);
+        registerDriverPage.fillConfirmPassword(password);
+
+        registerDriverPage.submitForm();
+
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
+        } catch (Exception e) {
+            // Se o alerta não aparecer, pode já ter conta → então valida que continuamos na tela de login
+            assertThat(driver.getCurrentUrl()).contains("/login");
+        }
+    }
+
+    @Test
     @DisplayName("Happy Path - Should register driver with valid data")
     void shouldRegisterDriverWithValidData() {
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
