@@ -3,10 +3,7 @@ package br.ifsp.demo.integration.persistence;
 import br.ifsp.demo.domain.*;
 import br.ifsp.demo.repositories.*;
 import br.ifsp.demo.utils.RideSolicitationStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -82,6 +79,8 @@ class RideSolicitationPersistenceTest {
     class RideSolicitationCreationTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist ride solicitation with valid data")
         void shouldPersistRideSolicitationWithValidData() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -108,6 +107,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should create multiple solicitations for same ride")
         void shouldCreateMultipleSolicitationsForSameRide() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -124,6 +125,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should create multiple solicitations for same passenger")
         void shouldCreateMultipleSolicitationsForSamePassenger() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -140,6 +143,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save solicitation without ride")
         void shouldFailWhenSavingSolicitationWithoutRide() {
             assertThatThrownBy(() -> new RideSolicitation(null, passenger))
@@ -147,6 +152,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to create solicitation without passenger")
         void shouldFailWhenCreatingSolicitationWithoutPassenger() {
             assertThatThrownBy(() -> {
@@ -156,6 +163,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should prevent duplicate solicitation for same ride and passenger")
         void shouldPreventDuplicateSolicitationForSameRideAndPassenger() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -182,6 +191,8 @@ class RideSolicitationPersistenceTest {
     class RideSolicitationQueryTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find solicitations by ride")
         void shouldFindSolicitationsByRide() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -200,6 +211,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find solicitations by passenger")
         void shouldFindSolicitationsByPassenger() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -218,6 +231,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should return empty list when ride has no solicitations")
         void shouldReturnEmptyListWhenRideHasNoSolicitations() {
             List<RideSolicitation> rideSolicitations = solicitationRepository.findRideSolicitationByRide_Id(ride.getId());
@@ -226,6 +241,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should return empty list when passenger has no solicitations")
         void shouldReturnEmptyListWhenPassengerHasNoSolicitations() {
             List<RideSolicitation> passengerSolicitations = solicitationRepository.findRideSolicitationsByPassenger_Id(passenger.getId());
@@ -234,6 +251,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find solicitations by status")
         void shouldFindSolicitationsByStatus() {
             RideSolicitation waitingSolicitation = new RideSolicitation(ride, passenger);
@@ -258,6 +277,8 @@ class RideSolicitationPersistenceTest {
     class RideSolicitationBusinessLogicTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete solicitation successfully")
         void shouldDeleteSolicitationSuccessfully() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -272,6 +293,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should maintain referential integrity when deleting ride")
         void shouldMaintainReferentialIntegrityWhenDeletingRide() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -285,6 +308,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should maintain referential integrity when deleting passenger")
         void shouldMaintainReferentialIntegrityWhenDeletingPassenger() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -298,6 +323,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should count solicitations by ride")
         void shouldCountSolicitationsByRide() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -311,6 +338,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should count solicitations by passenger")
         void shouldCountSolicitationsByPassenger() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -329,6 +358,8 @@ class RideSolicitationPersistenceTest {
     class RideSolicitationStatusManagementTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should update solicitation status successfully")
         void shouldUpdateSolicitationStatusSuccessfully() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -348,6 +379,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should reject solicitation successfully")
         void shouldRejectSolicitationSuccessfully() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -363,6 +396,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should cancel solicitation successfully")
         void shouldCancelSolicitationSuccessfully() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -378,6 +413,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle status transitions correctly")
         void shouldHandleStatusTransitionsCorrectly() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -401,6 +438,8 @@ class RideSolicitationPersistenceTest {
     class RideSolicitationEdgeCasesTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle concurrent solicitation creation")
         void shouldHandleConcurrentSolicitationCreation() {
             RideSolicitation solicitation1 = new RideSolicitation(ride, passenger);
@@ -415,6 +454,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle solicitation for ride with no available seats")
         void shouldHandleSolicitationForRideWithNoAvailableSeats() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);
@@ -426,6 +467,8 @@ class RideSolicitationPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle solicitation status validation")
         void shouldHandleSolicitationStatusValidation() {
             RideSolicitation solicitation = new RideSolicitation(ride, passenger);

@@ -6,10 +6,7 @@ import br.ifsp.demo.domain.Driver;
 import br.ifsp.demo.domain.LicensePlate;
 import br.ifsp.demo.repositories.CarRepository;
 import br.ifsp.demo.repositories.DriverRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -54,6 +51,8 @@ class CarPersistenceTest {
     class CarCreationTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist car with all valid data")
         void shouldPersistCarWithValidData() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -74,6 +73,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist car with minimum required data")
         void shouldPersistCarWithMinimumData() {
             Car car = new Car("Chevrolet", "Malibu", "White", 4, LicensePlate.parse("XYZ-9876"));
@@ -86,6 +87,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save car without driver")
         void shouldFailWhenSavingCarWithoutDriver() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -97,6 +100,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save car with duplicate license plate")
         void shouldFailWhenSavingCarWithDuplicateLicensePlate() {
             Car firstCar = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -119,6 +124,8 @@ class CarPersistenceTest {
     class CarQueryTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find car by license plate")
         void shouldFindCarByLicensePlate() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -135,6 +142,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should return empty when searching for non-existent license plate")
         void shouldReturnEmptyForNonExistentLicensePlate() {
             Optional<Car> foundCar = carRepository.findByLicensePlate(LicensePlate.parse("XXX-0000"));
@@ -143,6 +152,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find cars by driver")
         void shouldFindCarsByDriver() {
             Car car1 = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -169,6 +180,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find only active cars")
         void shouldFindOnlyActiveCars() {
             Car activeCar = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -196,6 +209,8 @@ class CarPersistenceTest {
     class CarStateManagementTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should deactivate car successfully")
         void shouldDeactivateCarSuccessfully() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -216,6 +231,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should activate car successfully")
         void shouldActivateCarSuccessfully() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -237,6 +254,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should update car properties")
         void shouldUpdateCarProperties() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -262,6 +281,8 @@ class CarPersistenceTest {
     class CarValidationTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should validate license plate format")
         void shouldValidateLicensePlateFormat() {
             assertThatThrownBy(() -> LicensePlate.parse("INVALID"))
@@ -275,6 +296,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should accept valid license plate formats")
         void shouldAcceptValidLicensePlateFormats() {
             assertThatCode(() -> LicensePlate.parse("ABC-1234")).doesNotThrowAnyException();
@@ -287,6 +310,8 @@ class CarPersistenceTest {
     class CarRepositoryEdgeCasesTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle concurrent updates correctly")
         void shouldHandleConcurrentUpdatesCorrectly() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");
@@ -313,6 +338,8 @@ class CarPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete car successfully")
         void shouldDeleteCarSuccessfully() {
             Car car = createValidCar("Volkswagen", "Passat", "ABC-1234");

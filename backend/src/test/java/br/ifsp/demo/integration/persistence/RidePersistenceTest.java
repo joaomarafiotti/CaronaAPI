@@ -6,10 +6,7 @@ import br.ifsp.demo.repositories.DriverRepository;
 import br.ifsp.demo.repositories.PassengerRepository;
 import br.ifsp.demo.repositories.RideRepository;
 import br.ifsp.demo.utils.RideStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -79,6 +76,8 @@ class RidePersistenceTest {
     class RideCreationTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist ride with all valid data")
         void shouldPersistRideWithValidData() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -99,6 +98,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist ride with future departure time")
         void shouldPersistRideWithFutureDepartureTime() {
             LocalDateTime futureDepartureTime = LocalDateTime.now().plusDays(1);
@@ -112,6 +113,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save ride without driver")
         void shouldFailWhenSavingRideWithoutDriver() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -124,6 +127,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save ride without car")
         void shouldFailWhenSavingRideWithoutCar() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -136,6 +141,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when trying to save ride without addresses")
         void shouldFailWhenSavingRideWithoutAddresses() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -159,6 +166,8 @@ class RidePersistenceTest {
     class RideQueryTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find rides by driver")
         void shouldFindRidesByDriver() {
             LocalDateTime departureTime1 = LocalDateTime.now().plusHours(1);
@@ -180,6 +189,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should return empty list when driver has no rides")
         void shouldReturnEmptyListWhenDriverHasNoRides() {
             List<Ride> driverRides = rideRepository.findRideByDriver_Id(driver.getId());
@@ -188,6 +199,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find rides by status")
         void shouldFindRidesByStatus() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -208,6 +221,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find rides by departure time range")
         void shouldFindRidesByDepartureTimeRange() {
             LocalDateTime now = LocalDateTime.now();
@@ -242,6 +257,8 @@ class RidePersistenceTest {
     class RidePassengerManagementTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should add passenger to ride successfully")
         void shouldAddPassengerToRideSuccessfully() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -267,6 +284,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should add multiple passengers to ride")
         void shouldAddMultiplePassengersToRide() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -285,6 +304,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should remove passenger from ride")
         void shouldRemovePassengerFromRide() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -313,6 +334,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should not exceed car capacity")
         void shouldNotExceedCarCapacity() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -344,6 +367,8 @@ class RidePersistenceTest {
     class RideStatusManagementTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should update ride status successfully")
         void shouldUpdateRideStatusSuccessfully() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -364,6 +389,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should complete ride successfully")
         void shouldCompleteRideSuccessfully() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -381,6 +408,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should cancel ride successfully")
         void shouldCancelRideSuccessfully() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -402,6 +431,8 @@ class RidePersistenceTest {
     class RideBusinessLogicTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should check if ride exists for driver and car")
         void shouldCheckIfRideExistsForDriverAndCar() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -417,6 +448,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle ride with same start and end address")
         void shouldHandleRideWithSameStartAndEndAddress() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);
@@ -429,6 +462,8 @@ class RidePersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete ride successfully")
         void shouldDeleteRideSuccessfully() {
             LocalDateTime departureTime = LocalDateTime.now().plusHours(1);

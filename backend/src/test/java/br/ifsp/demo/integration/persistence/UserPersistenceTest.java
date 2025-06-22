@@ -6,10 +6,7 @@ import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.security.user.JpaUserRepository;
 import br.ifsp.demo.security.user.Role;
 import br.ifsp.demo.security.user.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -55,6 +52,8 @@ class UserPersistenceTest {
     class DriverPersistenceTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist driver with all valid data")
         void shouldPersistDriverWithValidData() {
             Driver savedDriver = userRepository.save(driver);
@@ -73,6 +72,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist driver with minimum age")
         void shouldPersistDriverWithMinimumAge() {
             Driver youngDriver = new Driver(
@@ -91,6 +92,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist driver with maximum age")
         void shouldPersistDriverWithMaximumAge() {
             Driver oldDriver = new Driver(
@@ -109,6 +112,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when saving driver with duplicate email")
         void shouldFailWhenSavingDriverWithDuplicateEmail() {
             userRepository.save(driver);
@@ -130,6 +135,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when saving driver with duplicate CPF")
         void shouldFailWhenSavingDriverWithDuplicateCpf() {
             userRepository.save(driver);
@@ -156,6 +163,8 @@ class UserPersistenceTest {
     class PassengerPersistenceTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist passenger with all valid data")
         void shouldPersistPassengerWithValidData() {
             Passenger savedPassenger = userRepository.save(passenger);
@@ -174,6 +183,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should persist passenger with minimum age")
         void shouldPersistPassengerWithMinimumAge() {
             Passenger youngPassenger = new Passenger(
@@ -192,6 +203,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when saving passenger with duplicate email")
         void shouldFailWhenSavingPassengerWithDuplicateEmail() {
             userRepository.save(passenger);
@@ -213,6 +226,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should fail when saving passenger with duplicate CPF")
         void shouldFailWhenSavingPassengerWithDuplicateCpf() {
             userRepository.save(passenger);
@@ -240,6 +255,8 @@ class UserPersistenceTest {
     class UserQueryTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find user by email")
         void shouldFindUserByEmail() {
             userRepository.save(driver);
@@ -254,6 +271,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find driver by email")
         void shouldFindDriverByEmail() {
             userRepository.save(driver);
@@ -268,6 +287,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find passenger by email")
         void shouldFindPassengerByEmail() {
             userRepository.save(passenger);
@@ -282,6 +303,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should not find user by non-existent email")
         void shouldNotFindUserByNonExistentEmail() {
             Optional<User> foundUser = userRepository.findByEmail("nonexistent@gmail.com");
@@ -290,6 +313,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find user by email case insensitive")
         void shouldFindUserByEmailCaseInsensitive() {
             userRepository.save(driver);
@@ -303,6 +328,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find all users")
         void shouldFindAllUsers() {
             userRepository.saveAll(List.of(driver, passenger, anotherDriver, anotherPassenger));
@@ -316,6 +343,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should find users by role")
         void shouldFindUsersByRole() {
             userRepository.saveAll(List.of(driver, passenger, anotherDriver, anotherPassenger));
@@ -341,6 +370,8 @@ class UserPersistenceTest {
     class UserValidationTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should validate email format")
         void shouldValidateEmailFormat() {
             assertThatThrownBy(() -> {
@@ -350,6 +381,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should validate CPF format")
         void shouldValidateCpfFormat() {
             assertThatThrownBy(() -> {
@@ -358,6 +391,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should validate birth date not in future")
         void shouldValidateBirthDateNotInFuture() {
             LocalDate futureDate = LocalDate.now().plusDays(1);
@@ -369,6 +404,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should validate required fields")
         void shouldValidateRequiredFields() {
             assertThatThrownBy(() -> {
@@ -393,6 +430,8 @@ class UserPersistenceTest {
     class UserUpdateTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should update driver information")
         void shouldUpdateDriverInformation() {
             Driver savedDriver = userRepository.save(driver);
@@ -412,6 +451,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should update passenger information")
         void shouldUpdatePassengerInformation() {
             Passenger savedPassenger = userRepository.save(passenger);
@@ -431,6 +472,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should not allow updating email to existing email")
         void shouldNotAllowUpdatingEmailToExistingEmail() {
             userRepository.save(driver);
@@ -451,6 +494,8 @@ class UserPersistenceTest {
     class UserDeletionTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete driver successfully")
         void shouldDeleteDriverSuccessfully() {
             Driver savedDriver = userRepository.save(driver);
@@ -464,6 +509,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete passenger successfully")
         void shouldDeletePassengerSuccessfully() {
             Passenger savedPassenger = userRepository.save(passenger);
@@ -477,6 +524,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should delete user by id")
         void shouldDeleteUserById() {
             Driver savedDriver = userRepository.save(driver);
@@ -495,6 +544,8 @@ class UserPersistenceTest {
     class UserEdgeCasesTests {
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle special characters in names")
         void shouldHandleSpecialCharactersInNames() {
             Driver specialDriver = new Driver(
@@ -513,6 +564,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle long names")
         void shouldHandleLongNames() {
             String longName = "A".repeat(100);
@@ -534,6 +587,8 @@ class UserPersistenceTest {
         }
 
         @Test
+        @Tag("IntegrationTest")
+        @Tag("PersistenceTest")
         @DisplayName("Should handle users with same name but different emails")
         void shouldHandleUsersWithSameNameButDifferentEmails() {
             Driver driver1 = new Driver(
