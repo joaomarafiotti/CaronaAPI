@@ -96,7 +96,8 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
                 .when().get("/api/v1/ride-solicitations/passenger/pending")
                 .then().log().ifValidationFails(LogDetail.BODY)
                     .statusCode(200)
-                    .body("rideSolicitaionId", notNullValue());
+                .body("rideSolicitaionId", notNullValue())
+                .body("[0].status",equalTo("WAITING"));
     }
 
     @Test
@@ -111,7 +112,8 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
                 .when().get("/api/v1/ride-solicitations/driver/pending")
                 .then().log().ifValidationFails(LogDetail.BODY)
                 .statusCode(200)
-                .body("rideSolicitaionId", notNullValue());
+                .body("rideSolicitaionId", notNullValue())
+                .body("[0].status",equalTo("WAITING"));
     }
 
     @Test
@@ -131,7 +133,6 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
         given().header("Authorization", "Bearer " + authenticationTokenDriver)
                 .when().post("/api/v1/ride-solicitations/"+id+"/accept")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(200);
-
     }
 
 }
