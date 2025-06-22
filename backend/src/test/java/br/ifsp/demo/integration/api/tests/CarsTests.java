@@ -45,4 +45,19 @@ public class CarsTests extends BaseApiIntegrationTest{
                 .when().post("/api/v1/drivers/cars")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
+    
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 409 if creating two equal cars")
+    void shouldReturn409IfCreatingTwoEqualCars(){
+        final CarRequestModel car = CarEntityBuilder.createRandomCar();
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).body("id", notNullValue());
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port).body(car)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(409);
+    }
 }
