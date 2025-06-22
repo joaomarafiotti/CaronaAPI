@@ -24,6 +24,39 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
     }
 
     @Test
+    @DisplayName("Setup - Should ensure passenger account with fixed email exists")
+    void shouldEnsurePassengerAccountExists() {
+        RegisterPassengerPage registerPassengerPage = new RegisterPassengerPage(driver);
+
+        String name = "João";
+        String lastname = "Passenger";
+        String email = "passageiro@ifsp.edu.br";
+        String cpf = "12345678909"; // Use um CPF fixo válido
+        String birthDate = "2000-05-10";
+        String password = "SenhaForte123!";
+
+        registerPassengerPage.fillName(name);
+        registerPassengerPage.fillLastname(lastname);
+        registerPassengerPage.fillEmail(email);
+        registerPassengerPage.fillCpf(cpf);
+        registerPassengerPage.fillBirthDate(birthDate);
+        registerPassengerPage.fillPassword(password);
+        registerPassengerPage.fillConfirmPassword(password);
+
+        registerPassengerPage.submitForm();
+
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
+        } catch (Exception e) {
+            // Se o alerta não aparecer, conta já existe → ok
+            assertThat(driver.getCurrentUrl()).contains("/login");
+        }
+    }
+
+
+    @Test
     @DisplayName("Happy Path - Should register passenger with valid data")
     void shouldRegisterPassengerWithValidData() {
         RegisterPassengerPage registerPassengerPage = new RegisterPassengerPage(driver);
