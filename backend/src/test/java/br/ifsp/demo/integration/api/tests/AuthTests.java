@@ -77,5 +77,14 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .when().post("/api/v1/authenticate")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
     }
+    
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should return 400 if bad request")
+    void shouldReturn400IfBadRequest(){
+        given().contentType("application/json").port(port).body("")
+                .when().post("/api/v1/authenticate")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(400);
+    }
 
 }
