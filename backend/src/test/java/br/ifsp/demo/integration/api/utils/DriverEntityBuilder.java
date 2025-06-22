@@ -36,6 +36,18 @@ public class DriverEntityBuilder {
                 .build();
     }
 
+    public static User createDriverByEmail(String password, String email){
+        return User.builder().id(UUID.randomUUID())
+                .name(faker.name().firstName())
+                .lastname(faker.name().lastName())
+                .email(email)
+                .password(password)
+                .role(Role.DRIVER)
+                .cpf(Cpf.of(getRandomCPF()))
+                .birthDate(LocalDate.ofInstant(faker.date().birthday(20, 80).toInstant(), ZoneId.systemDefault()))
+                .build();
+    }
+
     private static String getRandomCPF(){
         Random rand = new Random();
         return cpfs.get(rand.nextInt(cpfs.size()));

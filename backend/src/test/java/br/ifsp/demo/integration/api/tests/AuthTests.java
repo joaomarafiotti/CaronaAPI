@@ -1,5 +1,6 @@
 package br.ifsp.demo.integration.api.tests;
 
+import br.ifsp.demo.domain.Passenger;
 import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
 import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
 import br.ifsp.demo.security.user.User;
@@ -34,4 +35,16 @@ public class AuthTests extends BaseApiIntegrationTest {
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
     }
 
+    @Test
+    @DisplayName("Should return code 409 if email is already used")
+    void shouldReturnCode409IfEmailIsAlreadyUsed(){
+        final User user1 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
+        final User user2 = DriverEntityBuilder.createDriverByEmail("password", "email@email.com");
+        given().contentType("application/json").port(port).body(user1)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(201).body("id", notNullValue());
+        given().contentType("application/json").port(port).body(user2)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(409);
+    }
 }
