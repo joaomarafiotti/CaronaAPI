@@ -51,6 +51,7 @@ public class AuthTests extends BaseApiIntegrationTest {
     }
 
     @Test
+    @Tag("ApiTest")
     @DisplayName("Should login a user and returns 200 and token payload")
     void shouldLoginAUserAndReturns200AndTokenPayload(){
         final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
@@ -61,6 +62,20 @@ public class AuthTests extends BaseApiIntegrationTest {
         given().contentType("application/json").port(port).body(authRequest)
                 .when().post("/api/v1/authenticate")
                 .then().log().ifValidationFails(LogDetail.BODY).statusCode(200).body("token", notNullValue());
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @DisplayName("Should not login user and returns 401")
+    void shouldNotLoginUserAndReturns401(){
+        final User user = PassengerEntityBuilder.createPassengerByEmail("password", "email@email.com");
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register");
+
+        final AuthRequest authRequest = new AuthRequest("email@email.com","");
+        given().contentType("application/json").port(port).body(authRequest)
+                .when().post("/api/v1/authenticate")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
     }
 
 }
