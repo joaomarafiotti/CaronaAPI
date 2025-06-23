@@ -10,9 +10,11 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BaseApiIntegrationTest {
 
     @LocalServerPort protected int port;
@@ -27,14 +29,21 @@ public class BaseApiIntegrationTest {
     public void generalSetup() {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = port;
+
+        rideSolicitationRepository.deleteAll();
+        rideRepository.deleteAll();
+        carRepository.deleteAll();
+        driverRepository.deleteAll();
+        passengerRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @AfterEach void tearDown() {
         rideSolicitationRepository.deleteAll();
         rideRepository.deleteAll();
-        passengerRepository.deleteAll();
-        driverRepository.deleteAll();
         carRepository.deleteAll();
+        driverRepository.deleteAll();
+        passengerRepository.deleteAll();
         userRepository.deleteAll();
     }
 

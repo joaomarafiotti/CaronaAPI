@@ -76,6 +76,17 @@ public class RideTests extends BaseApiIntegrationTest {
     }
 
     @Test
+    @Tag("ApitTest")
+    @Tag("IntegrationTest")
+    @DisplayName("Should return 400 status code when creating a ride but no body")
+    void shouldReturn400StatusCodeWhenCreatingARideButNoBody(){
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .contentType("application/json").port(port)
+                .when().post("/api/v1/ride")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(400);
+    }
+
+    @Test
     @Tag("ApiTest")
     @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get available rides and rides in body")
