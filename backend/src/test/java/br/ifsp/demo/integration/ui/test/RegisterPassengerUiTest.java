@@ -31,7 +31,7 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
         String name = "João";
         String lastname = "Passenger";
         String email = "passageiro@ifsp.edu.br";
-        String cpf = "12345678909"; // Use um CPF fixo válido
+        String cpf = "465.286.180-03";
         String birthDate = "2000-05-10";
         String password = "SenhaForte123!";
 
@@ -50,7 +50,6 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
             driver.switchTo().alert().accept();
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
         } catch (Exception e) {
-            // Se o alerta não aparecer, conta já existe → ok
             assertThat(driver.getCurrentUrl()).contains("/login");
         }
     }
@@ -78,12 +77,10 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
 
         registerPassengerPage.submitForm();
 
-        // Aceita o alert de sucesso
         new WebDriverWait(driver, Duration.ofSeconds(3))
             .until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
 
-        // Aguarda redirecionamento para a tela de login
         new WebDriverWait(driver, Duration.ofSeconds(5))
             .until(ExpectedConditions.urlContains("/login"));
 

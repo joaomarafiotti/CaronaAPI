@@ -15,8 +15,7 @@ public class AvailableRidesPage extends BasePageObject {
     public AvailableRidesPage(WebDriver driver) {
         super(driver);
     }
-
-    // Método explícito para visitar a página — evita conflito com login
+    
     public void visit() {
         driver.get(AVAILABLE_RIDES_URL);
         waitForVisibility(pageTitle);

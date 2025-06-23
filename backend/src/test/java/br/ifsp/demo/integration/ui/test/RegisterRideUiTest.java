@@ -23,19 +23,16 @@ public class RegisterRideUiTest extends BaseDriverTest {
     @Test
     @DisplayName("Happy Path - Should register ride with valid data")
     void shouldRegisterRideWithValidData() {
-        // Login como driver
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
         waitForUrlContains("/dashboard/driver/profile");
 
-        // Acesso à página de registro de carona
         RegisterRidePage registerRidePage = new RegisterRidePage(driver);
         registerRidePage.visit();
 
-        // Dados fake
         String startAddress = FakeDataFactory.randomAddress();
         String endAddress = FakeDataFactory.randomAddress();
         String formattedFutureDateTime = LocalDateTime.now()
@@ -46,12 +43,10 @@ public class RegisterRideUiTest extends BaseDriverTest {
         System.out.println(">>> Data para setar: " + formattedFutureDateTime);
         System.out.println(">>> Campo após set: " + driver.findElement(By.id("departureTime")).getAttribute("value"));
 
-        // Preenchimento dos campos
         registerRidePage.fillStartAddress(startAddress);
         registerRidePage.fillEndAddress(endAddress);
         registerRidePage.fillDepartureTime(formattedFutureDateTime);
 
-        // Seleciona o carro
         System.out.println("Departure field value: " + driver.findElement(By.id("departureTime")).getAttribute("value"));
         registerRidePage.printCarOptionsValues();
         String selectedCarId = registerRidePage.selectFirstAvailableCar();
@@ -61,9 +56,8 @@ public class RegisterRideUiTest extends BaseDriverTest {
         System.out.println("Date: " + formattedFutureDateTime);
         System.out.println("Car ID: " + selectedCarId);
 
-        // Submissão e verificação
         registerRidePage.submitForm();
-        registerRidePage.waitForFormSuccessVisible(); // ⏳ espera o DOM atualizar
+        registerRidePage.waitForFormSuccessVisible();
 
         System.out.println("--- DEBUG ---");
         System.out.println("Current URL: " + driver.getCurrentUrl());
@@ -79,7 +73,7 @@ public class RegisterRideUiTest extends BaseDriverTest {
     @DisplayName("Sad Path - Should show error when submitting empty form")
     void shouldShowErrorWhenSubmittingEmptyForm() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
@@ -88,13 +82,10 @@ public class RegisterRideUiTest extends BaseDriverTest {
         RegisterRidePage registerRidePage = new RegisterRidePage(driver);
         registerRidePage.visit();
 
-        // Tenta submeter sem preencher
         registerRidePage.submitForm();
 
-        // Verifica se ainda está na mesma URL (submit foi barrado)
         assertThat(registerRidePage.getCurrentUrl()).contains("/dashboard/driver/rides/register");
 
-        // Confirma que campos estão vazios (confirmando que o submit não foi aceito)
         assertThat(driver.findElement(By.id("startAddress")).getAttribute("value")).isEmpty();
         assertThat(driver.findElement(By.id("endAddress")).getAttribute("value")).isEmpty();
     }
@@ -102,20 +93,17 @@ public class RegisterRideUiTest extends BaseDriverTest {
     @Test
     @DisplayName("UI Responsiveness - Should display Register Ride page correctly on mobile size")
     void shouldDisplayRegisterRidePageCorrectlyOnMobile() {
-        // Login antes de redimensionar
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
-        // Trata possíveis alertas de erro no login
         try {
             driver.switchTo().alert().accept();
         } catch (NoAlertPresentException ignored) {}
 
         waitForUrlContains("/dashboard/driver/profile");
 
-        // Agora sim, simula mobile
         driver.manage().window().setSize(new Dimension(375, 812));
 
         RegisterRidePage registerRidePage = new RegisterRidePage(driver);

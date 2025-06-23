@@ -18,7 +18,7 @@ public class LoginDriverUiTest extends BaseSeleniumTest {
     @DisplayName("Happy Path - Should login with valid Driver credentials")
     void shouldLoginWithValidDriverCredentials() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com"); // substituir por um login válido
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
@@ -41,12 +41,10 @@ public class LoginDriverUiTest extends BaseSeleniumTest {
     @Test
     @DisplayName("UI Responsiveness - Should display login page correctly on mobile size")
     void shouldDisplayLoginPageCorrectlyOnMobile() {
-        // Define um tamanho de tela de mobile (exemplo: iPhone X)
         driver.manage().window().setSize(new Dimension(375, 812));
 
         LoginPage loginPage = new LoginPage(driver);
 
-        // Verifica se o campo de email está visível (página renderizou corretamente)
         assertThat(loginPage.isEmailFieldVisible()).isTrue();
     }
 }

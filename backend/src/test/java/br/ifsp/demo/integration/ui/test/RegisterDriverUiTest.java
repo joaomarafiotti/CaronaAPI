@@ -36,7 +36,7 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         String name = "Sophie";
         String lastname = "Driver";
         String email = "motorista@ifsp.edu.br";
-        String cpf = "52998224725"; // você pode usar um fixo que já saiba que é válido
+        String cpf = "812.976.140-89";
         String birthDate = "2000-12-09";
         String password = "SenhaForte123!";
 
@@ -55,7 +55,6 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
             driver.switchTo().alert().accept();
             new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
         } catch (Exception e) {
-            // Se o alerta não aparecer, pode já ter conta → então valida que continuamos na tela de login
             assertThat(driver.getCurrentUrl()).contains("/login");
         }
     }
@@ -83,17 +82,14 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         registerDriverPage.submitForm();
 
         try {
-            // Aguarda e aceita o alerta "Cadastro realizado com sucesso!"
             new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().accept();
 
-            // Logging
             System.out.println("[DEBUG] URL após aceitar alerta: " + driver.getCurrentUrl());
             System.out.println("[DEBUG] Título da página: " + driver.getTitle());
             System.out.println("[DEBUG] Data de nascimento gerada: " + birthDate);
             
-            // Espera redirecionamento
             new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.urlContains("/login"));
 

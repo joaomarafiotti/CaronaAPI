@@ -21,12 +21,10 @@ public class ViewRidesUiTest extends BaseDriverTest {
     void shouldDisplayAllRideSectionsIfDataExists() {
         Actions actions = new Actions(driver);
 
-        // Hover no botão "Caronas"
         WebElement caronasMenu = waitForVisibility(By.xpath("//button[contains(text(), 'Caronas')]"));
         actions.moveToElement(caronasMenu).perform();
         caronasMenu.click();
 
-        // Clicar em "Visualizar Caronas" (sem forçar que seja button)
         WebElement visualizarBtn = waitForVisibility(By.xpath("//*[contains(text(), 'Visualizar Caronas')]"));
         visualizarBtn.click();
 
