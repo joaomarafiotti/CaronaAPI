@@ -67,6 +67,17 @@ public class CarsTests extends BaseApiIntegrationTest{
     @Test
     @Tag("ApiTest")
     @Tag("IntegrationTest")
+    @DisplayName("Should return 400 if request doesnt have a car in body")
+    void shouldReturn400IfRequestDoesntHaveACarInBody(){
+        given().header("Authorization", "Bearer " + authenticatedToken)
+                .contentType("application/json").port(port)
+                .when().post("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(400);
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 with all cars in body")
     void shouldReturn200WithAllCarsInBody(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
