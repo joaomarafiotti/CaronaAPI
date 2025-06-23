@@ -4,7 +4,6 @@ import br.ifsp.demo.integration.api.utils.*;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.models.request.RideRequestModel;
 import br.ifsp.demo.security.auth.AuthRequest;
-import br.ifsp.demo.utils.RideSolicitationStatus;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class RideSolicitationTests extends BaseApiIntegrationTest{

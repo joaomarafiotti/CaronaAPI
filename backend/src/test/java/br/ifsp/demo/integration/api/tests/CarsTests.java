@@ -1,10 +1,6 @@
 package br.ifsp.demo.integration.api.tests;
 
-import br.ifsp.demo.domain.Car;
-import br.ifsp.demo.integration.api.utils.CarEntityBuilder;
-import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
-import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
-import br.ifsp.demo.integration.api.utils.RegisterUserRequest;
+import br.ifsp.demo.integration.api.utils.*;
 import br.ifsp.demo.models.request.CarRequestModel;
 import br.ifsp.demo.security.auth.AuthRequest;
 import io.restassured.filter.log.LogDetail;
@@ -15,10 +11,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-public class CarsTests extends BaseApiIntegrationTest{
+public class CarsTests extends BaseApiIntegrationTest {
 
     private String authenticatedToken;
 

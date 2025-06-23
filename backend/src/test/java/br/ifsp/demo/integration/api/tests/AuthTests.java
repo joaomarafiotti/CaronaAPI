@@ -1,18 +1,16 @@
 package br.ifsp.demo.integration.api.tests;
 
-import br.ifsp.demo.domain.Passenger;
+import br.ifsp.demo.integration.api.utils.BaseApiIntegrationTest;
 import br.ifsp.demo.integration.api.utils.DriverEntityBuilder;
 import br.ifsp.demo.integration.api.utils.PassengerEntityBuilder;
 import br.ifsp.demo.integration.api.utils.RegisterUserRequest;
 import br.ifsp.demo.security.auth.AuthRequest;
-import br.ifsp.demo.security.user.User;
 import io.restassured.filter.log.LogDetail;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class AuthTests extends BaseApiIntegrationTest {
