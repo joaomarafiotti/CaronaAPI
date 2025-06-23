@@ -19,7 +19,7 @@ public class ViewRidesPage extends BasePageObject {
 
     public void visit() {
         driver.get(VIEW_RIDES_URL);
-        waitForAnySection(); // espera uma das seções após navegar
+        waitForAnySection();
     }
 
     private void waitForAnySection() {
@@ -47,6 +47,6 @@ public class ViewRidesPage extends BasePageObject {
     }
 
     public boolean isResponsiveTitleVisible() {
-        return isVisible(notStartedTitle); // adaptável conforme layout responsivo
+        return isVisible(notStartedTitle);
     }
 }

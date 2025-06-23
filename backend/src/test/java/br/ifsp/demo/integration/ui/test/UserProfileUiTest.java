@@ -16,7 +16,6 @@ public class UserProfileUiTest extends BasePassengerTest {
     @Test
     @DisplayName("Happy Path - Should show name, email, CPF and birth date")
     void shouldShowUserProfileInfo() {
-        // Já está na página após login
         UserProfilePage page = new UserProfilePage(driver);
 
         assertThat(page.isNameVisible()).isTrue();

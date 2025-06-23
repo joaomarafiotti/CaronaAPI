@@ -20,7 +20,6 @@ public class RegisterRidePage extends BasePageObject {
     private final By carSelectField = By.id("carSelect");
     private final By submitButton = By.cssSelector("button[type='submit'].auth-button");
 
-    // ✅ Atualizado para localizar erros em span, p ou div com classe .form-error
     private final By formError = By.cssSelector(".form-error");
     private final By formSuccess = By.cssSelector("div.form-success");
 

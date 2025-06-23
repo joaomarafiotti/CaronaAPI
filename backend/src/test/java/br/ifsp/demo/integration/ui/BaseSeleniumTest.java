@@ -24,7 +24,6 @@ public class BaseSeleniumTest {
     public void setUp() {
         WebDriverManager.chromedriver().setup();
 
-        // Define diretório de perfil do Chrome para persistir localStorage/token
         String userDataDir = System.getProperty("java.io.tmpdir") + File.separator + "selenium-profile";
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
@@ -32,10 +31,7 @@ public class BaseSeleniumTest {
 
         driver = new ChromeDriver(options);
 
-        // Importante: não limpar cookies, para manter o localStorage/token entre páginas
-        // driver.manage().deleteAllCookies();
-
-        setInitialPage(); // Hook para subclasses definirem a página inicial
+        setInitialPage();
     }
 
     protected void setInitialPage() {}
