@@ -88,6 +88,16 @@ public class RideSolicitationTests extends BaseApiIntegrationTest{
     @Test
     @Tag("ApiTest")
     @Tag("IntegrationTest")
+    @DisplayName("Should return 401 if driver is trying to create ride solicitation")
+    void shouldReturn401IfDriverIsTryingToCreateRideSolicitation(){
+        given().header("Authorization", "Bearer " + authenticationTokenDriver)
+                .when().post("/api/v1/ride-solicitations?rideId="+rideId)
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 when get pending ride solicitations")
     void shouldReturn200WhenGetPendingRideSolicitations(){
         given().header("Authorization", "Bearer " + authenticationTokenPassenger)
