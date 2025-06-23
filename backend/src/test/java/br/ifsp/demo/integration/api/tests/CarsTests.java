@@ -78,6 +78,27 @@ public class CarsTests extends BaseApiIntegrationTest{
     @Test
     @Tag("ApiTest")
     @Tag("IntegrationTest")
+    @DisplayName("Should return 401 when passenger tries to create a car")
+    void shouldReturn401WhenPassengerTriesToCreateACar(){
+        final RegisterUserRequest user = PassengerEntityBuilder.createPassengerByEmail("password", "passenger@email.com");
+        given().contentType("application/json").port(port).body(user)
+                .when().post("/api/v1/register")
+                .then().log().ifValidationFails(LogDetail.BODY);
+
+        final AuthRequest authRequest = new AuthRequest("passenger@email.com","password");
+        Response loginResponse = given().contentType("application/json").port(port).body(authRequest)
+                .when().post("/api/v1/authenticate")
+                .then().log().ifValidationFails(LogDetail.BODY).extract().response();
+        String token = loginResponse.jsonPath().getString("token");
+
+        given().header("Authorization", "Bearer " + token)
+                .when().get("/api/v1/drivers/cars")
+                .then().log().ifValidationFails(LogDetail.BODY).statusCode(401);
+    }
+
+    @Test
+    @Tag("ApiTest")
+    @Tag("IntegrationTest")
     @DisplayName("Should return 200 with all cars in body")
     void shouldReturn200WithAllCarsInBody(){
         final CarRequestModel car = CarEntityBuilder.createRandomCar();
