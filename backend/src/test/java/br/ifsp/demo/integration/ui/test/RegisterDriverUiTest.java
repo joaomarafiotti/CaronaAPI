@@ -29,6 +29,37 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
     }
 
     @Test
+    @DisplayName("Setup - Should ensure driver account with fixed email exists")
+    void shouldEnsureDriverAccountExists() {
+        RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
+
+        String name = "Sophie";
+        String lastname = "Driver";
+        String email = "motorista@ifsp.edu.br";
+        String cpf = "812.976.140-89";
+        String birthDate = "2000-12-09";
+        String password = "SenhaForte123!";
+
+        registerDriverPage.fillName(name);
+        registerDriverPage.fillLastname(lastname);
+        registerDriverPage.fillEmail(email);
+        registerDriverPage.fillCpf(cpf);
+        registerDriverPage.fillBirthDate(birthDate);
+        registerDriverPage.fillPassword(password);
+        registerDriverPage.fillConfirmPassword(password);
+
+        registerDriverPage.submitForm();
+
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
+        } catch (Exception e) {
+            assertThat(driver.getCurrentUrl()).contains("/login");
+        }
+    }
+
+    @Test
     @DisplayName("Happy Path - Should register driver with valid data")
     void shouldRegisterDriverWithValidData() {
         RegisterDriverPage registerDriverPage = new RegisterDriverPage(driver);
@@ -51,17 +82,14 @@ public class RegisterDriverUiTest extends BaseSeleniumTest {
         registerDriverPage.submitForm();
 
         try {
-            // Aguarda e aceita o alerta "Cadastro realizado com sucesso!"
             new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.alertIsPresent());
             driver.switchTo().alert().accept();
 
-            // Logging
             System.out.println("[DEBUG] URL após aceitar alerta: " + driver.getCurrentUrl());
             System.out.println("[DEBUG] Título da página: " + driver.getTitle());
             System.out.println("[DEBUG] Data de nascimento gerada: " + birthDate);
             
-            // Espera redirecionamento
             new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.urlContains("/login"));
 

@@ -24,6 +24,38 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
     }
 
     @Test
+    @DisplayName("Setup - Should ensure passenger account with fixed email exists")
+    void shouldEnsurePassengerAccountExists() {
+        RegisterPassengerPage registerPassengerPage = new RegisterPassengerPage(driver);
+
+        String name = "João";
+        String lastname = "Passenger";
+        String email = "passageiro@ifsp.edu.br";
+        String cpf = "465.286.180-03";
+        String birthDate = "2000-05-10";
+        String password = "SenhaForte123!";
+
+        registerPassengerPage.fillName(name);
+        registerPassengerPage.fillLastname(lastname);
+        registerPassengerPage.fillEmail(email);
+        registerPassengerPage.fillCpf(cpf);
+        registerPassengerPage.fillBirthDate(birthDate);
+        registerPassengerPage.fillPassword(password);
+        registerPassengerPage.fillConfirmPassword(password);
+
+        registerPassengerPage.submitForm();
+
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.alertIsPresent());
+            driver.switchTo().alert().accept();
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.urlContains("/login"));
+        } catch (Exception e) {
+            assertThat(driver.getCurrentUrl()).contains("/login");
+        }
+    }
+
+
+    @Test
     @DisplayName("Happy Path - Should register passenger with valid data")
     void shouldRegisterPassengerWithValidData() {
         RegisterPassengerPage registerPassengerPage = new RegisterPassengerPage(driver);
@@ -45,12 +77,10 @@ public class RegisterPassengerUiTest extends BaseSeleniumTest {
 
         registerPassengerPage.submitForm();
 
-        // Aceita o alert de sucesso
         new WebDriverWait(driver, Duration.ofSeconds(3))
             .until(ExpectedConditions.alertIsPresent());
         driver.switchTo().alert().accept();
 
-        // Aguarda redirecionamento para a tela de login
         new WebDriverWait(driver, Duration.ofSeconds(5))
             .until(ExpectedConditions.urlContains("/login"));
 

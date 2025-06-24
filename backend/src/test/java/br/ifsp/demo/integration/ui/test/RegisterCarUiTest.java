@@ -19,7 +19,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
     @DisplayName("Happy Path - Should register car with valid data")
     void shouldRegisterCarWithValidData() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
@@ -32,7 +32,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
         registerCarPage.fillModel(FakeDataFactory.randomCarModel());
         registerCarPage.fillColor(FakeDataFactory.randomColor());
         registerCarPage.fillSeats(String.valueOf(FakeDataFactory.randomSeats()));
-        registerCarPage.fillLicensePlate(FakeDataFactory.randomPlate()); // já atualizado
+        registerCarPage.fillLicensePlate(FakeDataFactory.randomPlate());
 
         registerCarPage.submitForm();
 
@@ -44,7 +44,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
     @DisplayName("Sad Path - Should show error when submitting empty form")
     void shouldShowErrorWhenSubmittingEmptyForm() {
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 
@@ -54,7 +54,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
         registerCarPage.visit();
 
         registerCarPage.submitForm();
-        assertThat(registerCarPage.isAnyFieldErrorVisible()).isTrue(); // alterado aqui
+        assertThat(registerCarPage.isAnyFieldErrorVisible()).isTrue();
     }
 
     @Test
@@ -63,7 +63,7 @@ public class RegisterCarUiTest extends BaseSeleniumTest {
         driver.manage().window().setSize(new Dimension(375, 812));
 
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.fillEmail("testuser@gmail.com");
+        loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
 

@@ -2,7 +2,6 @@ package br.ifsp.demo.integration.ui.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
 import br.ifsp.demo.integration.ui.BasePageObject;
 
 public class ViewRidesPage extends BasePageObject {
@@ -16,23 +15,31 @@ public class ViewRidesPage extends BasePageObject {
 
     public ViewRidesPage(WebDriver driver) {
         super(driver);
+    }
+
+    public void visit() {
         driver.get(VIEW_RIDES_URL);
+        waitForAnySection();
+    }
+
+    private void waitForAnySection() {
+        waitUntilAnyVisible(notStartedTitle, inProgressTitle, finishedTitle, errorAlert);
     }
 
     public boolean hasNotStartedRides() {
-        return !driver.findElements(notStartedTitle).isEmpty();
+        return isVisible(notStartedTitle);
     }
 
     public boolean hasInProgressRides() {
-        return !driver.findElements(inProgressTitle).isEmpty();
+        return isVisible(inProgressTitle);
     }
 
     public boolean hasFinishedRides() {
-        return !driver.findElements(finishedTitle).isEmpty();
+        return isVisible(finishedTitle);
     }
 
     public boolean hasErrorMessage() {
-        return !driver.findElements(errorAlert).isEmpty();
+        return isVisible(errorAlert);
     }
 
     public String getErrorMessageText() {

@@ -12,5 +12,6 @@ public abstract class BaseDriverTest extends BaseSeleniumTest {
         loginPage.fillEmail("motorista@ifsp.edu.br");
         loginPage.fillPassword("SenhaForte123!");
         loginPage.submitLogin();
+        waitForUrlContains("/dashboard/driver/profile");
     }
 }

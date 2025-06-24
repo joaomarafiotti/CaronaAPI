@@ -16,7 +16,6 @@ public class UserProfilePage extends BasePageObject {
 
     public UserProfilePage(WebDriver driver) {
         super(driver);
-        driver.get(PROFILE_URL);
         waitForVisibility(nameHeading);
     }
 
